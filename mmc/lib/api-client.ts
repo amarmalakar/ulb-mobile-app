@@ -1,5 +1,6 @@
 import { getAuthTypeHeaderValue } from '@/lib/auth-type-storage';
 import { getStaffTokenHeaderValue } from '@/lib/staff-auth-storage';
+import { getUserTokenHeaderValue } from '@/lib/user-auth-storage';
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -99,9 +100,17 @@ export function createApiClient({ baseURL, ulbId }: CreateApiClientOptions): Axi
         config.headers.set('x-auth-type', authType);
       }
 
-      const staffToken = getStaffTokenHeaderValue();
-      if (staffToken) {
-        config.headers.set('Authorization', `Bearer ${staffToken}`);
+      // Attach bearer token for the active auth role only (avoid staff token on user routes).
+      if (authType === 'Staff') {
+        const staffToken = getStaffTokenHeaderValue();
+        if (staffToken) {
+          config.headers.set('Authorization', `Bearer ${staffToken}`);
+        }
+      } else if (authType === 'User') {
+        const userToken = getUserTokenHeaderValue();
+        if (userToken) {
+          config.headers.set('Authorization', `Bearer ${userToken}`);
+        }
       }
 
       if (__DEV__) {

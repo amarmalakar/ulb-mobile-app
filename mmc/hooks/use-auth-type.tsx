@@ -1,4 +1,5 @@
 import { AUTH_TYPE_STORAGE_KEY, setAuthTypeHeaderValue } from '@/lib/auth-type-storage';
+import { loadUserSession } from '@/lib/user-auth-storage';
 import type { AuthType } from '@/types/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
@@ -33,6 +34,9 @@ export function useAuthType() {
         if (mounted) {
           setAuthTypeHeaderValue(parsed);
           setAuthType(parsed);
+          if (parsed === 'User') {
+            await loadUserSession();
+          }
         }
       } catch (error) {
         console.error(error);

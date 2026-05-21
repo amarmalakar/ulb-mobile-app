@@ -11,6 +11,7 @@ import loginHero from '@/assets/images/login-hero.png';
 import { useAppInitContext } from '@/components/provider/app-init-provider';
 import { useAuthContext } from '@/components/provider/auth-provider';
 import { useStaffBootstrap } from '@/hooks/use-staff-bootstrap';
+import { useUserBootstrap } from '@/hooks/use-user-bootstrap';
 import { cn } from '@/lib/utils';
 
 const SCREEN_OPTIONS = {
@@ -21,6 +22,7 @@ export default function Screen() {
   const { ulb } = useAppInitContext();
   const { currentStep } = useAuthContext();
   useStaffBootstrap();
+  useUserBootstrap();
 
   return (
     <>

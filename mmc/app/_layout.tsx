@@ -12,6 +12,7 @@ import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { useNetworkContext } from '@/components/provider/network-provider';
 import { AuthProvider } from '@/components/provider/auth-provider';
 import { StaffAuthProvider } from '@/components/provider/staff-auth-provider';
+import { UserAuthProvider } from '@/components/provider/user-auth-provider';
 
 function QueryDevTools() {
   const { queryClient } = useNetworkContext();
@@ -31,12 +32,14 @@ export default function RootLayout() {
       <NetworkProvider>
         <AppInitProvider>
           <StaffAuthProvider>
+            <UserAuthProvider>
             <AuthProvider>
               <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
               <Stack />
               <PortalHost />
               <QueryDevTools />
             </AuthProvider>
+            </UserAuthProvider>
           </StaffAuthProvider>
         </AppInitProvider>
       </NetworkProvider>
