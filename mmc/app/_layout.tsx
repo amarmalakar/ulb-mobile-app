@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { useNetworkContext } from '@/components/provider/network-provider';
+import { AuthProvider } from '@/components/provider/auth-provider';
 
 function QueryDevTools() {
   const { queryClient } = useNetworkContext();
@@ -28,10 +29,13 @@ export default function RootLayout() {
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <NetworkProvider>
         <AppInitProvider>
-          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-          <Stack />
-          <QueryDevTools />
-          <PortalHost />
+          <AuthProvider>
+            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+            <Stack />
+            <PortalHost />
+            
+            <QueryDevTools />
+          </AuthProvider>
         </AppInitProvider>
       </NetworkProvider>
     </ThemeProvider>

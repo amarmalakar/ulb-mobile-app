@@ -40,7 +40,8 @@ export function AppInitProvider({ children }: AppInitProviderProps) {
   return (
     <AppInitContext.Provider value={{ isOnline, ulb, wards }}>
       {children}
-      <Text>{JSON.stringify(ulb, null, 2)}</Text>
+      {/* <Text>AA: {JSON.stringify(ulb, null, 2)}</Text>
+      <Text>{JSON.stringify({ isLoading, isError, error }, null, 2)}</Text> */}
     </AppInitContext.Provider>
   );
 }

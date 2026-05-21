@@ -1,23 +1,70 @@
-import { createContext, useContext, useMemo } from "react";
-import { useUserType } from "@/hooks/use-user-type";
+import { createContext, useCallback, useContext, useMemo, useState } from "react";
+import { useAuthType } from "@/hooks/use-auth-type";
+import { useRouter } from "expo-router";
 
-export type iUserTypes = "Staff" | "User" | null;
+export type iAuthTypes = "Staff" | "User" | null;
 interface iAuthContext {
-  userType: iUserTypes;
-  handleUserType: (userType: iUserTypes) => void;
+  authType: iAuthTypes;
+  handleAuthType: (authType: iAuthTypes) => void;
+  currentStep: { title: string; onPress: () => void }[];
 }
 
 const AuthContext = createContext<iAuthContext | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const { userType, handleUserType } = useUserType();
+  const router = useRouter();
+  const { authType, handleAuthType } = useAuthType();
+  const [step, setStep] = useState<1 | 2>(1);
+
+
+  const handleNextStep = useCallback((stepParam: 1 | 2) => {
+    setStep(stepParam);
+  }, []);
+
+  const startAsStaff = useCallback(async () => {
+    await handleAuthType("Staff");
+  }, []);
+
+  const startAsUser = useCallback(async () => {
+    await handleAuthType("User");
+  }, []);
+
+  const GET_STARTED_STEPS = useMemo(
+    () => ({
+      1: [
+        {
+          title: "Get Started",
+          onPress: () => handleNextStep(2),
+        },
+      ],
+      2: [
+        {
+          title: "Start as Staff",
+          onPress: () => {
+            void startAsStaff();
+          },
+        },
+        {
+          title: "Start as User",
+          onPress: () => {
+            void startAsUser();
+          },
+        },
+      ],
+    }),
+    [handleNextStep, handleAuthType, router, startAsStaff, startAsUser],
+  );
+
+  const currentStep = useMemo(() => GET_STARTED_STEPS[step], [step]);
 
   const value = useMemo(() => ({
-    userType,
-    handleUserType
+    authType,
+    handleAuthType,
+    currentStep
   }), [
-    userType,
-    handleUserType,
+    authType,
+    handleAuthType,
+    currentStep
   ]);
 
   return (

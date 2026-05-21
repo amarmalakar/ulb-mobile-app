@@ -22,7 +22,7 @@ export function useGetUlbById() {
 
   const { data: ulb, isLoading, error, isError } = useQuery<iUlbByIdRes, Error>({
     queryKey: ['ulb', ulbId],
-    queryFn: () => client.get(`/api/v1/ulbs/${ulbId}`),
+    queryFn: () => client.get(`/ulb`),
   });
 
   const totalWards = ulb?.data?.totalWards ?? 0;
