@@ -17,12 +17,13 @@ export interface iUlbByIdRes {
   data: iUlb;
 }
 
-export function useGetUlbById() {
+export function useGetUlbById(enabled = true) {
   const { client, ulbId } = useNetworkContext();
 
   const { data: ulb, isLoading, error, isError } = useQuery<iUlbByIdRes, Error>({
     queryKey: ['ulb', ulbId],
     queryFn: () => client.get(`/ulb`),
+    enabled,
   });
 
   const totalWards = ulb?.data?.totalWards ?? 0;

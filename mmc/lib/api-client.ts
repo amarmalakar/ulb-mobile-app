@@ -1,3 +1,5 @@
+import { getAuthTypeHeaderValue } from '@/lib/auth-type-storage';
+import { getStaffTokenHeaderValue } from '@/lib/staff-auth-storage';
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -91,6 +93,16 @@ export function createApiClient({ baseURL, ulbId }: CreateApiClientOptions): Axi
   client.interceptors.request.use(
     (config: InternalAxiosRequestConfig) => {
       config.headers.set('x-ulb-id', ulbId);
+
+      const authType = getAuthTypeHeaderValue();
+      if (authType) {
+        config.headers.set('x-auth-type', authType);
+      }
+
+      const staffToken = getStaffTokenHeaderValue();
+      if (staffToken) {
+        config.headers.set('Authorization', `Bearer ${staffToken}`);
+      }
 
       if (__DEV__) {
         console.log(`[API] ${config.method?.toUpperCase() ?? 'GET'} ${config.baseURL ?? ''}${config.url ?? ''}`);

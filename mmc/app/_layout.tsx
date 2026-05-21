@@ -11,6 +11,7 @@ import { useColorScheme } from 'nativewind';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { useNetworkContext } from '@/components/provider/network-provider';
 import { AuthProvider } from '@/components/provider/auth-provider';
+import { StaffAuthProvider } from '@/components/provider/staff-auth-provider';
 
 function QueryDevTools() {
   const { queryClient } = useNetworkContext();
@@ -29,13 +30,14 @@ export default function RootLayout() {
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
       <NetworkProvider>
         <AppInitProvider>
-          <AuthProvider>
-            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            <Stack />
-            <PortalHost />
-            
-            <QueryDevTools />
-          </AuthProvider>
+          <StaffAuthProvider>
+            <AuthProvider>
+              <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+              <Stack />
+              <PortalHost />
+              <QueryDevTools />
+            </AuthProvider>
+          </StaffAuthProvider>
         </AppInitProvider>
       </NetworkProvider>
     </ThemeProvider>

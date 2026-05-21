@@ -1,38 +1,27 @@
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
-import { Link, Stack } from 'expo-router';
-import { MoonStarIcon, StarIcon, SunIcon } from 'lucide-react-native';
+import { Stack } from 'expo-router';
+import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import * as React from 'react';
-import { Image, type ImageStyle, View } from 'react-native';
+import { Image, View } from 'react-native';
 import bubbleShape1 from '@/assets/images/bubble-shape-1.png';
 import loginHero from '@/assets/images/login-hero.png';
 import { useAppInitContext } from '@/components/provider/app-init-provider';
 import { useAuthContext } from '@/components/provider/auth-provider';
+import { useStaffBootstrap } from '@/hooks/use-staff-bootstrap';
 import { cn } from '@/lib/utils';
 
-const LOGO = {
-  light: require('@/assets/images/react-native-reusables-light.png'),
-  dark: require('@/assets/images/react-native-reusables-dark.png'),
-};
-
 const SCREEN_OPTIONS = {
-  // title: 'React Native Reusables',
-  // headerTransparent: true,
-  // headerRight: () => <ThemeToggle />,
   headerShown: false,
 };
 
-const IMAGE_STYLE: ImageStyle = {
-  height: 76,
-  width: 76,
-};
-
 export default function Screen() {
-  const { colorScheme } = useColorScheme();
   const { ulb } = useAppInitContext();
   const { currentStep } = useAuthContext();
+  useStaffBootstrap();
+
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
