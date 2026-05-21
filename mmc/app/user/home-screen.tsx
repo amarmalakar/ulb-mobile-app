@@ -2,6 +2,7 @@ import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { HomeBanner } from '@/features/home-banner';
+import { BottomNav } from '@/components/common/bottom-nav';
 
 export default function UserHomeScreen() {
   const { userInfo } = useUserAuth();
@@ -12,6 +13,8 @@ export default function UserHomeScreen() {
 
       <View className="bg-background flex-1">
         <HomeBanner userName={userInfo?.name ?? 'User'} />
+
+        <BottomNav activeItemId="home" />
       </View>
     </>
   );

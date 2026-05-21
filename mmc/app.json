@@ -23,7 +23,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.amar_malakar.mmc"
+      "package": "com.amar_malakar.mmc",
+      "primaryColor": "#51c2c8"
     },
     "web": {
       "bundler": "metro",

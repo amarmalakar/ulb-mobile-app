@@ -2,6 +2,7 @@ import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { Stack } from 'expo-router';
 import { View } from 'react-native';
 import { HomeBanner } from '@/features/home-banner';
+import { BottomNav } from '@/components/common/bottom-nav';
 
 export default function StaffHomeScreen() {
   const { staffInfo } = useStaffAuth();
@@ -12,6 +13,8 @@ export default function StaffHomeScreen() {
 
       <View className="bg-background flex-1">
         <HomeBanner userName={staffInfo?.name ?? 'Staff'} />
+
+        <BottomNav activeItemId="home" />
       </View>
     </>
   );

@@ -85,9 +85,9 @@ export function MobileMenu({
             ))}
           </View>
 
-          <Pressable onPress={onLogout} className="bg-foreground mt-auto flex-row items-center justify-center rounded-xl py-3">
+          <Pressable onPress={onLogout} className="bg-destructive mt-auto flex-row items-center justify-center rounded-xl py-3">
             <LogOutIcon size={18} color="#FFFFFF" />
-            <Text className="text-background ml-2 text-base font-semibold">Logout</Text>
+            <Text className="text-white ml-2 text-base font-semibold">Logout</Text>
           </Pressable>
         </View>
       </View>
