@@ -3,9 +3,9 @@ import { useAuthType } from '@/hooks/use-auth-type';
 import { type Href, usePathname, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 
-const STAFF_HOME_HREF = '/(staff)/home-screen' as Href;
-const STAFF_MPIN_HREF = '/(staff-auth)/staff-mpin-screen' as Href;
-const STAFF_LOGIN_HREF = '/(staff-auth)/staff-login-screen' as Href;
+const STAFF_HOME_HREF = '/staff/home-screen' as Href;
+const STAFF_MPIN_HREF = '/staff-auth/staff-mpin-screen' as Href;
+const STAFF_LOGIN_HREF = '/staff-auth/staff-login-screen' as Href;
 
 /**
  * On cold start, resume staff flow when auth type and session are already stored.

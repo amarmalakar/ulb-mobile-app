@@ -6,13 +6,13 @@ import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { useAuthType } from '@/hooks/use-auth-type';
 import type { AuthType } from '@/types/auth';
 
-const STAFF_HOME_HREF = '/(staff)/home-screen' as Href;
-const STAFF_MPIN_HREF = '/(staff-auth)/staff-mpin-screen' as Href;
-const STAFF_LOGIN_HREF = '/(staff-auth)/staff-login-screen' as Href;
+const STAFF_HOME_HREF = '/staff/home-screen' as Href;
+const STAFF_MPIN_HREF = '/staff-auth/staff-mpin-screen' as Href;
+const STAFF_LOGIN_HREF = '/staff-auth/staff-login-screen' as Href;
 
-const USER_HOME_HREF = '/(user)/home-screen' as Href;
-const USER_MPIN_HREF = '/(user-auth)/user-mpin-screen' as Href;
-const USER_LOGIN_HREF = '/(user-auth)/user-login-screen' as Href;
+const USER_HOME_HREF = '/user/home-screen' as Href;
+const USER_MPIN_HREF = '/user-auth/user-mpin-screen' as Href;
+const USER_LOGIN_HREF = '/user-auth/user-login-screen' as Href;
 /** @deprecated Use `AuthType` from `@/types/auth` */
 export type iAuthTypes = AuthType;
 
@@ -20,6 +20,8 @@ interface iAuthContext {
   authType: AuthType;
   handleAuthType: (authType: AuthType) => Promise<void>;
   clearAuthType: () => void;
+  logout: () => Promise<void>;
+  isLoggingOut: boolean;
   currentStep: { title: string; onPress: () => void }[];
 }
 
@@ -28,13 +30,15 @@ const AuthContext = createContext<iAuthContext | undefined>(undefined);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { authType, handleAuthType } = useAuthType();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { signOut: staffSignOut, session, sessionHydrated, mpinUnlocked } = useStaffAuth();
   const {
+    signOut: userSignOut,
     session: userSession,
     sessionHydrated: userSessionHydrated,
     mpinUnlocked: userMpinUnlocked,
   } = useUserAuth();
   const [step, setStep] = useState<1 | 2>(1);
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const handleNextStep = useCallback((stepParam: 1 | 2) => {
     setStep(stepParam);
@@ -116,14 +120,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const currentStep = useMemo(() => GET_STARTED_STEPS[step], [step, GET_STARTED_STEPS]);
 
+  const logout = useCallback(async () => {
+    if (isLoggingOut) return;
+
+    setIsLoggingOut(true);
+    try {
+      if (authType === 'Staff') {
+        await staffSignOut();
+      } else if (authType === 'User') {
+        await userSignOut();
+      }
+
+      await handleAuthType(null);
+      setStep(1);
+      router.replace('/');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }, [
+    authType,
+    handleAuthType,
+    isLoggingOut,
+    router,
+    staffSignOut,
+    userSignOut,
+  ]);
+
   const value = useMemo(
     () => ({
       authType,
       handleAuthType,
       clearAuthType,
+      logout,
+      isLoggingOut,
       currentStep,
     }),
-    [authType, handleAuthType, clearAuthType, currentStep],
+    [authType, handleAuthType, clearAuthType, logout, isLoggingOut, currentStep],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -13,8 +13,8 @@ import { ArrowLeftIcon } from 'lucide-react-native';
 import bubbleShape1 from '@/assets/images/bubble-shape-1.png';
 import loginHero from '@/assets/images/login-hero.png';
 
-const USER_HOME_HREF = '/(user)/home-screen' as Href;
-const USER_LOGIN_HREF = '/(user-auth)/user-login-screen' as Href;
+const USER_HOME_HREF = '/user/home-screen' as Href;
+const USER_LOGIN_HREF = '/user-auth/user-login-screen' as Href;
 
 export default function UserMpinScreen() {
   const { clearAuthType } = useAuthContext();

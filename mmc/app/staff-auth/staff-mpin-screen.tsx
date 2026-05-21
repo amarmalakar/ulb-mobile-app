@@ -1,6 +1,6 @@
 import { type Href, Stack, router } from 'expo-router';
 
-const STAFF_HOME_HREF = '/(staff)/home-screen' as Href;
+const STAFF_HOME_HREF = '/staff/home-screen' as Href;
 import { useCallback, useEffect, useState } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';

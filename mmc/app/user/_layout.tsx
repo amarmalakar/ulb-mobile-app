@@ -3,8 +3,8 @@ import { type Href, Stack, useRouter } from 'expo-router';
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 
-const USER_LOGIN_HREF = '/(user-auth)/user-login-screen' as Href;
-const USER_MPIN_HREF = '/(user-auth)/user-mpin-screen' as Href;
+const USER_LOGIN_HREF = '/user-auth/user-login-screen' as Href;
+const USER_MPIN_HREF = '/user-auth/user-mpin-screen' as Href;
 
 export default function UserLayout() {
   const router = useRouter();

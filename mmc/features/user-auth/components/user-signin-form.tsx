@@ -28,7 +28,7 @@ export function UserSigninForm({
   } = useUserSigninForm({ onSession, onSignedIn });
 
   const onPressSignUp = useCallback(() => {
-    router.push('/(user-auth)/user-signup-screen');
+    router.push('/user-auth/user-signup-screen');
   }, [router]);
 
   return (

@@ -1,8 +1,8 @@
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { type Href, Stack, useRouter } from 'expo-router';
 
-const STAFF_LOGIN_HREF = '/(staff-auth)/staff-login-screen' as Href;
-const STAFF_MPIN_HREF = '/(staff-auth)/staff-mpin-screen' as Href;
+const STAFF_LOGIN_HREF = '/staff-auth/staff-login-screen' as Href;
+const STAFF_MPIN_HREF = '/staff-auth/staff-mpin-screen' as Href;
 import { useEffect } from 'react';
 import { ActivityIndicator, View } from 'react-native';
 

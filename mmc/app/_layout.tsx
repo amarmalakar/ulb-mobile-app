@@ -35,7 +35,7 @@ export default function RootLayout() {
             <UserAuthProvider>
             <AuthProvider>
               <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-              <Stack />
+              <Stack screenOptions={{ headerShown: false }} />
               <PortalHost />
               <QueryDevTools />
             </AuthProvider>

@@ -35,7 +35,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
   } = useUserSignupForm({ onSession, onVerified });
 
   const onPressSignIn = useCallback(() => {
-    router.push('/(user-auth)/user-login-screen');
+    router.push('/user-auth/user-login-screen');
   }, [router]);
 
   return (
