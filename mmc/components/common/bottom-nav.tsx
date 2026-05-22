@@ -21,13 +21,13 @@ const userItems = [
   // { id: 'near-me', label: 'Near me', icon: MapPinnedIcon, route: '/(user)/near-me-screen' },
   // { id: 'booking-list', label: 'Booking', icon: SchoolIcon, route: '/(user)/booking-list-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartPieIcon, route: '/(user)/analytics-screen' },
-  // { id: 'tickets', label: 'Tickets', icon: HistoryIcon, route: '/(user)/tickets-screen' },
+  { id: 'tickets', label: 'Tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
   { id: 'account', label: 'Account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
 ];
 
 const staffItems = [
   { id: 'home', label: 'Home', icon: HouseIcon, route: '/staff/home-screen' },
-  // { id: 'tickets', label: 'Tickets', icon: TicketSlashIcon, route: '/(staff)/ticket-screen' },
+  { id: 'tickets', label: 'Tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
   // { id: 'attendance', label: 'Attendance', icon: CalendarClockIcon, route: '/(staff)/attendance-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartScatterIcon, route: '/(staff)/analytics-screen' },
   { id: 'account', label: 'Account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },
