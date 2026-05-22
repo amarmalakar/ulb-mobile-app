@@ -319,6 +319,42 @@ export type StaffTicketFiltersData = {
   complaints: StaffComplaintFilterOption[];
 };
 
+export type StaffTicketTimelineEntry = {
+  id: string;
+  ulbId: string;
+  ticketTokenId: string;
+  description: string;
+  occurredAt: string;
+  createdAt: string;
+};
+
+export type StaffTicketComment = {
+  id: string;
+  ulbId: string;
+  ticketTokenId: string;
+  comment: string;
+  authorType: iTicketCommentAuthorType;
+  authorUserId: string | null;
+  authorStaffId: string | null;
+  createdAt: string;
+  authorUser: { id: string; name: string } | null;
+  authorStaff: { id: string; name: string; imgProfileUrl: string | null } | null;
+};
+
+export type StaffTicketDetailUser = {
+  id: string;
+  name: string;
+  phone: string;
+  email: string | null;
+};
+
+/** Full ticket from `GET /staff/tickets/:ticketId`. */
+export type StaffTicketDetail = StaffTicketListItem & {
+  timelines: StaffTicketTimelineEntry[];
+  comments: StaffTicketComment[];
+  user: StaffTicketDetailUser;
+};
+
 export type UserTicketAssignedStaff = {
   id: string;
   name: string;
@@ -348,4 +384,42 @@ export type TicketListItem = {
   complaint: { id: string; title: string };
   assignedStaff: UserTicketAssignedStaff | null;
   images: { id: string; imageUrl: string; imageKey?: string; createdAt: string }[];
+};
+
+/** One timeline row for a user ticket (API / DB shape, serialized dates). */
+export type UserTicketTimelineEntry = {
+	id: string;
+	ulbId: string;
+	ticketTokenId: string;
+	description: string;
+	occurredAt: string;
+	createdAt: string;
+};
+
+export type UserTicketComment = {
+	id: string;
+	ulbId: string;
+	ticketTokenId: string;
+	comment: string;
+	authorType: "USER" | "STAFF" | "SYSTEM";
+	authorUserId: string | null;
+	authorStaffId: string | null;
+	createdAt: string;
+	authorUser: { id: string; name: string } | null;
+	authorStaff: { id: string; name: string; imgProfileUrl: string | null } | null;
+};
+
+/** Citizen who filed the ticket (`GET .../:id` only). */
+export type UserTicketDetailUser = {
+	id: string;
+	name: string;
+	phone: string;
+	email: string | null;
+};
+
+/** Full ticket from `GET /api/v1/user/tickets/:ticketId` (and PATCH/PUT rating body). */
+export type UserTicketDetail = StaffTicketListItem & {
+	timelines: UserTicketTimelineEntry[];
+	comments: UserTicketComment[];
+	user: UserTicketDetailUser;
 };

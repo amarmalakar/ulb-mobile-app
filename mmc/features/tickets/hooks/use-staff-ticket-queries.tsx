@@ -1,10 +1,12 @@
 import type { AxiosInstance } from 'axios';
-import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useMutation, useQuery } from '@tanstack/react-query';
 
 import { useNetworkContext } from '@/components/provider/network-provider';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { staffBearerHeaders, throwUnlessOk } from '@/features/staff-auth/utils/api-response';
 import type {
+  iTicketStatus,
+  StaffTicketDetail,
   StaffTicketFiltersData,
   StaffTicketsListFilterParams,
   StaffTicketsPage,
@@ -19,6 +21,12 @@ type StaffTicketsApiResponse = {
 type StaffTicketFiltersApiResponse = {
   ok: boolean;
   data?: StaffTicketFiltersData;
+  message?: string;
+};
+
+type StaffTicketDetailApiResponse = {
+  ok: boolean;
+  data?: StaffTicketDetail;
   message?: string;
 };
 
@@ -90,6 +98,121 @@ export function useStaffTicketFilterQuery(
         throw new Error('Missing access token');
       }
       return fetchStaffTicketFilters(client, token);
+    },
+  });
+}
+
+export type UseStaffTicketQueryOptions = {
+  enabled?: boolean;
+};
+
+export async function fetchStaffTicketDetail(
+  client: AxiosInstance,
+  accessToken: string,
+  ticketId: string,
+): Promise<StaffTicketDetail> {
+  const res = (await client.get(`/staff/tickets/${encodeURIComponent(ticketId)}`, {
+    headers: staffBearerHeaders(accessToken),
+  })) as StaffTicketDetailApiResponse;
+
+  return throwUnlessOk(res, 'Failed to load ticket');
+}
+
+/** Fetches one assigned ticket from `GET /staff/tickets/:ticketId`. */
+export function useStaffTicketQuery(
+  ticketId: string | string[] | null | undefined,
+  options?: UseStaffTicketQueryOptions,
+) {
+  const { client } = useNetworkContext();
+  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const accessToken = session?.accessToken;
+  const id = Array.isArray(ticketId) ? ticketId[0]?.trim() : ticketId?.trim();
+
+  return useQuery<StaffTicketDetail, Error>({
+    queryKey: ['staff', 'tickets', 'detail', accessToken, id ?? ''],
+    enabled:
+      Boolean(accessToken && id) &&
+      sessionHydrated &&
+      mpinUnlocked &&
+      (options?.enabled ?? true),
+    queryFn: async () => {
+      const token = accessToken;
+      if (!token || !id) {
+        throw new Error('Missing access token or ticket id');
+      }
+      return fetchStaffTicketDetail(client, token, id);
+    },
+  });
+}
+
+export type PostStaffTicketCommentBody = {
+  comment: string;
+};
+
+export type PatchStaffTicketStatusBody = {
+  status: iTicketStatus;
+};
+
+/** Updates ticket status via `PATCH /staff/tickets/:ticketId`. */
+export function usePatchStaffTicketStatusMutation() {
+  const { client, queryClient } = useNetworkContext();
+  const { session } = useStaffAuth();
+  const accessToken = session?.accessToken;
+
+  return useMutation<
+    StaffTicketDetail,
+    Error,
+    { ticketId: string; body: PatchStaffTicketStatusBody }
+  >({
+    mutationFn: async ({ ticketId, body }) => {
+      const token = accessToken;
+      if (!token) {
+        throw new Error('You must be signed in');
+      }
+      const res = (await client.patch(
+        `/staff/tickets/${encodeURIComponent(ticketId)}`,
+        body,
+        { headers: staffBearerHeaders(token) },
+      )) as StaffTicketDetailApiResponse;
+      return throwUnlessOk(res, 'Failed to update ticket status');
+    },
+    onSuccess: (_data, { ticketId }) => {
+      void queryClient.invalidateQueries({ queryKey: ['staff', 'tickets'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['staff', 'tickets', 'detail', accessToken, ticketId],
+      });
+    },
+  });
+}
+
+/** Adds a staff comment via `POST /staff/tickets/:ticketId/comments`. */
+export function usePostStaffTicketCommentMutation() {
+  const { client, queryClient } = useNetworkContext();
+  const { session } = useStaffAuth();
+  const accessToken = session?.accessToken;
+
+  return useMutation<
+    StaffTicketDetail,
+    Error,
+    { ticketId: string; body: PostStaffTicketCommentBody }
+  >({
+    mutationFn: async ({ ticketId, body }) => {
+      const token = accessToken;
+      if (!token) {
+        throw new Error('You must be signed in');
+      }
+      const res = (await client.post(
+        `/staff/tickets/${encodeURIComponent(ticketId)}/comments`,
+        body,
+        { headers: staffBearerHeaders(token) },
+      )) as StaffTicketDetailApiResponse;
+      return throwUnlessOk(res, 'Failed to add comment');
+    },
+    onSuccess: (_data, { ticketId }) => {
+      void queryClient.invalidateQueries({ queryKey: ['staff', 'tickets'] });
+      void queryClient.invalidateQueries({
+        queryKey: ['staff', 'tickets', 'detail', accessToken, ticketId],
+      });
     },
   });
 }
