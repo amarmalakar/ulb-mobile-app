@@ -2,6 +2,7 @@ import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
 import { Text } from "@/components/ui/text";
 import { Separator } from "@/components/ui/separator";
 import { usePatchStaffTicketStatusMutation } from "@/features/tickets/hooks/use-staff-ticket-queries";
+import { usePatchUserTicketStatusMutation } from "@/features/tickets/hooks/use-ticket-queries";
 import TicketDescription from "./components/ticket-description";
 import { TicketsTimelines } from "./components/tickets-timelines";
 import { TicketStaffInfo } from "./components/ticket-staff-info";
@@ -19,7 +20,9 @@ export default function TicketInfo({
   authType: TicketInfoAuthType;
 }) {
   const canRate = authType === "User" && ticket.status === "COMPLETED";
-  const patchStatus = usePatchStaffTicketStatusMutation();
+  const patchStaffStatus = usePatchStaffTicketStatusMutation();
+  const patchUserStatus = usePatchUserTicketStatusMutation();
+  const patchStatus = authType === "Staff" ? patchStaffStatus : patchUserStatus;
 
   return (
     <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>

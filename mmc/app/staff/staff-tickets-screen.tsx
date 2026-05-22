@@ -84,14 +84,6 @@ export default function StaffTicketsScreen() {
         <TopNavigation label="Tickets" isBackButton={true} />
         <TicketFilter {...ticketFilter} />
 				<StaffTicketList ticketsQuery={ticketsQuery} />
-        {/* {totalLabel ? (
-          <Text className="text-muted-foreground px-4 text-sm font-medium">{totalLabel}</Text>
-        ) : null}
-        {ticketsQuery.isError ? (
-          <Text className="text-destructive px-4 text-sm">
-            {ticketsQuery.error?.message ?? "Could not load tickets."}
-          </Text>
-        ) : null} */}
 
         <BottomNav activeItemId="tickets" />
       </View>

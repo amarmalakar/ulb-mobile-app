@@ -417,6 +417,13 @@ export type UserTicketDetailUser = {
 	email: string | null;
 };
 
+/** One page from `GET /user/tickets` (cursor pagination). */
+export type UserTicketsPage = {
+  items: TicketListItem[];
+  nextCursor: string | null;
+  hasMore: boolean;
+};
+
 /** Full ticket from `GET /api/v1/user/tickets/:ticketId` (and PATCH/PUT rating body). */
 export type UserTicketDetail = StaffTicketListItem & {
 	timelines: UserTicketTimelineEntry[];
