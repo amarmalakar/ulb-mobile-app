@@ -257,3 +257,95 @@ export type StaffHomeAnalyticsData = {
   complaintTickets: StaffHomeAnalyticsComplaintTickets;
   complaint: StaffHomeAnalyticsComplaintBreakdown[];
 };
+
+export type StaffTicketsListFilterParams = {
+  query: string;
+  selectedComplaintId: string | null;
+  /** Empty = all statuses. */
+  selectedStatuses: iTicketStatus[];
+  month: string;
+  year: string;
+  selectedWards: number[];
+  limit: number;
+};
+
+/** Assigned staff on a staff ticket list row. */
+export type StaffTicketAssignedStaff = {
+  id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string | null;
+  imgProfileUrl: string | null;
+  staffPosition: { id: string; name: string };
+};
+
+/** One ticket from `GET /staff/tickets`. */
+export type StaffTicketListItem = {
+  id: string;
+  ticketTokenId: string;
+  ward: number;
+  status: iTicketStatus;
+  title: string;
+  description: string;
+  ticketCategory: TicketCategory | null;
+  dueDateTime: string;
+  locationAddress: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  commentEnabled: boolean;
+  rating: number | null;
+  createdAt: string;
+  updatedAt: string;
+  complaint: { id: string; title: string };
+  assignedStaff: StaffTicketAssignedStaff | null;
+  images: { id: string; imageUrl: string; imageKey?: string; createdAt: string }[];
+};
+
+export type StaffTicketsPage = {
+  items: StaffTicketListItem[];
+  page: number;
+  limit: number;
+  hasMore: boolean;
+  total: number;
+};
+
+export type StaffComplaintFilterOption = {
+  id: string;
+  label: string;
+};
+
+export type StaffTicketFiltersData = {
+  complaints: StaffComplaintFilterOption[];
+};
+
+export type UserTicketAssignedStaff = {
+  id: string;
+  name: string;
+  email: string;
+  phoneNumber: string;
+  address: string | null;
+  imgProfileUrl: string | null;
+  staffPosition: { id: string; name: string };
+};
+
+export type TicketListItem = {
+  id: string;
+  ticketTokenId: string;
+  ward: number;
+  status: "TODO" | "IN_PROGRESS" | "COMPLETED" | "BLOCKED" | "REOPENED";
+  title: string;
+  description: string;
+  ticketCategory: "COMPLIANT" | null;
+  dueDateTime: string;
+  locationAddress: string | null;
+  latitude: number | null;
+  longitude: number | null;
+  commentEnabled: boolean;
+  rating: number | null;
+  createdAt: string;
+  updatedAt: string;
+  complaint: { id: string; title: string };
+  assignedStaff: UserTicketAssignedStaff | null;
+  images: { id: string; imageUrl: string; imageKey?: string; createdAt: string }[];
+};
