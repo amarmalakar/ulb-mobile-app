@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Platform,
@@ -110,43 +111,44 @@ export function UserMpinForm({
   onComplete,
   onSessionTokens,
 }: UserMpinFormProps) {
+  const { t } = useTranslation();
+
   if (!accessToken || !refreshToken) {
     return (
       <View className="mt-8 gap-2">
         <Text className="text-center text-sm text-destructive">
-          Missing session. Sign in again to continue.
+          {t("auth.missingSession")}
         </Text>
       </View>
     );
   }
 
   const flow = useUserMpinFlow(accessToken, refreshToken, onComplete, onSessionTokens);
-  const M = flow.messages;
 
   const primary = useMemo(() => {
     switch (flow.step) {
       case "create_mpin":
         return {
-          label: M.continue,
-          loading: M.saving,
+          label: t("auth.mpinContinue"),
+          loading: t("auth.mpinSaving"),
           onPress: flow.submitCreate,
         };
       case "enter_mpin":
         return {
-          label: M.continue,
-          loading: M.verifying,
+          label: t("auth.mpinContinue"),
+          loading: t("auth.mpinVerifying"),
           onPress: flow.submitEnter,
         };
       case "reset_mpin":
         return {
-          label: M.continue,
-          loading: M.saving,
+          label: t("auth.mpinContinue"),
+          loading: t("auth.mpinSaving"),
           onPress: flow.submitResetNew,
         };
       default:
         return null;
     }
-  }, [M, flow.step, flow.submitCreate, flow.submitEnter, flow.submitResetNew]);
+  }, [t, flow.step, flow.submitCreate, flow.submitEnter, flow.submitResetNew]);
 
   if (flow.step === "loading") {
     return (
@@ -155,13 +157,13 @@ export function UserMpinForm({
           <>
             <Text className="text-center text-sm text-destructive">{flow.statusError}</Text>
             <Button onPress={() => void flow.refetchStatus()} variant="outline">
-              <Text>{M.refetchStatus}</Text>
+              <Text>{t("common.tryAgain")}</Text>
             </Button>
           </>
         ) : (
           <>
             <ActivityIndicator size="large" />
-            <Text className="text-sm text-muted-foreground">Loading…</Text>
+            <Text className="text-sm text-muted-foreground">{t("common.loading")}</Text>
           </>
         )}
       </View>
@@ -172,14 +174,14 @@ export function UserMpinForm({
     const until = flow.statusQuery.data?.lockedUntil;
     return (
       <View className="mt-8 gap-4">
-        <Text className="text-center text-base text-foreground">{M.locked}</Text>
+        <Text className="text-center text-base text-foreground">{t("auth.mpinLocked")}</Text>
         {until ? (
           <Text className="text-center text-xs text-muted-foreground">
-            Locked until {new Date(until).toLocaleString()}
+            {t("auth.lockedUntil", { date: new Date(until).toLocaleString() })}
           </Text>
         ) : null}
         <Button onPress={() => void flow.refetchStatus()} variant="outline">
-          <Text>{M.refetchStatus}</Text>
+          <Text>{t("common.tryAgain")}</Text>
         </Button>
       </View>
     );
@@ -189,10 +191,10 @@ export function UserMpinForm({
     <View className="mt-8 flex-1 gap-6">
       {flow.step === "create_mpin" ? (
         <>
-          <Text className="text-lg font-bold text-foreground">{M.titleCreate}</Text>
-          <Text className="text-sm text-muted-foreground">{M.helperCreate}</Text>
+          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleCreate")}</Text>
+          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperCreate")}</Text>
           <MpinCodeRow
-            label="MPIN"
+            label={t("auth.mpin")}
             length={MPIN_LENGTH}
             value={flow.createMpin}
             onChangeText={flow.setCreateMpin}
@@ -200,7 +202,7 @@ export function UserMpinForm({
             disabled={flow.isBusy}
           />
           <MpinCodeRow
-            label={M.confirmLabel}
+            label={t("auth.confirmMpin")}
             length={MPIN_LENGTH}
             value={flow.createConfirm}
             onChangeText={flow.setCreateConfirm}
@@ -212,10 +214,10 @@ export function UserMpinForm({
 
       {flow.step === "enter_mpin" ? (
         <>
-          <Text className="text-lg font-bold text-foreground">{M.titleEnter}</Text>
-          <Text className="text-sm text-muted-foreground">{M.helperEnter}</Text>
+          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleEnter")}</Text>
+          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperEnter")}</Text>
           <MpinCodeRow
-            label="MPIN"
+            label={t("auth.mpin")}
             length={MPIN_LENGTH}
             value={flow.enterMpin}
             onChangeText={flow.setEnterMpin}
@@ -228,7 +230,7 @@ export function UserMpinForm({
             className="self-center py-2 active:opacity-70"
           >
             <Text className="text-sm font-semibold text-primary">
-              {flow.resetRequestPending ? M.sendingReset : M.resetMpin}
+              {flow.resetRequestPending ? t("auth.mpinSendingReset") : t("auth.mpinReset")}
             </Text>
           </Pressable>
         </>
@@ -236,10 +238,10 @@ export function UserMpinForm({
 
       {flow.step === "reset_mpin" ? (
         <>
-          <Text className="text-lg font-bold text-foreground">{M.titleReset}</Text>
-          <Text className="text-sm text-muted-foreground">{M.helperReset}</Text>
+          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleReset")}</Text>
+          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperReset")}</Text>
           <MpinCodeRow
-            label="SMS code"
+            label={t("auth.smsCode")}
             length={OTP_LENGTH}
             value={flow.resetOtp}
             onChangeText={flow.setResetOtp}
@@ -247,7 +249,7 @@ export function UserMpinForm({
             disabled={flow.isBusy}
           />
           <MpinCodeRow
-            label="New MPIN"
+            label={t("auth.newMpin")}
             length={MPIN_LENGTH}
             value={flow.resetNew}
             onChangeText={flow.setResetNew}
@@ -255,7 +257,7 @@ export function UserMpinForm({
             disabled={flow.isBusy}
           />
           <MpinCodeRow
-            label={M.confirmLabel}
+            label={t("auth.confirmMpin")}
             length={MPIN_LENGTH}
             value={flow.resetNewConfirm}
             onChangeText={flow.setResetNewConfirm}
@@ -267,7 +269,7 @@ export function UserMpinForm({
             disabled={flow.isBusy}
             className="self-center py-2 active:opacity-70"
           >
-            <Text className="text-sm font-medium text-muted-foreground">{M.back}</Text>
+            <Text className="text-sm font-medium text-muted-foreground">{t("auth.mpinBack")}</Text>
           </Pressable>
         </>
       ) : null}

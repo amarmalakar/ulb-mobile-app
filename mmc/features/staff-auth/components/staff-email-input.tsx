@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { MailIcon } from "lucide-react-native";
 import { Input } from "../../../components/ui/input";
@@ -7,8 +8,6 @@ import { Label } from "../../../components/ui/label";
 import { Icon } from "../../../components/ui/icon";
 import { cn } from "../../../lib/utils";
 import { EMAIL_MAX_LENGTH } from "../constants";
-import { HELPER_MESSAGES } from "../messages";
-
 interface StaffEmailInputProps {
   value: string;
   onChangeText: (value: string) => void;
@@ -24,12 +23,13 @@ export function StaffEmailInput({
   disabled = false,
   maxLength = EMAIL_MAX_LENGTH,
 }: StaffEmailInputProps) {
+  const { t } = useTranslation();
   const hasError = Boolean(error);
   const [focused, setFocused] = useState(false);
 
   return (
     <View className="gap-2">
-      <Label>Work email</Label>
+      <Label>{t("auth.workEmail")}</Label>
 
       <View
         className={cn(
@@ -51,12 +51,12 @@ export function StaffEmailInput({
 
           <Input
             editable={!disabled}
-            accessibilityLabel="Work email"
+            accessibilityLabel={t("auth.workEmail")}
             value={value}
             onChangeText={onChangeText}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="name@example.com"
+            placeholder={t("auth.workEmailPlaceholder")}
             keyboardType="email-address"
             inputMode="email"
             autoCapitalize="none"
@@ -75,7 +75,7 @@ export function StaffEmailInput({
         <Text className="text-destructive px-1 text-sm">{error}</Text>
       ) : (
         <Text className="text-muted-foreground px-1 text-xs leading-relaxed">
-          {HELPER_MESSAGES.email}
+          {t("auth.staffEmailHint")}
         </Text>
       )}
     </View>

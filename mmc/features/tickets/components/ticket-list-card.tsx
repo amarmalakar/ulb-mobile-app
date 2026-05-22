@@ -7,6 +7,7 @@ import {
   StarIcon,
 } from "lucide-react-native";
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import type { TicketListItem } from "../../tickets/types";
 import { useRouter } from "expo-router";
 
@@ -38,12 +39,13 @@ function TicketAvatar({ category }: { category: "COMPLIANT" | null }) {
 }
 
 function TicketCardText({ ticket }: { ticket: TicketListItem }) {
+  const { t } = useTranslation();
   const { authType } = useAuthContext();
   const router = useRouter();
   const configs = getTicketStatusConfig(ticket.status);
 
   const metadataLabel = ticket.assignedStaff
-    ? `Assigned to ${ticket.assignedStaff.name}`
+    ? t("tickets.assignedToName", { name: ticket.assignedStaff.name })
     : ticket.complaint.title;
 
   return (
@@ -60,12 +62,16 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
         <View className="flex-row flex-wrap items-center gap-2 my-2">
           <View className="flex-row items-center gap-1 rounded-md bg-sky-100 px-2 py-0.5">
             <Icon as={HashIcon} className="size-3 text-sky-600" />
-            <Text className="text-[13px] font-semibold text-sky-700">ID: {ticket.ticketTokenId}</Text>
+            <Text className="text-[13px] font-semibold text-sky-700">
+              {t("common.ticketId", { id: ticket.ticketTokenId })}
+            </Text>
           </View>
 
           <View className="flex-row items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5">
             <Icon as={MapPinIcon} className="size-3 text-emerald-600" />
-            <Text className="text-[13px] font-semibold text-emerald-700">Ward {ticket.ward}</Text>
+            <Text className="text-[13px] font-semibold text-emerald-700">
+              {t("common.wardNumber", { ward: ticket.ward })}
+            </Text>
           </View>
         </View>
 
@@ -97,7 +103,9 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
           {typeof ticket.rating === "number" ? (
             <View className="self-start flex-row items-center gap-1 rounded-sm bg-amber-100 px-2 py-1">
               <StarIcon size={12} color="#D97706" fill="#D97706" />
-              <Text className="text-xs font-semibold text-amber-700">{ticket.rating}/5</Text>
+              <Text className="text-xs font-semibold text-amber-700">
+                {t("tickets.ratingScore", { rating: ticket.rating })}
+              </Text>
             </View>
           ) : null}
         </View>

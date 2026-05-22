@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Check, ChevronsDownUpIcon, Search, SearchX, X } from "lucide-react-native";
 import { FlatList, Modal, Pressable, View } from "react-native";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
@@ -18,8 +19,8 @@ export function ComplaintSelectField<
   control,
   name,
   options,
-  placeholder = "Select problem",
-  title = "Select problem",
+  placeholder,
+  title,
 }: {
   control: Control<TFieldValues>;
   name: TName;
@@ -27,6 +28,10 @@ export function ComplaintSelectField<
   placeholder?: string;
   title?: string;
 }) {
+  const { t } = useTranslation();
+  const resolvedPlaceholder = placeholder ?? t("complaints.selectProblem");
+  const resolvedTitle = title ?? t("complaints.selectProblem");
+
   return (
     <Controller
       control={control}
@@ -38,8 +43,8 @@ export function ComplaintSelectField<
             value={String(value ?? "")}
             onChange={onChange}
             onBlur={onBlur}
-            placeholder={placeholder}
-            title={title}
+            placeholder={resolvedPlaceholder}
+            title={resolvedTitle}
             invalid={Boolean(error)}
           />
           {error ? (
@@ -68,6 +73,7 @@ function ComplaintSelectFieldControl({
   title: string;
   invalid: boolean;
 }) {
+  const { t } = useTranslation();
   const [visible, setVisible] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -118,7 +124,7 @@ function ComplaintSelectFieldControl({
                 <Input
                   value={search}
                   onChangeText={setSearch}
-                  placeholder="Search problems..."
+                  placeholder={t("common.searchProblems")}
                   className="pl-9"
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -133,9 +139,11 @@ function ComplaintSelectFieldControl({
                   <View className="bg-muted size-14 items-center justify-center rounded-full">
                     <Icon as={SearchX} size={24} className="text-muted-foreground" />
                   </View>
-                  <Text className="text-foreground text-center text-base font-semibold">No results</Text>
+                  <Text className="text-foreground text-center text-base font-semibold">
+                    {t("common.noResults")}
+                  </Text>
                   <Text className="text-muted-foreground text-center text-sm">
-                    Try a different search term
+                    {t("complaints.tryDifferentSearch")}
                   </Text>
                 </View>
               ) : (

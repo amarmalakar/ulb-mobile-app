@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
 import { useNetworkContext } from '@/components/provider/network-provider';
+import { LocaleProvider } from '@/components/provider/locale-provider';
 import { AuthProvider } from '@/components/provider/auth-provider';
 import { StaffAuthProvider } from '@/components/provider/staff-auth-provider';
 import { UserAuthProvider } from '@/components/provider/user-auth-provider';
@@ -29,6 +30,7 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={NAV_THEME[colorScheme ?? 'light']}>
+      <LocaleProvider>
       <NetworkProvider>
         <AppInitProvider>
           <StaffAuthProvider>
@@ -43,6 +45,7 @@ export default function RootLayout() {
           </StaffAuthProvider>
         </AppInitProvider>
       </NetworkProvider>
+      </LocaleProvider>
     </ThemeProvider>
   );
 }

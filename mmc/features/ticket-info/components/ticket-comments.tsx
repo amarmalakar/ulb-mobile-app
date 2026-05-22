@@ -1,6 +1,8 @@
 import { format, isValid, parseISO } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { View } from "react-native";
 
 import type { StaffTicketComment, UserTicketComment } from "@/features/tickets/types";
@@ -26,7 +28,10 @@ function formatCommentTime(value: string) {
 
 type TicketComment = UserTicketComment | StaffTicketComment;
 
-function getCommentAuthor(item: TicketComment): { name: string; avatar: string | null | undefined } {
+function getCommentAuthor(
+  item: TicketComment,
+  t: TFunction,
+): { name: string; avatar: string | null | undefined } {
   if (item.authorType === "STAFF" && item.authorStaff) {
     return { name: item.authorStaff.name, avatar: item.authorStaff.imgProfileUrl };
   }
@@ -34,9 +39,9 @@ function getCommentAuthor(item: TicketComment): { name: string; avatar: string |
     return { name: item.authorUser.name, avatar: undefined };
   }
   if (item.authorType === "SYSTEM") {
-    return { name: "System", avatar: undefined };
+    return { name: t("tickets.system"), avatar: undefined };
   }
-  return { name: "Unknown", avatar: undefined };
+  return { name: t("tickets.unknown"), avatar: undefined };
 }
 
 export function TicketComments({
@@ -50,6 +55,7 @@ export function TicketComments({
   commentEnabled: boolean;
   authType: TicketInfoAuthType;
 }) {
+  const { t } = useTranslation();
   const hasComments = comments.length > 0;
 
   const sortedComments = useMemo(
@@ -61,7 +67,7 @@ export function TicketComments({
   return (
     <View className="gap-4">
       {!commentEnabled ? (
-        <Text className="text-sm text-muted-foreground">Comments are disabled for this ticket.</Text>
+        <Text className="text-sm text-muted-foreground">{t("tickets.commentsDisabled")}</Text>
       ) : null}
 
       {authType === "User" ? (
@@ -73,7 +79,7 @@ export function TicketComments({
       {hasComments ? (
         <View className="gap-3">
           {sortedComments.map((item) => {
-            const { name: commentBy, avatar } = getCommentAuthor(item);
+            const { name: commentBy, avatar } = getCommentAuthor(item, t);
             const initials = commentBy
               .split(" ")
               .filter(Boolean)
@@ -106,7 +112,7 @@ export function TicketComments({
         </View>
       ) : (
         <View className="rounded-xl border border-dashed border-muted-foreground/40 bg-muted/30 p-4">
-          <Text className="text-sm text-muted-foreground">No comments yet.</Text>
+          <Text className="text-sm text-muted-foreground">{t("tickets.noComments")}</Text>
         </View>
       )}
     </View>

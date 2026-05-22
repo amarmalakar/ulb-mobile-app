@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   Modal,
@@ -69,14 +70,15 @@ export function StatusFilter({
   selectedStatuses,
   onChangeSelectedStatuses,
 }: StatusFilterProps) {
+  const { t } = useTranslation();
   const handleToggleStatus = (status: iTicketStatus) => {
     onChangeSelectedStatuses(toggleStatusSelection(selectedStatuses, status));
   };
 
   return (
-    <FilterChipRow label="Status">
+    <FilterChipRow label={t("tickets.filterStatus")}>
       <FilterChip
-        label="All"
+        label={t("common.all")}
         selected={isAllStatusesSelected(selectedStatuses)}
         onPress={() => onChangeSelectedStatuses([])}
       />
@@ -117,12 +119,13 @@ export function MonthYearFilter({
   onSelectMonth,
   onSelectYear,
 }: MonthYearFilterProps) {
+  const { t } = useTranslation();
   const yearOptions = useMemo(() => getTicketFilterYearOptions(), []);
   const monthOptions = useMemo(() => getTicketFilterMonthOptions(year), [year]);
 
   return (
     <View className="gap-1">
-      <FilterChipRow label="Year">
+      <FilterChipRow label={t("tickets.filterYear")}>
         {yearOptions.map((opt) => (
           <FilterChip
             key={opt.value}
@@ -133,7 +136,7 @@ export function MonthYearFilter({
         ))}
       </FilterChipRow>
 
-      <FilterChipRow label="Month">
+      <FilterChipRow label={t("tickets.filterMonth")}>
         {monthOptions.map((opt) => (
           <FilterChip
             key={opt.value}
@@ -180,6 +183,7 @@ function FilterChip({
 }
 
 export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilterProps) {
+  const { t } = useTranslation();
   const { staffInfo, isStaffInfoLoading, staffInfoError, refetchStaffInfo } = useStaffAuth();
 
   const wardOptions = useMemo(
@@ -193,12 +197,14 @@ export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilte
 
   return (
     <View className="gap-2 py-3">
-      <Text className="text-primary text-xs font-bold uppercase tracking-wide">Ward</Text>
+      <Text className="text-primary text-xs font-bold uppercase tracking-wide">
+        {t("tickets.filterWard")}
+      </Text>
 
       {isStaffInfoLoading ? (
         <View className="flex-row items-center py-2">
           <ActivityIndicator size="small" />
-          <Text className="text-muted-foreground ml-2 text-sm">Loading wards…</Text>
+          <Text className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingWards")}</Text>
         </View>
       ) : null}
 
@@ -208,7 +214,7 @@ export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilte
           className="self-start rounded-md bg-destructive/10 px-3 py-2 active:opacity-80"
         >
           <Text className="text-destructive text-sm font-medium">
-            Couldn’t load wards. Tap to retry.
+            {t("tickets.wardsLoadRetry")}
           </Text>
         </Pressable>
       ) : null}
@@ -217,14 +223,14 @@ export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilte
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View className="flex-row gap-2 pb-1">
             <FilterChip
-              label="All"
+              label={t("common.all")}
               selected={isAllWardsSelected(selectedWards)}
               onPress={() => onChangeSelectedWards([])}
             />
             {wardOptions.map((ward) => (
               <FilterChip
                 key={ward}
-                label={`Ward ${ward}`}
+                label={t("common.wardNumber", { ward })}
                 selected={!isAllWardsSelected(selectedWards) && selectedWards.includes(ward)}
                 onPress={() => handleToggleWard(ward)}
               />
@@ -241,7 +247,7 @@ export function ComplaintFilter({
   onSelectComplaint,
   complaintQuery = "",
 }: ComplaintFilterProps) {
-  const { session } = useStaffAuth();
+  const { t } = useTranslation();
   const { data, isPending, isError, refetch, isRefetching } = useStaffTicketFilterQuery();
 
   const options = useMemo(
@@ -258,13 +264,13 @@ export function ComplaintFilter({
   return (
     <View className="gap-2 py-3">
       <Text className="text-primary text-xs font-bold uppercase tracking-wide">
-        Complaint type
+        {t("tickets.filterComplaintType")}
       </Text>
 
       {isPending ? (
         <View className="flex-row items-center py-2">
           <ActivityIndicator size="small" />
-          <Text className="text-muted-foreground ml-2 text-sm">Loading filters…</Text>
+          <Text className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingFilters")}</Text>
         </View>
       ) : null}
 
@@ -274,7 +280,7 @@ export function ComplaintFilter({
           className="self-start rounded-md bg-destructive/10 px-3 py-2 active:opacity-80"
         >
           <Text className="text-destructive text-sm font-medium">
-            {isRefetching ? "Retrying…" : "Couldn’t load filters. Tap to retry."}
+            {isRefetching ? t("tickets.retrying") : t("tickets.filtersLoadRetry")}
           </Text>
         </Pressable>
       ) : null}
@@ -283,7 +289,7 @@ export function ComplaintFilter({
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View className="flex-row gap-2 pb-1">
             <FilterChip
-              label="All"
+              label={t("common.all")}
               selected={selectedComplaintId === null}
               onPress={() => onSelectComplaint(null)}
             />
@@ -358,7 +364,7 @@ function TicketFilterSummaryBar({
   activeCount: number;
   onOpenFilters: () => void;
 }) {
-  const { session } = useStaffAuth();
+  const { t } = useTranslation();
   const { data: filterOptions } = useStaffTicketFilterQuery();
 
   const complaintLabel = useMemo(() => {
@@ -398,7 +404,9 @@ function TicketFilterSummaryBar({
         onPress={onOpenFilters}
         accessibilityRole="button"
         accessibilityLabel={
-          activeCount > 0 ? `Filters, ${activeCount} active` : "Open filters"
+          activeCount > 0
+            ? t("tickets.filtersActive", { count: activeCount })
+            : t("tickets.openFilters")
         }
         className={cn(
           "shrink-0 flex-row items-center gap-1.5 rounded-full border px-3 py-1.5 active:opacity-80",
@@ -417,7 +425,7 @@ function TicketFilterSummaryBar({
             activeCount > 0 ? "text-primary" : "text-foreground",
           )}
         >
-          Filters
+          {t("tickets.filters")}
         </Text>
         {activeCount > 0 ? (
           <View className="h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1">
@@ -430,6 +438,7 @@ function TicketFilterSummaryBar({
 }
 
 export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
+  const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [draft, setDraft] = useState<TicketFilterState>(filter);
 
@@ -480,7 +489,7 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
             <View className="flex-row items-center justify-between px-4 py-3">
               <View className="flex-row items-center gap-2">
                 <Icon as={CogIcon} className="size-6 text-primary" />
-                <Text className="text-primary text-lg font-bold">Filter & Sort Tickets</Text>
+                <Text className="text-primary text-lg font-bold">{t("tickets.filterTitle")}</Text>
               </View>
               <Pressable onPress={handleClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
                 <XIcon size={18} color="#737373" />
@@ -501,7 +510,7 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
                 <Input
                   value={draft.query}
                   onChangeText={(q) => patchDraft({ query: q })}
-                  placeholder="Search problems..."
+                  placeholder={t("common.searchProblems")}
                   className="pl-9"
                   autoCorrect={false}
                   autoCapitalize="none"
@@ -539,10 +548,10 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
 
             <View className="flex-row gap-3 bg-card px-4 py-3">
               <Button variant="outline" className="flex-1" onPress={handleResetAll}>
-                <Text className="font-semibold">Reset All</Text>
+                <Text className="font-semibold">{t("common.resetAll")}</Text>
               </Button>
               <Button variant="default" className="flex-1" onPress={handleApply}>
-                <Text className="font-semibold text-primary-foreground">Apply</Text>
+                <Text className="font-semibold text-primary-foreground">{t("common.apply")}</Text>
               </Button>
             </View>
           </View>

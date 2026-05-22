@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Platform, Pressable, type TextInputProps, View } from 'react-native';
 import {
   CodeField,
@@ -11,10 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Text } from '@/components/ui/text';
 import { cn } from '@/lib/utils';
 import { useOtpCountdown } from '@/features/staff-auth/hooks/use-otp-countdown';
-import { HELPER_MESSAGES } from '@/features/staff-auth/messages';
 import { OTP_EXPIRY_SECONDS, OTP_LENGTH } from '../constants';
-import { USER_AUTH_MESSAGES } from '../messages';
-
 const autoComplete = Platform.select<TextInputProps['autoComplete']>({
   android: 'sms-otp',
   default: 'one-time-code',
@@ -43,6 +41,7 @@ export function UserOtpInput({
   expiresInSeconds = OTP_EXPIRY_SECONDS,
   onResend,
 }: UserOtpInputProps) {
+  const { t } = useTranslation();
   const setValue = useCallback(
     (next: string) => {
       const digitsOnly = next.replace(/\D/g, '').slice(0, cellCount);
@@ -74,26 +73,26 @@ export function UserOtpInput({
   return (
     <View className="gap-2">
       <View className="flex-row items-center justify-between gap-3 px-1">
-        <Label>Verification code</Label>
+        <Label>{t('common.verificationCode')}</Label>
         <Pressable
           onPress={onChangePhone}
           disabled={disabled}
           hitSlop={8}
           accessibilityRole="button"
-          accessibilityLabel={USER_AUTH_MESSAGES.changeMobile}
+          accessibilityLabel={t('auth.changeMobile')}
           className={cn(
             'rounded-full px-2 py-1 active:bg-primary/10',
             disabled && 'opacity-50',
           )}
         >
           <Text className="text-sm font-semibold text-primary">
-            {USER_AUTH_MESSAGES.changeMobile}
+            {t('auth.changeMobile')}
           </Text>
         </Pressable>
       </View>
 
       <Text className="px-1 text-sm text-muted-foreground">
-        {USER_AUTH_MESSAGES.otpHint}{' '}
+        {t('auth.otpHint')}{' '}
         <Text className="font-semibold tracking-wide text-foreground">{phoneDisplay}</Text>
       </Text>
 
@@ -137,20 +136,20 @@ export function UserOtpInput({
         <Text className="px-1 text-sm text-destructive">{error}</Text>
       ) : isExpired ? (
         <View className="flex-row items-center gap-1 px-1">
-          <Text className="text-xs text-muted-foreground">{HELPER_MESSAGES.resendPrompt}</Text>
+          <Text className="text-xs text-muted-foreground">{t('auth.resendPrompt')}</Text>
           <Pressable
             onPress={handleResend}
             disabled={disabled}
             hitSlop={6}
             accessibilityRole="button"
-            accessibilityLabel={USER_AUTH_MESSAGES.resendOtp}
+            accessibilityLabel={t('auth.resendOtp')}
             className={cn(
               'rounded-full px-1.5 py-0.5 active:bg-primary/10',
               disabled && 'opacity-50',
             )}
           >
             <Text className="text-xs font-semibold text-primary">
-              {USER_AUTH_MESSAGES.resendOtp}
+              {t('auth.resendOtp')}
             </Text>
           </Pressable>
         </View>
@@ -161,7 +160,7 @@ export function UserOtpInput({
             isUrgent ? 'font-medium text-destructive' : 'text-muted-foreground',
           )}
         >
-          OTP expires in {countdownLabel}
+          {t('auth.otpExpiresIn', { time: countdownLabel })}
         </Text>
       )}
     </View>

@@ -10,6 +10,7 @@ import {
   type LucideIcon,
 } from "lucide-react-native";
 import { Pressable, View } from "react-native";
+import { useTranslation } from "react-i18next";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
@@ -143,6 +144,7 @@ function StaffHomeDashboardSkeleton() {
 }
 
 export function StaffHomeDashboard() {
+  const { t } = useTranslation();
   const router = useRouter();
   const { staffInfo } = useStaffAuth();
 
@@ -158,7 +160,7 @@ export function StaffHomeDashboard() {
     return (
       <View className="mb-56 px-4 pb-6 pt-2">
         <Text className="text-destructive text-sm">
-          {error?.message ?? "Could not load dashboard."}
+          {error?.message ?? t("tickets.dashboardLoadError")}
         </Text>
       </View>
     );
@@ -189,29 +191,29 @@ export function StaffHomeDashboard() {
       {tickets ? (
         <>
           <Text className="text-foreground text-2xl font-bold">
-            Total Tickets {tickets.total}
+            {t("tickets.totalTicketsTitle", { total: tickets.total })}
           </Text>
 
           <View className="flex-row gap-3">
-            <StatCard label="Open" value={tickets.open} icon={FolderOpen} variant="open" />
+            <StatCard label={t("tickets.open")} value={tickets.open} icon={FolderOpen} variant="open" />
             <StatCard
-              label="Done"
+              label={t("tickets.done")}
               value={tickets.completed}
               icon={CheckCircle2}
               variant="completed"
             />
-            <StatCard label="Blocked" value={tickets.blocked} icon={Ban} variant="blocked" />
+            <StatCard label={t("tickets.blocked")} value={tickets.blocked} icon={Ban} variant="blocked" />
           </View>
         </>
       ) : (
-        <Text className="text-muted-foreground text-sm">No data yet.</Text>
+        <Text className="text-muted-foreground text-sm">{t("tickets.noData")}</Text>
       )}
 
       <View className="gap-3">
-        <Text className="text-foreground text-xl font-bold">Complaints</Text>
+        <Text className="text-foreground text-xl font-bold">{t("complaints.title")}</Text>
 
         {complaints.length === 0 ? (
-          <Text className="text-muted-foreground text-sm">No complaint types for this ULB.</Text>
+          <Text className="text-muted-foreground text-sm">{t("tickets.noComplaintTypes")}</Text>
         ) : (
           <View className="-mx-1 flex-row flex-wrap">
             {complaints.map((item) => {
@@ -244,7 +246,7 @@ export function StaffHomeDashboard() {
                         className="text-center text-[11px] font-bold tabular-nums"
                         style={{ color: theme.iconColor }}
                         numberOfLines={1}>
-                        {item.open} Open Tickets
+                        {t("tickets.openTicketsCount", { count: item.open })}
                       </Text>
                     </View>
                   </View>

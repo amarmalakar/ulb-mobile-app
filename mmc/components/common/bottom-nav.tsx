@@ -15,27 +15,30 @@ import {
   HouseIcon
 } from 'lucide-react-native';
 import { useAuthContext } from "@/components/provider/auth-provider";
+import { useTranslation } from "react-i18next";
+import type { TranslationKey } from "@/locales/keys";
 
-const userItems = [
-  { id: 'home', label: 'Home', icon: HouseIcon, route: '/user/home-screen' },
+const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
+  { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/user/home-screen' },
   // { id: 'near-me', label: 'Near me', icon: MapPinnedIcon, route: '/(user)/near-me-screen' },
   // { id: 'booking-list', label: 'Booking', icon: SchoolIcon, route: '/(user)/booking-list-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartPieIcon, route: '/(user)/analytics-screen' },
-  { id: 'tickets', label: 'Tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
-  { id: 'account', label: 'Account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
+  { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
+  { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
 ];
 
-const staffItems = [
-  { id: 'home', label: 'Home', icon: HouseIcon, route: '/staff/home-screen' },
-  { id: 'tickets', label: 'Tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
+const staffItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
+  { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/staff/home-screen' },
+  { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
   // { id: 'attendance', label: 'Attendance', icon: CalendarClockIcon, route: '/(staff)/attendance-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartScatterIcon, route: '/(staff)/analytics-screen' },
-  { id: 'account', label: 'Account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },
+  { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },
 ];
 
 export function BottomNav({ activeItemId }: {
   activeItemId?: string;
 }) {
+  const { t } = useTranslation();
   const { authType } = useAuthContext();
   const items = authType === "User" ? userItems : staffItems;
 
@@ -65,7 +68,7 @@ export function BottomNav({ activeItemId }: {
               <Icon size={20} color={isActive ? '#FFFFFF' : '#94A3B8'} />
               {isActive ? (
                 <Text className="text-primary-foreground ml-2 text-sm font-semibold">
-                  {item.label}
+                  {t(item.labelKey)}
                 </Text>
               ) : null}
             </Pressable>

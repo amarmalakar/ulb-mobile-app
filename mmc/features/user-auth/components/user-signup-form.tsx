@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Pressable, ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -17,6 +18,7 @@ import { UserTextInput } from './user-text-input';
 import { UserWardInput } from './user-ward-input';
 
 export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptions = {}) {
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     step,
@@ -69,10 +71,10 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
               name="name"
               render={({ field, fieldState }) => (
                 <UserTextInput
-                  label="Full name"
+                  label={t('auth.fullName')}
                   value={field.value}
                   onChangeText={field.onChange}
-                  placeholder="As on records"
+                  placeholder={t('auth.fullNamePlaceholder')}
                   autoCapitalize="words"
                   autoComplete="name"
                   textContentType="name"
@@ -100,10 +102,10 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
               name="holdingNumber"
               render={({ field, fieldState }) => (
                 <UserTextInput
-                  label="Holding number (optional)"
+                  label={t('auth.holdingNumber')}
                   value={field.value}
                   onChangeText={(text) => field.onChange(text.slice(0, 120))}
-                  placeholder="Property / holding ID"
+                  placeholder={t('auth.holdingPlaceholder')}
                   error={fieldState.error?.message}
                   disabled={isLoading}
                   maxLength={120}
@@ -168,9 +170,9 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
       </Button>
 
       <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Text className="text-sm text-muted-foreground">Already registered?</Text>
+        <Text className="text-sm text-muted-foreground">{t('auth.alreadyRegistered')}</Text>
         <Pressable onPress={onPressSignIn} disabled={isLoading} hitSlop={8}>
-          <Text className="text-sm font-semibold text-primary">Sign in</Text>
+          <Text className="text-sm font-semibold text-primary">{t('auth.signInLink')}</Text>
         </Pressable>
       </View>
     </View>

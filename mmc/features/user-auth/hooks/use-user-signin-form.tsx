@@ -2,9 +2,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { isApiError } from '@/lib/api-client';
+import { i18n } from '@/lib/i18n';
 
 import { MOBILE_NUMBER_LENGTH } from '../constants';
-import { USER_AUTH_MESSAGES } from '../messages';
 import { parseSignupPhone, userSigninSchema, type UserSigninFormValues } from '../schemas';
 import type { UserAuthSession } from '../types/index';
 import { useUserSigninMutation } from './use-user-auth-queries';
@@ -46,7 +46,7 @@ export function useUserSigninForm({
       await onSession?.(session);
       onSignedIn?.();
     } catch (error) {
-      setSubmitError(apiErrorMessage(error, 'Sign in failed'));
+      setSubmitError(apiErrorMessage(error, i18n.t('auth.signInFailed')));
     }
   });
 
@@ -56,8 +56,8 @@ export function useUserSigninForm({
     clearSubmitError,
     submit,
     isLoading: signinMutation.isPending,
-    buttonTitle: USER_AUTH_MESSAGES.signIn,
-    buttonLoading: USER_AUTH_MESSAGES.signingIn,
+    buttonTitle: i18n.t('auth.signIn'),
+    buttonLoading: i18n.t('auth.signingIn'),
     maxPhoneLength: MOBILE_NUMBER_LENGTH,
   };
 }

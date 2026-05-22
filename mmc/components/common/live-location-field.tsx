@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { ActivityIndicator, View } from "react-native";
 
 import { Icon } from "../ui/icon";
@@ -33,6 +34,7 @@ export function LiveLocationField<
   longitudeName: TLon;
   formState: UseFormReturn<TFieldValues>;
 }) {
+  const { t } = useTranslation();
   const { formState: { errors }, setValue } = formState;
   const locationSource = useWatch({ control, name: locationSourceName });
   const [mapCoords, setMapCoords] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -45,7 +47,7 @@ export function LiveLocationField<
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setPickerError("Location permission is required to use current location.");
+        setPickerError(t("complaints.locationPermissionRequired"));
         setLocationLoading(false);
         return;
       }
@@ -73,7 +75,7 @@ export function LiveLocationField<
         { shouldValidate: true },
       );
     } catch {
-      setPickerError("Could not resolve current location.");
+      setPickerError(t("complaints.locationResolveFailed"));
     } finally {
       setLocationLoading(false);
     }
@@ -119,7 +121,9 @@ export function LiveLocationField<
     <View className="border-border overflow-hidden rounded-xl border bg-card">
       <View className="flex-row items-center gap-2 px-4 pb-3 pt-4">
         <Icon as={MapPinIcon} className="size-[18px] text-primary" />
-        <Text className="text-muted-foreground text-sm font-medium">Select Problem Location</Text>
+        <Text className="text-muted-foreground text-sm font-medium">
+          {t("complaints.selectProblemLocation")}
+        </Text>
       </View>
 
       <Separator />
@@ -138,7 +142,7 @@ export function LiveLocationField<
                     nativeID="loc-current"
                     onPress={() => onChange("current")}
                   >
-                    Current Location
+                    {t("complaints.currentLocation")}
                   </Label>
                 </View>
                 <View className="flex-row items-center gap-2">
@@ -148,7 +152,7 @@ export function LiveLocationField<
                     nativeID="loc-profile"
                     onPress={() => onChange("profile")}
                   >
-                    Profile Address
+                    {t("complaints.profileAddress")}
                   </Label>
                 </View>
               </View>
@@ -163,7 +167,7 @@ export function LiveLocationField<
         {locationLoading ? (
           <View className="h-44 items-center justify-center">
             <ActivityIndicator />
-            <Text className="text-muted-foreground mt-2 text-sm">Finding location…</Text>
+            <Text className="text-muted-foreground mt-2 text-sm">{t("complaints.findingLocation")}</Text>
           </View>
         ) : (
           <MapView

@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { useRouter } from "expo-router";
 
@@ -20,6 +21,7 @@ export function TopNavigation({
   label: string;
   isBackButton?: boolean;
 }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const { logout, isLoggingOut } = useLogout();
@@ -29,13 +31,13 @@ export function TopNavigation({
 
   const userName = useMemo(() => {
     if (authType === "Staff") {
-      return staffInfo?.name ?? "Staff";
+      return staffInfo?.name ?? t("common.staff");
     }
     if (authType === "User") {
-      return userInfo?.name ?? "User";
+      return userInfo?.name ?? t("common.user");
     }
-    return "Guest";
-  }, [authType, staffInfo?.name, userInfo?.name]);
+    return t("common.guest");
+  }, [authType, staffInfo?.name, userInfo?.name, t]);
 
   return (
     <>

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNetworkContext } from "@/components/provider/network-provider";
 import { isApiError } from "@/lib/api-client";
+import { i18n } from "@/lib/i18n";
 
 import { MPIN_LENGTH, OTP_LENGTH } from "../constants";
 import {
@@ -11,7 +12,6 @@ import {
 	useUserMpinVerifyMutation,
 } from "./use-user-auth-queries";
 import { userQueryKeys } from "../query-keys";
-import { USER_MPIN_MESSAGES } from "../messages";
 
 type FlowStep =
 	| "loading"
@@ -87,11 +87,11 @@ export function useUserMpinFlow(
 	const submitCreate = useCallback(async () => {
 		clearErrors();
 		if (createMpin.length !== MPIN_LENGTH || createConfirm.length !== MPIN_LENGTH) {
-			setFormError("MPIN must be 4 digits");
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		if (createMpin !== createConfirm) {
-			setFormError("MPINs do not match");
+			setFormError(i18n.t("auth.mpinMismatch"));
 			return;
 		}
 		try {
@@ -115,7 +115,7 @@ export function useUserMpinFlow(
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not save MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotSaveMpin")));
 		}
 	}, [
 		accessToken,
@@ -133,7 +133,7 @@ export function useUserMpinFlow(
 	const submitEnter = useCallback(async () => {
 		clearErrors();
 		if (enterMpin.length !== MPIN_LENGTH) {
-			setFormError("MPIN must be 4 digits");
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		try {
@@ -148,7 +148,7 @@ export function useUserMpinFlow(
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Incorrect MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.incorrectMpin")));
 			setEnterMpin("");
 		}
 	}, [
@@ -174,26 +174,26 @@ export function useUserMpinFlow(
 			setResetNewConfirm("");
 			setStep("reset_mpin");
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not start reset"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotStartReset")));
 		}
 	}, [accessToken, clearErrors, resetRequestMutation]);
 
 	const submitResetNew = useCallback(async () => {
 		clearErrors();
 		if (!resetToken) {
-			setFormError("Reset session expired. Try again.");
+			setFormError(i18n.t("auth.resetSessionExpired"));
 			return;
 		}
 		if (resetOtp.length < 4 || resetOtp.length > OTP_LENGTH) {
-			setFormError("Enter the SMS code");
+			setFormError(i18n.t("auth.enterSmsCode"));
 			return;
 		}
 		if (resetNew.length !== MPIN_LENGTH || resetNewConfirm.length !== MPIN_LENGTH) {
-			setFormError("MPIN must be 4 digits");
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		if (resetNew !== resetNewConfirm) {
-			setFormError("MPINs do not match");
+			setFormError(i18n.t("auth.mpinMismatch"));
 			return;
 		}
 		try {
@@ -216,7 +216,7 @@ export function useUserMpinFlow(
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not reset MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotResetMpin")));
 			setResetOtp("");
 		}
 	}, [
@@ -260,7 +260,7 @@ export function useUserMpinFlow(
 	const statusError = statusQuery.isError
 		? statusQuery.error instanceof Error
 			? statusQuery.error.message
-			: "Could not load MPIN status"
+			: i18n.t("auth.couldNotLoadMpinStatus")
 		: null;
 
 	return {
@@ -289,6 +289,5 @@ export function useUserMpinFlow(
 		cancelReset,
 		isBusy,
 		resetRequestPending,
-		messages: USER_MPIN_MESSAGES,
 	};
 }

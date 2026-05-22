@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Text } from "@/components/ui/text";
+import { useTranslation } from "react-i18next";
 import { useUserComplaintQueries } from "@/features/complaints/hooks/use-user-complaint-queries";
 import { cn } from "@/lib/utils";
 
@@ -61,9 +62,15 @@ const defaultTheme: ComplaintTheme = {
 function ComplaintListError({
   onRetry,
   message,
+  title,
+  retryLabel,
+  defaultMessage,
 }: {
   onRetry: () => void;
   message?: string;
+  title: string;
+  retryLabel: string;
+  defaultMessage: string;
 }) {
   return (
     <View className="items-center gap-4 px-4 py-8">
@@ -71,14 +78,14 @@ function ComplaintListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={32} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-base font-bold">Something went wrong</Text>
+        <Text className="text-destructive text-center text-base font-bold">{title}</Text>
         <Text className="text-muted-foreground text-center text-sm">
-          {message ?? "Please try again later."}
+          {message ?? defaultMessage}
         </Text>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>Retry</Text>
+        <Text>{retryLabel}</Text>
       </Button>
     </View>
   );
@@ -86,6 +93,7 @@ function ComplaintListError({
 
 export function ComplaintList() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { data: complaints, isLoading, isError, error, refetch } = useUserComplaintQueries();
 
   if (isLoading) {
@@ -108,10 +116,13 @@ export function ComplaintList() {
   if (isError) {
     return (
       <View className="gap-4 p-4">
-        <Text className="text-xl font-bold text-primary">Complaints</Text>
+        <Text className="text-xl font-bold text-primary">{t('complaints.title')}</Text>
         <ComplaintListError
           onRetry={() => void refetch()}
           message={error?.message}
+          title={t('common.errorTitle')}
+          retryLabel={t('common.retry')}
+          defaultMessage={t('common.errorDefault')}
         />
       </View>
     );
@@ -121,10 +132,10 @@ export function ComplaintList() {
 
   return (
     <View className="gap-4 p-4">
-      <Text className="text-xl font-bold text-primary">Complaints</Text>
+      <Text className="text-xl font-bold text-primary">{t('complaints.title')}</Text>
 
       {items.length === 0 ? (
-        <Text className="text-muted-foreground text-sm">No complaint types available.</Text>
+        <Text className="text-muted-foreground text-sm">{t('complaints.empty')}</Text>
       ) : (
         <View className="flex-row flex-wrap gap-y-4">
           {items.map((item) => {

@@ -1,5 +1,6 @@
 import { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
@@ -15,6 +16,7 @@ export function UserSigninForm({
   onSession,
   onSignedIn,
 }: UseUserSigninFormOptions = {}) {
+  const { t } = useTranslation();
   const router = useRouter();
   const {
     form,
@@ -66,9 +68,9 @@ export function UserSigninForm({
       </Button>
 
       <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Text className="text-sm text-muted-foreground">New here?</Text>
+        <Text className="text-sm text-muted-foreground">{t('auth.newHere')}</Text>
         <Pressable onPress={onPressSignUp} disabled={isLoading} hitSlop={8}>
-          <Text className="text-sm font-semibold text-primary">Create account</Text>
+          <Text className="text-sm font-semibold text-primary">{t('auth.createAccount')}</Text>
         </Pressable>
       </View>
     </View>

@@ -1,4 +1,5 @@
 import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Separator } from "@/components/ui/separator";
 import { usePatchStaffTicketStatusMutation } from "@/features/tickets/hooks/use-staff-ticket-queries";
@@ -19,6 +20,7 @@ export default function TicketInfo({
   ticket: TicketInfoTicket;
   authType: TicketInfoAuthType;
 }) {
+  const { t } = useTranslation();
   const canRate = authType === "User" && ticket.status === "COMPLETED";
   const patchStaffStatus = usePatchStaffTicketStatusMutation();
   const patchUserStatus = usePatchUserTicketStatusMutation();
@@ -40,7 +42,7 @@ export default function TicketInfo({
                     void patchStatus
                       .mutateAsync({ ticketId: ticket.id, body: { status } })
                       .catch((e: Error) => {
-                        Alert.alert("Could not update status", e.message);
+                        Alert.alert(t("tickets.statusUpdateFailed"), e.message);
                       });
                   }}
                 />
@@ -66,7 +68,7 @@ export default function TicketInfo({
         <Separator className="my-2" />
 
         <View className="px-4">
-          <Text className="text-primary text-2xl font-bold pb-2">Timelines</Text>
+          <Text className="text-primary text-2xl font-bold pb-2">{t("tickets.timelines")}</Text>
           <TicketsTimelines timelines={ticket.timelines} />
         </View>
 
@@ -74,7 +76,7 @@ export default function TicketInfo({
 
         <View className="px-4">
           <Text className="text-primary text-2xl font-bold pb-2">
-            {authType === "User" ? "Assigned To" : "Reported By"}
+            {authType === "User" ? t("tickets.assignedTo") : t("tickets.reportedBy")}
           </Text>
           {authType === "User" ? (
             <TicketStaffInfo staff={ticket.assignedStaff} />
@@ -86,7 +88,7 @@ export default function TicketInfo({
         <Separator className="my-2" />
 
         <View className="px-4">
-          <Text className="text-primary text-2xl font-bold pb-2">Comments</Text>
+          <Text className="text-primary text-2xl font-bold pb-2">{t("tickets.comments")}</Text>
           <TicketComments
             comments={ticket.comments}
             ticketId={ticket.id}

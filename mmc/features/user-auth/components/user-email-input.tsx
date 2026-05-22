@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
 import { MailIcon } from 'lucide-react-native';
 
@@ -24,12 +25,13 @@ export function UserEmailInput({
   disabled = false,
   maxLength = EMAIL_MAX_LENGTH,
 }: UserEmailInputProps) {
+  const { t } = useTranslation();
   const hasError = Boolean(error);
   const [focused, setFocused] = useState(false);
 
   return (
     <View className="gap-2">
-      <Label>Email (optional)</Label>
+      <Label>{t('auth.emailOptional')}</Label>
 
       <View
         className={cn(
@@ -51,12 +53,12 @@ export function UserEmailInput({
 
           <Input
             editable={!disabled}
-            accessibilityLabel="Email"
+            accessibilityLabel={t('account.email')}
             value={value}
             onChangeText={onChangeText}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="you@example.com"
+            placeholder={t('auth.emailPlaceholder')}
             keyboardType="email-address"
             inputMode="email"
             autoCapitalize="none"
@@ -75,7 +77,7 @@ export function UserEmailInput({
         <Text className="px-1 text-sm text-destructive">{error}</Text>
       ) : (
         <Text className="px-1 text-xs leading-relaxed text-muted-foreground">
-          Optional — for receipts and updates.
+          {t('auth.emailOptionalHint')}
         </Text>
       )}
     </View>

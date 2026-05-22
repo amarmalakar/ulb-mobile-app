@@ -1,27 +1,25 @@
-import { useAppInitContext } from "@/components/provider/app-init-provider";
 import { useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
+import type { TFunction } from "i18next";
 import { View, Text, Modal, Pressable } from "react-native";
 import { BellIcon, CircleHelpIcon, LogOutIcon, MessageSquareTextIcon, SettingsIcon, UserRoundIcon, XIcon } from "lucide-react-native";
 import { useAuthContext } from "../provider/auth-provider";
 
-function generateStaffMenuItems(router: ReturnType<typeof useRouter>) {
+function generateMenuItems(
+  router: ReturnType<typeof useRouter>,
+  t: TFunction,
+) {
   return [
-    { label: "Profile", icon: UserRoundIcon, onPress: () => { } },
-    { label: "Notifications", icon: BellIcon, onPress: () => { } },
-    { label: "Settings", icon: SettingsIcon, onPress: () => { } },
-    { label: "Feedback & Suggestion", icon: MessageSquareTextIcon, onPress: () => { router.push('/common/feedback-and-suggestion-screen') } },
-    { label: "Help & Support", icon: CircleHelpIcon, onPress: () => { } },
-  ]
-}
-
-function generateUserMenuItems(router: ReturnType<typeof useRouter>) {
-  return [
-    { label: "Profile", icon: UserRoundIcon, onPress: () => { } },
-    { label: "Notifications", icon: BellIcon, onPress: () => { } },
-    { label: "Settings", icon: SettingsIcon, onPress: () => { } },
-    { label: "Feedback & Suggestion", icon: MessageSquareTextIcon, onPress: () => { router.push('/common/feedback-and-suggestion-screen') } },
-    { label: "Help & Support", icon: CircleHelpIcon, onPress: () => { } },
-  ]
+    { label: t("menu.profile"), icon: UserRoundIcon, onPress: () => { } },
+    { label: t("menu.notifications"), icon: BellIcon, onPress: () => { } },
+    { label: t("menu.settings"), icon: SettingsIcon, onPress: () => { } },
+    {
+      label: t("menu.feedback"),
+      icon: MessageSquareTextIcon,
+      onPress: () => { router.push('/common/feedback-and-suggestion-screen') },
+    },
+    { label: t("menu.help"), icon: CircleHelpIcon, onPress: () => { } },
+  ];
 }
 
 type MobileMenuProps = {
@@ -52,10 +50,13 @@ export function MobileMenu({
   onClose,
   onLogout,
 }: MobileMenuProps) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { authType } = useAuthContext();
 
-  const menuItems = authType === 'Staff' ? generateStaffMenuItems(router) : generateUserMenuItems(router);
+  const menuItems = generateMenuItems(router, t);
+  const roleKey =
+    authType === "Staff" ? "common.staff" : authType === "User" ? "common.user" : "common.guest";
 
   return (
     <Modal transparent animationType="fade" visible={visible} onRequestClose={onClose}>
@@ -63,7 +64,7 @@ export function MobileMenu({
         <Pressable className="flex-1" onPress={onClose} />
         <View className="bg-card h-full w-[78%] px-4 pb-8 pt-14">
           <View className="flex-row items-center justify-between">
-            <Text className="text-foreground text-lg font-bold">Menu</Text>
+            <Text className="text-foreground text-lg font-bold">{t("menu.title")}</Text>
             <Pressable onPress={onClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
               <XIcon size={18} color="#737373" />
             </Pressable>
@@ -71,7 +72,7 @@ export function MobileMenu({
 
           <View className="bg-muted mt-5 rounded-2xl px-4 py-4">
             <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
-              Logged in as {authType}
+              {t("menu.loggedInAs", { role: t(roleKey) })}
             </Text>
             <Text className="text-foreground mt-1 text-lg font-bold">{userName}</Text>
           </View>
@@ -87,7 +88,7 @@ export function MobileMenu({
 
           <Pressable onPress={onLogout} className="bg-destructive mt-auto flex-row items-center justify-center rounded-xl py-3">
             <LogOutIcon size={18} color="#FFFFFF" />
-            <Text className="text-white ml-2 text-base font-semibold">Logout</Text>
+            <Text className="text-white ml-2 text-base font-semibold">{t("menu.logout")}</Text>
           </Pressable>
         </View>
       </View>

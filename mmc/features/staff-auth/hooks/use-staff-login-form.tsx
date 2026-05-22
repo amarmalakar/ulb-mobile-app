@@ -6,7 +6,7 @@ import {
   useStaffLoginMutation,
   useStaffVerifyMutation,
 } from "./use-staff-auth-queries";
-import { ACTION_LABELS } from "../messages";
+import { i18n } from "@/lib/i18n";
 import {
   staffContactSchema,
   staffOtpSchema,
@@ -106,7 +106,7 @@ export function useStaffLoginForm({ onVerified }: UseStaffLoginFormOptions = {})
         setStep("otp");
         otpForm.reset();
       } catch (error) {
-        setSendError(apiErrorMessage(error, "Failed to send OTP. Try again."));
+        setSendError(apiErrorMessage(error, i18n.t("auth.sendOtpFailed")));
       }
     },
     [loginMutation, otpForm],
@@ -119,14 +119,14 @@ export function useStaffLoginForm({ onVerified }: UseStaffLoginFormOptions = {})
   const verifyOtp = otpForm.handleSubmit(async ({ otp }) => {
     setSendError(null);
     if (!loginToken) {
-      setSendError("Session expired. Go back and try again.");
+      setSendError(i18n.t("auth.sessionExpiredBack"));
       return;
     }
     try {
       const session = await verifyMutation.mutateAsync({ loginToken, otp });
       await onVerified?.(session);
     } catch (error) {
-      setSendError(apiErrorMessage(error, "Failed to verify OTP. Try again."));
+      setSendError(apiErrorMessage(error, i18n.t("auth.verifyOtpFailed")));
       otpForm.setValue("otp", "");
     }
   });
@@ -134,15 +134,15 @@ export function useStaffLoginForm({ onVerified }: UseStaffLoginFormOptions = {})
   const stepsActions = useMemo(() => {
     if (step === "contact") {
       return {
-        title: ACTION_LABELS.sendOtp,
-        loadingText: ACTION_LABELS.sendingOtp,
+        title: i18n.t("auth.sendOtp"),
+        loadingText: i18n.t("auth.sendingOtp"),
         onPress: sendOtp,
       };
     }
 
     return {
-      title: ACTION_LABELS.verifyOtp,
-      loadingText: ACTION_LABELS.verifyingOtp,
+      title: i18n.t("auth.verifyOtp"),
+      loadingText: i18n.t("auth.verifyingOtp"),
       onPress: verifyOtp,
     };
   }, [step, sendOtp, verifyOtp]);

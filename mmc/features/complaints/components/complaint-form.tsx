@@ -1,6 +1,7 @@
 import { useNetworkContext } from "@/components/provider/network-provider";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -30,6 +31,7 @@ export function ComplaintForm({
   subComplaints: string[];
   onCancel: () => void;
 }) {
+  const { t } = useTranslation();
   const router = useRouter();
   const { session, userInfo } = useUserAuth();
   const { client } = useNetworkContext();
@@ -51,7 +53,7 @@ export function ComplaintForm({
     setSubmitError(null);
     const token = session?.accessToken;
     if (!token) {
-      Alert.alert("Could not submit", "You must be signed in to submit a complaint");
+      Alert.alert(t("complaints.couldNotSubmit"), t("complaints.submitSignInRequired"));
       return;
     }
 
@@ -83,15 +85,18 @@ export function ComplaintForm({
 
       const photoNote =
         imageKeys && imageKeys.length > 0
-          ? `\n${imageKeys.length} photo(s) attached.`
+          ? t("common.photosAttached", { count: imageKeys.length })
           : "";
 
       Alert.alert(
-        "Complaint submitted",
-        `Complaint submitted successfully.\nTicket ID: ${ticket.ticketTokenId}${photoNote}`,
+        t("complaints.submitSuccessTitle"),
+        t("complaints.submitSuccessBody", {
+          ticketId: ticket.ticketTokenId,
+          photoNote,
+        }),
         [
           {
-            text: "OK", onPress: () => {
+            text: t("common.ok"), onPress: () => {
               form.reset();
               router.push("/user/user-tickets-screen")
             }
@@ -99,9 +104,9 @@ export function ComplaintForm({
         ]);
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : "Failed to submit complaint";
+        error instanceof Error ? error.message : t("complaints.submitFailed");
       setSubmitError(message);
-      Alert.alert("Could not submit", message);
+      Alert.alert(t("complaints.couldNotSubmit"), message);
     } finally {
       setSubmitPhase("idle");
     }
@@ -139,7 +144,7 @@ export function ComplaintForm({
                   render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <View className="gap-1.5 w-32">
                       <Input
-                        placeholder="Ward number"
+                        placeholder={t("complaints.wardPlaceholder")}
                         value={value === undefined || value === null ? "" : String(value)}
                         onBlur={onBlur}
                         onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
@@ -157,7 +162,7 @@ export function ComplaintForm({
                   render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
                     <View className="gap-1.5 flex-1">
                       <Input
-                        placeholder="Phone number"
+                        placeholder={t("complaints.phonePlaceholder")}
                         value={String(value ?? "")}
                         onBlur={onBlur}
                         onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
@@ -177,7 +182,7 @@ export function ComplaintForm({
                 render={({ field: { onChange, onBlur, value } }) => (
                   <View className="gap-1.5">
                     <Textarea
-                      placeholder="Enter complaint description"
+                      placeholder={t("complaints.descriptionPlaceholder")}
                       value={value}
                       onBlur={onBlur}
                       onChangeText={onChange}
@@ -220,7 +225,7 @@ export function ComplaintForm({
             disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
             onPress={onCancel}
           >
-            <Text>Cancel</Text>
+            <Text>{t("common.cancel")}</Text>
           </Button>
           <Button
             size="lg"
@@ -230,10 +235,10 @@ export function ComplaintForm({
           >
             <Text>
               {submitPhase === "photos"
-                ? "Uploading photos…"
+                ? t("complaints.uploadingPhotos")
                 : submitPhase === "submit" || createComplaintMutation.isPending
-                  ? "Submitting…"
-                  : "Submit"}
+                  ? t("complaints.submitting")
+                  : t("complaints.submitComplaint")}
             </Text>
           </Button>
         </View>

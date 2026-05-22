@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { useTranslation } from 'react-i18next';
 import NetInfo from '@react-native-community/netinfo';
 import { WifiOffIcon } from 'lucide-react-native';
 import { View } from 'react-native';
@@ -10,6 +11,8 @@ type NoConnectionScreenProps = {
 };
 
 export function NoConnectionScreen({ onRetry }: NoConnectionScreenProps) {
+  const { t } = useTranslation();
+
   async function handleRetry() {
     await NetInfo.refresh();
     onRetry?.();
@@ -22,14 +25,14 @@ export function NoConnectionScreen({ onRetry }: NoConnectionScreenProps) {
       </View>
       <View className="items-center gap-2">
         <Text variant="h3" className="text-center">
-          No internet connection
+          {t('network.title')}
         </Text>
         <Text variant="muted" className="text-center">
-          Check your connection and try again.
+          {t('network.hint')}
         </Text>
       </View>
       <Button onPress={handleRetry}>
-        <Text>Try again</Text>
+        <Text>{t('common.tryAgain')}</Text>
       </Button>
     </View>
   );

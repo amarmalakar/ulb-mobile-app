@@ -1,17 +1,17 @@
 import { z } from "zod";
 import { EMAIL_MAX_LENGTH, MOBILE_NUMBER_LENGTH, OTP_LENGTH } from "./constants";
-import { ERROR_MESSAGES } from "./messages";
+import { i18n } from "@/lib/i18n";
 
 const mobileNumberField = z
   .string()
-  .length(MOBILE_NUMBER_LENGTH, ERROR_MESSAGES.mobileLength)
-  .regex(/^\d+$/, ERROR_MESSAGES.mobileLength);
+  .length(MOBILE_NUMBER_LENGTH, i18n.t("auth.mobileLength"))
+  .regex(/^\d+$/, i18n.t("auth.mobileLength"));
 
 const emailField = z
   .string()
-  .min(1, ERROR_MESSAGES.invalidEmail)
-  .max(EMAIL_MAX_LENGTH, ERROR_MESSAGES.invalidEmail)
-  .email(ERROR_MESSAGES.invalidEmail);
+  .min(1, i18n.t("auth.invalidEmail"))
+  .max(EMAIL_MAX_LENGTH, i18n.t("auth.invalidEmail"))
+  .email(i18n.t("auth.invalidEmail"));
 
 export const staffContactSchema = z
   .object({
@@ -41,8 +41,8 @@ export const staffContactSchema = z
 export const staffOtpSchema = z.object({
   otp: z
     .string()
-    .length(OTP_LENGTH, ERROR_MESSAGES.otpLength)
-    .regex(/^\d+$/, ERROR_MESSAGES.otpLength),
+    .length(OTP_LENGTH, i18n.t("auth.otpLength"))
+    .regex(/^\d+$/, i18n.t("auth.otpLength")),
 });
 
 export type StaffContactFormValues = z.infer<typeof staffContactSchema>;

@@ -13,12 +13,14 @@ import { useAuthContext } from '@/components/provider/auth-provider';
 import { useStaffBootstrap } from '@/hooks/use-staff-bootstrap';
 import { useUserBootstrap } from '@/hooks/use-user-bootstrap';
 import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const SCREEN_OPTIONS = {
   headerShown: false,
 };
 
 export default function Screen() {
+  const { t } = useTranslation();
   const { ulb } = useAppInitContext();
   const { currentStep } = useAuthContext();
   useStaffBootstrap();
@@ -39,11 +41,11 @@ export default function Screen() {
             <Image source={loginHero} resizeMode="contain" className="h-72 w-full max-w-[280px]" />
 
             <Text className="mt-10 text-center text-xl font-extrabold text-foreground">
-              Get things with <Text className="text-primary text-xl font-extrabold">{ulb?.key}</Text>
+              {t('welcome.tagline', { ulb: ulb?.key ?? '' })}
             </Text>
 
             <Text className="text-muted-foreground mt-5 max-w-[320px] text-center">
-              Lorem ipsum dolor sit amet consectetur. Eget sit nec et euismod. Consequat urna quam felis interdum quisque. Malesuada adipiscing tristique ut eget sed.
+              {t('welcome.description')}
             </Text>
           </View>
 

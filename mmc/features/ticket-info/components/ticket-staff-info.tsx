@@ -2,6 +2,7 @@ import { View, Linking, Pressable } from "react-native";
 import type { UserTicketAssignedStaff } from "@/features/tickets/types";
 import { PhoneCallIcon } from "lucide-react-native";
 
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -15,11 +16,13 @@ function initials(name: string): string {
 export function TicketStaffInfo({ staff }: {
   staff: UserTicketAssignedStaff | null;
 }) {
+  const { t } = useTranslation();
+
   if (!staff) {
     return (
       <View className="rounded-xl bg-card">
         <Text className="text-sm text-muted-foreground">
-          No staff has been assigned to this ticket yet.
+          {t("tickets.noStaffAssigned")}
         </Text>
       </View>
     )
@@ -50,7 +53,7 @@ export function TicketStaffInfo({ staff }: {
       <View className="gap-3 rounded-xl bg-card p-4">
         <View className="gap-1">
           <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Phone
+            {t("account.phone")}
           </Text>
           <View className="flex-row items-center justify-between">
             <Text className="text-base text-foreground">{staff.phoneNumber}</Text>
@@ -59,14 +62,14 @@ export function TicketStaffInfo({ staff }: {
               className="flex-row items-center gap-1.5 rounded-md bg-primary px-3 py-1.5"
             >
               <PhoneCallIcon size={14} color="white" />
-              <Text className="text-xs font-semibold text-primary-foreground">Call Now</Text>
+              <Text className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Text>
             </Pressable>
           </View>
         </View>
 
         <View className="gap-1">
           <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Email
+            {t("account.email")}
           </Text>
           <Text className="text-base text-foreground">{staff.email}</Text>
         </View>

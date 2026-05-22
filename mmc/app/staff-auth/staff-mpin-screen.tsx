@@ -2,6 +2,7 @@ import { type Href, Stack, router } from 'expo-router';
 
 const STAFF_HOME_HREF = '/staff/home-screen' as Href;
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 
@@ -10,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { StaffMpin } from '@/features/staff-auth/components/staff-mpin';
 
 export default function StaffMpinScreen() {
+  const { t } = useTranslation();
   const { session, sessionHydrated, mpinUnlocked, completeMpin } = useStaffAuth();
   const [completing, setCompleting] = useState(false);
   const [completeError, setCompleteError] = useState<string | null>(null);
@@ -32,10 +34,10 @@ export default function StaffMpinScreen() {
       await completeMpin();
       router.replace(STAFF_HOME_HREF);
     } catch {
-      setCompleteError('Could not load your profile. Try again.');
+      setCompleteError(t('auth.profileLoadError'));
       setCompleting(false);
     }
-  }, [completeMpin]);
+  }, [completeMpin, t]);
 
   if (!sessionHydrated || completing) {
     return (
@@ -44,7 +46,7 @@ export default function StaffMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Text className="text-muted-foreground mt-4 text-sm">Loading profile…</Text>
+            <Text className="text-muted-foreground mt-4 text-sm">{t('auth.loadingProfile')}</Text>
           ) : null}
         </View>
       </>
@@ -62,7 +64,7 @@ export default function StaffMpinScreen() {
         <View className="absolute inset-x-6 bottom-8 z-10 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
           <Text className="text-destructive text-center text-sm">{completeError}</Text>
           <Button variant="outline" onPress={() => void onComplete()}>
-            <Text>Retry</Text>
+            <Text>{t('common.retry')}</Text>
           </Button>
         </View>
       ) : null}

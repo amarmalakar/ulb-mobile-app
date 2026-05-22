@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNetworkContext } from "@/components/provider/network-provider";
 import { isApiError } from "@/lib/api-client";
+import { i18n } from "@/lib/i18n";
 
 import { MPIN_LENGTH, OTP_LENGTH } from "../constants";
 import {
@@ -11,7 +12,6 @@ import {
 	useStaffMpinVerifyMutation,
 } from "./use-staff-auth-queries";
 import { staffQueryKeys } from "../query-keys";
-import { MPIN_MESSAGES } from "../messages";
 
 type FlowStep =
 	| "loading"
@@ -86,11 +86,11 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 	const submitCreate = useCallback(async () => {
 		clearErrors();
 		if (createMpin.length !== MPIN_LENGTH || createConfirm.length !== MPIN_LENGTH) {
-			setFormError(MPIN_MESSAGES.mpinLength);
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		if (createMpin !== createConfirm) {
-			setFormError(MPIN_MESSAGES.mpinMismatch);
+			setFormError(i18n.t("auth.mpinMismatch"));
 			return;
 		}
 		try {
@@ -102,7 +102,7 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not save MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotSaveMpin")));
 		}
 	}, [
 		accessToken,
@@ -117,7 +117,7 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 	const submitEnter = useCallback(async () => {
 		clearErrors();
 		if (enterMpin.length !== MPIN_LENGTH) {
-			setFormError(MPIN_MESSAGES.mpinLength);
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		try {
@@ -125,7 +125,7 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Incorrect MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.incorrectMpin")));
 			setEnterMpin("");
 		}
 	}, [accessToken, clearErrors, enterMpin, invalidateStatus, onComplete, verifyMutation]);
@@ -143,26 +143,26 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 			setResetNewConfirm("");
 			setStep("reset_mpin");
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not start reset"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotStartReset")));
 		}
 	}, [accessToken, clearErrors, resetRequestMutation]);
 
 	const submitResetNew = useCallback(async () => {
 		clearErrors();
 		if (!resetToken) {
-			setFormError("Reset session expired. Try again.");
+			setFormError(i18n.t("auth.resetSessionExpired"));
 			return;
 		}
 		if (resetOtp.length !== OTP_LENGTH) {
-			setFormError(MPIN_MESSAGES.otpLength);
+			setFormError(i18n.t("auth.otpLength"));
 			return;
 		}
 		if (resetNew.length !== MPIN_LENGTH || resetNewConfirm.length !== MPIN_LENGTH) {
-			setFormError(MPIN_MESSAGES.mpinLength);
+			setFormError(i18n.t("auth.mpinLength"));
 			return;
 		}
 		if (resetNew !== resetNewConfirm) {
-			setFormError(MPIN_MESSAGES.mpinMismatch);
+			setFormError(i18n.t("auth.mpinMismatch"));
 			return;
 		}
 		try {
@@ -178,7 +178,7 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 			invalidateStatus();
 			onComplete();
 		} catch (e) {
-			setFormError(errorMessage(e, "Could not reset MPIN"));
+			setFormError(errorMessage(e, i18n.t("auth.couldNotResetMpin")));
 			setResetOtp("");
 		}
 	}, [
@@ -219,7 +219,7 @@ export function useStaffMpinFlow(accessToken: string, onComplete: () => void) {
 	const statusError = statusQuery.isError
 		? statusQuery.error instanceof Error
 			? statusQuery.error.message
-			: "Could not load MPIN status"
+			: i18n.t("auth.couldNotLoadMpinStatus")
 		: null;
 
 	return {

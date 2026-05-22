@@ -1,4 +1,5 @@
 import { Image, ScrollView, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import bubbleShape1 from "@/assets/images/bubble-shape-1.png";
 import loginHero from "@/assets/images/login-hero.png";
 import { ArrowLeftIcon } from "lucide-react-native";
@@ -11,6 +12,7 @@ import { useAuthContext } from "@/components/provider/auth-provider";
 export type StaffMpinScreenProps = Pick<MpinFormProps, "accessToken" | "onComplete">;
 
 export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
+  const { t } = useTranslation();
   const { clearAuthType } = useAuthContext();
 
   return (
@@ -32,7 +34,7 @@ export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
           </Button>
 
           <Text className="text-center text-xl font-extrabold text-foreground">
-            MPIN
+            {t("auth.staffMpinTitle")}
           </Text>
         </View>
 

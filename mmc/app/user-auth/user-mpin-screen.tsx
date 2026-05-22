@@ -1,5 +1,6 @@
 import { type Href, Stack, router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
@@ -17,6 +18,7 @@ const USER_HOME_HREF = '/user/home-screen' as Href;
 const USER_LOGIN_HREF = '/user-auth/user-login-screen' as Href;
 
 export default function UserMpinScreen() {
+  const { t } = useTranslation();
   const { clearAuthType } = useAuthContext();
   const {
     session,
@@ -46,10 +48,10 @@ export default function UserMpinScreen() {
       await completeMpin();
       router.replace(USER_HOME_HREF);
     } catch {
-      setCompleteError('Could not load your profile. Try again.');
+      setCompleteError(t('auth.profileLoadError'));
       setCompleting(false);
     }
-  }, [completeMpin]);
+  }, [completeMpin, t]);
 
   if (!sessionHydrated || completing) {
     return (
@@ -58,7 +60,7 @@ export default function UserMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Text className="mt-4 text-sm text-muted-foreground">Loading profile…</Text>
+            <Text className="mt-4 text-sm text-muted-foreground">{t('auth.loadingProfile')}</Text>
           ) : null}
         </View>
       </>
@@ -91,7 +93,7 @@ export default function UserMpinScreen() {
             </Button>
 
             <Text className="text-center text-xl font-extrabold text-foreground">
-              User MPIN
+              {t('auth.userMpinTitle')}
             </Text>
           </View>
 
@@ -101,7 +103,7 @@ export default function UserMpinScreen() {
             <View className="mb-4 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
               <Text className="text-center text-sm text-destructive">{completeError}</Text>
               <Button variant="outline" onPress={() => void finishToHome()}>
-                <Text>Retry</Text>
+                <Text>{t('common.retry')}</Text>
               </Button>
             </View>
           ) : null}

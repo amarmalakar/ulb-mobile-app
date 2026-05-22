@@ -1,12 +1,11 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Input } from "../../../components/ui/input";
 import { Text } from "../../../components/ui/text";
 import { Label } from "../../../components/ui/label";
 import { cn } from "../../../lib/utils";
 import { MOBILE_NUMBER_LENGTH } from "../constants";
-import { HELPER_MESSAGES } from "../messages";
-
 interface StaffMobileInputProps {
   value: string;
   onChangeText: (value: string) => void;
@@ -22,12 +21,13 @@ export function StaffMobileInput({
   disabled = false,
   maxLength = MOBILE_NUMBER_LENGTH,
 }: StaffMobileInputProps) {
+  const { t } = useTranslation();
   const hasError = Boolean(error);
   const [focused, setFocused] = useState(false);
 
   return (
     <View className="gap-2">
-      <Label>Mobile number</Label>
+      <Label>{t("common.mobileNumber")}</Label>
 
       <View
         className={cn(
@@ -50,12 +50,12 @@ export function StaffMobileInput({
 
           <Input
             editable={!disabled}
-            accessibilityLabel="Mobile number"
+            accessibilityLabel={t("common.mobileNumber")}
             value={value}
             onChangeText={onChangeText}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="98765 43210"
+            placeholder={t("auth.mobilePlaceholder")}
             keyboardType="number-pad"
             inputMode="numeric"
             maxLength={maxLength}
@@ -71,7 +71,7 @@ export function StaffMobileInput({
         <Text className="text-destructive px-1 text-sm">{error}</Text>
       ) : (
         <Text className="text-muted-foreground px-1 text-xs leading-relaxed">
-          {HELPER_MESSAGES.mobile}
+          {t("auth.staffMobileHint")}
         </Text>
       )}
     </View>

@@ -7,7 +7,9 @@ import {
   TicketIcon,
   UserPenIcon
 } from "lucide-react-native";
+import { i18n } from '@/lib/i18n';
 import type { iTicketStatus } from "../types";
+import type { TranslationKey } from '@/locales/keys';
 import {
   differenceInDays,
   differenceInHours,
@@ -26,7 +28,14 @@ export function getCategoryIcon(category: "COMPLIANT" | null) {
   }
 }
 
+function statusLabel(status: iTicketStatus): string {
+  const key = `tickets.status.${status}` as TranslationKey;
+  return i18n.isInitialized ? i18n.t(key) : status;
+}
+
 export function getTicketStatusConfig(status: iTicketStatus) {
+  const label = statusLabel(status);
+
   switch (status) {
     case "TODO":
       return {
@@ -37,7 +46,7 @@ export function getTicketStatusConfig(status: iTicketStatus) {
           bgClassName: "bg-yellow-200",
           textClassName: "text-yellow-600",
         },
-        label: "Todo",
+        label,
       };
     case "IN_PROGRESS":
       return {
@@ -48,7 +57,7 @@ export function getTicketStatusConfig(status: iTicketStatus) {
           bgClassName: "bg-blue-200",
           textClassName: "text-blue-600",
         },
-        label: "In Progress",
+        label,
       };
     case "COMPLETED":
       return {
@@ -59,7 +68,7 @@ export function getTicketStatusConfig(status: iTicketStatus) {
           bgClassName: "bg-green-200",
           textClassName: "text-green-600",
         },
-        label: "Completed",
+        label,
       };
     case "BLOCKED":
       return {
@@ -70,7 +79,7 @@ export function getTicketStatusConfig(status: iTicketStatus) {
           bgClassName: "bg-red-200",
           textClassName: "text-red-600",
         },
-        label: "Blocked",
+        label,
       };
     case "REOPENED":
       return {
@@ -81,7 +90,7 @@ export function getTicketStatusConfig(status: iTicketStatus) {
           bgClassName: "bg-orange-200",
           textClassName: "text-orange-600",
         },
-        label: "Reopened",
+        label,
       };
     default:
       return {

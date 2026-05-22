@@ -1,25 +1,25 @@
 import { z } from 'zod';
 
 import { EMAIL_MAX_LENGTH, MOBILE_NUMBER_LENGTH, OTP_LENGTH } from './constants';
-import { ERROR_MESSAGES } from './messages';
+import { i18n } from '@/lib/i18n';
 
 const phoneField = z
   .string()
-  .length(MOBILE_NUMBER_LENGTH, ERROR_MESSAGES.mobileLength)
-  .regex(/^[6-9]\d{9}$/, ERROR_MESSAGES.mobileLength);
+  .length(MOBILE_NUMBER_LENGTH, i18n.t('auth.mobileLength'))
+  .regex(/^[6-9]\d{9}$/, i18n.t('auth.mobileLength'));
 
 const nameField = z
   .string()
   .trim()
-  .min(1, 'Name is required')
-  .max(200, 'Name is too long');
+  .min(1, i18n.t('auth.nameRequired'))
+  .max(200, i18n.t('auth.nameTooLong'));
 
 const optionalEmailField = z
   .string()
   .max(EMAIL_MAX_LENGTH)
   .refine(
     (s) => s.trim().length === 0 || /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(s.trim()),
-    ERROR_MESSAGES.invalidEmail,
+    i18n.t('auth.invalidEmail'),
   );
 
 const optionalTextField = z.string().max(120);
@@ -28,14 +28,14 @@ function createWardField(maxWard?: number) {
   return z
     .string()
     .trim()
-    .min(1, ERROR_MESSAGES.wardRequired)
-    .regex(/^\d+$/, ERROR_MESSAGES.wardInvalid)
+    .min(1, i18n.t('auth.wardRequired'))
+    .regex(/^\d+$/, i18n.t('auth.wardInvalid'))
     .refine((s) => {
       const n = parseInt(s, 10);
       if (!Number.isInteger(n) || n < 1) return false;
       if (maxWard != null && n > maxWard) return false;
       return true;
-    }, maxWard != null ? `Enter a ward number from 1 to ${maxWard}` : ERROR_MESSAGES.wardInvalid);
+    }, maxWard != null ? i18n.t('auth.wardHelperRange', { max: maxWard }) : i18n.t('auth.wardInvalid'));
 }
 
 export function createUserSignupDetailsSchema(maxWard?: number) {
@@ -92,8 +92,8 @@ export const userSignupDetailsSchema = createUserSignupDetailsSchema();
 export const userSignupOtpSchema = z.object({
   otp: z
     .string()
-    .length(OTP_LENGTH, ERROR_MESSAGES.otpLength)
-    .regex(/^\d+$/, ERROR_MESSAGES.otpLength),
+    .length(OTP_LENGTH, i18n.t('auth.otpLength'))
+    .regex(/^\d+$/, i18n.t('auth.otpLength')),
 });
 
 export const userSigninSchema = z.object({

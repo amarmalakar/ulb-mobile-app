@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 
 import { Text } from "../../../components/ui/text";
@@ -11,6 +12,7 @@ export function ExpandableDescription({
   description: string;
   className?: string;
 }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
   const LINE_HEIGHT = 22;
@@ -40,10 +42,12 @@ export function ExpandableDescription({
           onPress={() => setExpanded((e) => !e)}
           className="self-start"
           accessibilityRole="button"
-          accessibilityLabel={expanded ? "Show less description" : "Show more description"}
+          accessibilityLabel={
+            expanded ? t("tickets.showLessDescription") : t("tickets.showMoreDescription")
+          }
         >
           <Text className="text-primary text-sm font-semibold">
-            {expanded ? "Show less" : "Show more"}
+            {expanded ? t("tickets.showLess") : t("tickets.showMore")}
           </Text>
         </Pressable>
       ) : null}

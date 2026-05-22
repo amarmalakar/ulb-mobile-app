@@ -1,6 +1,7 @@
 import { Pressable, View } from "react-native";
 import { Control, FieldValues, Path, PathValue, UseFormReturn, useWatch } from "react-hook-form";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import * as ImagePicker from "expo-image-picker";
 import { File } from "expo-file-system";
 import { COMPLAINT_PHOTO_RAW_MAX_BYTES } from "@/features/complaints/constants";
@@ -50,6 +51,7 @@ export function PhotoPicker<
   name: TName;
   formState: UseFormReturn<TFieldValues>;
 }) {
+  const { t } = useTranslation();
   const {
     formState: { errors },
     setValue,
@@ -65,7 +67,7 @@ export function PhotoPicker<
 
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      setPickerError("Photo library access is required to attach images.");
+      setPickerError(t("complaints.photoLibraryRequired"));
       return;
     }
 
@@ -104,9 +106,9 @@ export function PhotoPicker<
       setPickerError(
         skippedOversized
           ? largestRejectedMb !== null
-            ? `Photo is ${largestRejectedMb} MB. Max ${MAX_PHOTO_MB} MB per photo.`
-            : `Each photo must be ${MAX_PHOTO_MB} MB or smaller.`
-          : "No photos could be added.",
+            ? t("complaints.photoTooLarge", { size: largestRejectedMb, max: MAX_PHOTO_MB })
+            : t("complaints.photoMaxSize", { max: MAX_PHOTO_MB })
+          : t("complaints.noPhotosAdded"),
       );
       return;
     }
@@ -118,8 +120,8 @@ export function PhotoPicker<
     if (skippedOversized) {
       setPickerError(
         largestRejectedMb !== null
-          ? `Some photos were skipped (over ${MAX_PHOTO_MB} MB; largest was ${largestRejectedMb} MB).`
-          : `Some photos were skipped because they exceed ${MAX_PHOTO_MB} MB.`,
+          ? t("complaints.photosSkipped", { max: MAX_PHOTO_MB, largest: largestRejectedMb })
+          : t("complaints.photosSkippedShort", { max: MAX_PHOTO_MB }),
       );
     }
   };
@@ -140,10 +142,14 @@ export function PhotoPicker<
           photos.length >= MAX_PHOTOS && "opacity-50",
         )}
       >
-        <Text className="text-foreground font-medium">Add photos</Text>
+        <Text className="text-foreground font-medium">{t("complaints.addPhotos")}</Text>
       </Pressable>
       <Text className="text-muted-foreground text-center text-xs">
-        {photos.length}/{MAX_PHOTOS} photo(s) added, max {MAX_PHOTO_MB} MB each
+        {t("complaints.photosHint", {
+          count: photos.length,
+          max: MAX_PHOTOS,
+          maxMb: MAX_PHOTO_MB,
+        })}
       </Text>
 
       {photos.length > 0 ? (

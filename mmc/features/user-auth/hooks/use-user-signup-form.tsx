@@ -3,9 +3,9 @@ import { useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAppInitContext } from '@/components/provider/app-init-provider';
 import { isApiError } from '@/lib/api-client';
+import { i18n } from '@/lib/i18n';
 
 import { MOBILE_NUMBER_LENGTH } from '../constants';
-import { USER_AUTH_MESSAGES } from '../messages';
 import {
   createUserSignupDetailsSchema,
   parseSignupPhone,
@@ -97,7 +97,7 @@ export function useUserSignupForm({
         setStep('otp');
         otpForm.reset();
       } catch (error) {
-        setSendError(apiErrorMessage(error, 'Could not send OTP'));
+        setSendError(apiErrorMessage(error, i18n.t('auth.couldNotSendOtp')));
       }
     },
     [otpForm, sendMutation],
@@ -118,7 +118,7 @@ export function useUserSignupForm({
   const verifyOtp = otpForm.handleSubmit(async ({ otp }) => {
     setSendError(null);
     if (!signupToken) {
-      otpForm.setError('otp', { message: 'Session expired. Go back and request a new code.' });
+      otpForm.setError('otp', { message: i18n.t('auth.sessionExpiredOtp') });
       return;
     }
 
@@ -140,7 +140,7 @@ export function useUserSignupForm({
       onVerified?.();
     } catch (error) {
       otpForm.setError('otp', {
-        message: apiErrorMessage(error, 'Verification failed'),
+        message: apiErrorMessage(error, i18n.t('auth.verificationFailed')),
       });
       otpForm.setValue('otp', '');
     }
@@ -153,14 +153,14 @@ export function useUserSignupForm({
   const stepsActions = useMemo(() => {
     if (step === 'details') {
       return {
-        title: USER_AUTH_MESSAGES.sendVerificationCode,
-        loadingText: USER_AUTH_MESSAGES.sendingOtp,
+        title: i18n.t('auth.sendVerificationCode'),
+        loadingText: i18n.t('auth.sendingOtp'),
         onPress: sendOtp,
       };
     }
     return {
-      title: USER_AUTH_MESSAGES.verifyAndContinue,
-      loadingText: USER_AUTH_MESSAGES.verifying,
+      title: i18n.t('auth.verifyAndContinue'),
+      loadingText: i18n.t('auth.verifying'),
       onPress: verifyOtp,
     };
   }, [step, sendOtp, verifyOtp]);

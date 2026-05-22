@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { UserTextInput } from './user-text-input';
 
 type UserWardInputProps = {
@@ -15,19 +16,20 @@ export function UserWardInput({
   error,
   disabled = false,
 }: UserWardInputProps) {
+  const { t } = useTranslation();
   const maxLength =
     maxWard != null && maxWard > 0 ? String(maxWard).length : 4;
   const helperText =
     maxWard != null && maxWard > 0
-      ? `Enter a ward number from 1 to ${maxWard}.`
-      : 'Enter your ward number.';
+      ? t('auth.wardHelperRange', { max: maxWard })
+      : t('auth.wardHelper');
 
   return (
     <UserTextInput
-      label="Ward number"
+      label={t('auth.wardLabel')}
       value={value}
       onChangeText={(text) => onValueChange(text.replace(/\D/g, '').slice(0, maxLength))}
-      placeholder={maxWard ? `1–${maxWard}` : 'e.g. 12'}
+      placeholder={maxWard ? t('auth.wardRange', { max: maxWard }) : t('auth.wardPlaceholder')}
       keyboardType="number-pad"
       inputMode="numeric"
       error={error}

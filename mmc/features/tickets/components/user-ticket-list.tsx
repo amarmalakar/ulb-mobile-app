@@ -1,4 +1,5 @@
 import { ActivityIndicator, FlatList, View } from "react-native";
+import { useTranslation } from "react-i18next";
 import type { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { AlertCircleIcon, HistoryIcon, RefreshCcwIcon } from "lucide-react-native";
 
@@ -23,36 +24,37 @@ function UserTicketListError({
   onRetry: () => void;
   message?: string;
 }) {
+  const { t } = useTranslation();
   return (
     <View className="flex-1 items-center justify-center gap-4 p-4">
       <View className="bg-destructive/10 size-20 items-center justify-center rounded-full">
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">Something went wrong</Text>
+        <Text className="text-destructive text-center text-lg font-bold">{t("common.errorTitle")}</Text>
         <Text className="text-muted-foreground text-center text-sm">
-          {message ?? "Please try again later."}
+          {message ?? t("common.errorDefault")}
         </Text>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>Retry</Text>
+        <Text>{t("common.retry")}</Text>
       </Button>
     </View>
   );
 }
 
 function UserTicketListEmpty() {
+  const { t } = useTranslation();
   return (
     <View className="flex-1 items-center justify-center gap-5 px-6 py-12">
       <View className="bg-muted size-20 items-center justify-center rounded-full">
         <Icon as={HistoryIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-foreground text-center text-xl font-bold">No tickets yet</Text>
+        <Text className="text-foreground text-center text-xl font-bold">{t("tickets.emptyTitle")}</Text>
         <Text className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
-          When you submit a complaint from the home screen, it will show up here so you can
-          track its status.
+          {t("tickets.emptyHint")}
         </Text>
       </View>
     </View>

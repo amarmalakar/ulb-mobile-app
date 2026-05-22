@@ -3,6 +3,7 @@ import { PhoneCallIcon } from "lucide-react-native";
 
 import type { UserTicketDetailUser } from "@/features/tickets/types";
 
+import { useTranslation } from "react-i18next";
 import { Text } from "@/components/ui/text";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
@@ -14,6 +15,8 @@ function initials(name: string): string {
 }
 
 export function TicketUserInfo({ user }: { user: UserTicketDetailUser }) {
+  const { t } = useTranslation();
+
   const handleCallNow = () => {
     const sanitizedPhone = user.phone.replace(/\s+/g, "");
     Linking.openURL(`tel:${sanitizedPhone}`);
@@ -29,14 +32,14 @@ export function TicketUserInfo({ user }: { user: UserTicketDetailUser }) {
         </Avatar>
         <View className="flex-1">
           <Text className="text-lg font-semibold text-foreground">{user.name}</Text>
-          <Text className="text-sm text-muted-foreground">Citizen</Text>
+          <Text className="text-sm text-muted-foreground">{t("common.citizen")}</Text>
         </View>
       </View>
 
       <View className="gap-3 rounded-xl bg-card p-4">
         <View className="gap-1">
           <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-            Phone
+            {t("account.phone")}
           </Text>
           <View className="flex-row items-center justify-between">
             <Text className="text-base text-foreground">{user.phone}</Text>
@@ -45,7 +48,7 @@ export function TicketUserInfo({ user }: { user: UserTicketDetailUser }) {
               className="flex-row items-center gap-1.5 rounded-md bg-primary px-3 py-1.5"
             >
               <PhoneCallIcon size={14} color="white" />
-              <Text className="text-xs font-semibold text-primary-foreground">Call Now</Text>
+              <Text className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Text>
             </Pressable>
           </View>
         </View>
@@ -53,7 +56,7 @@ export function TicketUserInfo({ user }: { user: UserTicketDetailUser }) {
         {user.email ? (
           <View className="gap-1">
             <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Email
+              {t("account.email")}
             </Text>
             <Text className="text-base text-foreground">{user.email}</Text>
           </View>

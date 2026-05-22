@@ -4,6 +4,7 @@ import { type Href, useRouter } from 'expo-router';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { useAuthType } from '@/hooks/use-auth-type';
+import { useTranslation } from 'react-i18next';
 import type { AuthType } from '@/types/auth';
 
 const STAFF_HOME_HREF = '/staff/home-screen' as Href;
@@ -37,6 +38,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     sessionHydrated: userSessionHydrated,
     mpinUnlocked: userMpinUnlocked,
   } = useUserAuth();
+  const { i18n } = useTranslation();
   const [step, setStep] = useState<1 | 2>(1);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -96,26 +98,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     () => ({
       1: [
         {
-          title: 'Get Started',
+          title: i18n.t('welcome.getStarted'),
           onPress: () => handleNextStep(2),
         },
       ],
       2: [
         {
-          title: 'Start as Staff',
+          title: i18n.t('welcome.startAsStaff'),
           onPress: () => {
             void startAsStaff();
           },
         },
         {
-          title: 'Start as User',
+          title: i18n.t('welcome.startAsUser'),
           onPress: () => {
             void startAsUser();
           },
         },
       ],
     }),
-    [handleNextStep, startAsStaff, startAsUser],
+    [handleNextStep, startAsStaff, startAsUser, i18n.language],
   );
 
   const currentStep = useMemo(() => GET_STARTED_STEPS[step], [step, GET_STARTED_STEPS]);

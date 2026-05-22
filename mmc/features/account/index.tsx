@@ -13,12 +13,15 @@ import { useRouter } from 'expo-router';
 import { ActivityIndicator, ScrollView, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { useTranslation } from 'react-i18next';
+import { AccountLanguagePicker } from './components/account-language-picker';
 import { AccountSettingsRow } from './components/account-settings-row';
 import { AccountThemePicker } from './components/account-theme-picker';
 import { useAccountProfile } from './hooks/use-account-profile';
 
 export function Account() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { logout, isLoggingOut } = useLogout();
   const {
     authType,
@@ -45,10 +48,8 @@ export function Account() {
         contentContainerClassName="px-5 pb-28 pt-4"
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-foreground text-2xl font-extrabold">Account</Text>
-        <Text className="text-muted-foreground mt-1 text-sm">
-          Manage your profile and app preferences
-        </Text>
+        <Text className="text-foreground text-2xl font-extrabold">{t('account.title')}</Text>
+        <Text className="text-muted-foreground mt-1 text-sm">{t('account.subtitle')}</Text>
 
         <View className="bg-card border-border mt-6 rounded-2xl border p-4">
           <View className="flex-row items-center gap-4">
@@ -80,19 +81,19 @@ export function Account() {
             <View className="border-border mt-4 gap-2 border-t pt-4">
               {phone ? (
                 <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">Phone </Text>
+                  <Text className="text-foreground font-semibold">{t('account.phone')} </Text>
                   {phone}
                 </Text>
               ) : null}
               {email ? (
                 <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">Email </Text>
+                  <Text className="text-foreground font-semibold">{t('account.email')} </Text>
                   {email}
                 </Text>
               ) : null}
               {ulb?.name ? (
                 <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">ULB </Text>
+                  <Text className="text-foreground font-semibold">{t('account.ulb')} </Text>
                   {ulb.name}
                 </Text>
               ) : null}
@@ -101,18 +102,19 @@ export function Account() {
 
           {error ? (
             <Text className="text-destructive mt-3 text-sm">
-              Could not load profile. Pull to refresh or try again later.
+              {t('account.profileError')}
             </Text>
           ) : null}
         </View>
 
-        <View className="mt-6">
+        <View className="mt-6 gap-6">
+          <AccountLanguagePicker />
           <AccountThemePicker />
         </View>
 
         <View className="mt-6 gap-2">
           <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
-            Preferences
+            {t('account.preferences')}
           </Text>
 
           {/* <AccountSettingsRow
@@ -121,7 +123,7 @@ export function Account() {
             icon={BellIcon}
           /> */}
           <AccountSettingsRow
-            label="Feedback & suggestions"
+            label={t('account.feedback')}
             icon={MessageSquareTextIcon}
             onPress={() => router.push('/common/feedback-and-suggestion-screen')}
           />
@@ -143,7 +145,7 @@ export function Account() {
             <>
               <Icon as={LogOutIcon} className="text-primary-foreground size-5" />
               <Text className="text-primary-foreground ml-2 text-base font-semibold">
-                Log out
+                {t('account.logout')}
               </Text>
             </>
           )}

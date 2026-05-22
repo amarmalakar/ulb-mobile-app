@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { useTranslation } from "react-i18next";
 import { Platform, Pressable, type TextInputProps, View } from "react-native";
 import {
   CodeField,
@@ -10,7 +11,6 @@ import { Label } from "../../../components/ui/label";
 import { Text } from "../../../components/ui/text";
 import { cn } from "../../../lib/utils";
 import { OTP_EXPIRY_SECONDS, OTP_LENGTH } from "../constants";
-import { ACTION_LABELS, HELPER_MESSAGES } from "../messages";
 import type { Contact } from "../types";
 import { formatContactDisplay } from "../utils/contact";
 import { useOtpCountdown } from "../hooks/use-otp-countdown";
@@ -43,6 +43,7 @@ export function StaffOtpInput({
   expiresInSeconds = OTP_EXPIRY_SECONDS,
   onResend,
 }: StaffOtpInputProps) {
+  const { t } = useTranslation();
   const setValue = useCallback(
     (next: string) => {
       const digitsOnly = next.replace(/\D/g, "").slice(0, cellCount);
@@ -72,15 +73,13 @@ export function StaffOtpInput({
   const hasError = Boolean(error);
   const sentToLabel = formatContactDisplay(contact);
   const changeLabel =
-    contact.kind === "email"
-      ? ACTION_LABELS.changeEmail
-      : ACTION_LABELS.changeMobile;
+    contact.kind === "email" ? t("auth.changeEmail") : t("auth.changeMobile");
   const isPhoneContact = contact.kind === "phone";
 
   return (
     <View className="gap-2">
       <View className="flex-row items-center justify-between gap-3 px-1">
-        <Label>Verification code</Label>
+        <Label>{t("common.verificationCode")}</Label>
 
         <Pressable
           onPress={onChangeContact}
@@ -100,20 +99,13 @@ export function StaffOtpInput({
       {sentToLabel ? (
         <Text className="text-muted-foreground px-1 text-sm">
           {isPhoneContact ? (
-            <>
-              Use code{" "}
-              <Text className="text-foreground font-semibold">000000</Text> to
-              verify{" "}
-              <Text className="text-foreground font-semibold tracking-widest">
-                {sentToLabel}
-              </Text>
-              .
-            </>
+            <Text>
+              {t("auth.staffDemoOtp", { code: "000000", contact: sentToLabel })}
+            </Text>
           ) : (
-            <>
-              OTP sent to{" "}
-              <Text className="text-foreground font-semibold">{sentToLabel}</Text>
-            </>
+            <Text>
+              {t("auth.staffOtpSentTo", { contact: sentToLabel })}
+            </Text>
           )}
         </Text>
       ) : null}
@@ -159,21 +151,21 @@ export function StaffOtpInput({
       ) : isExpired ? (
         <View className="flex-row items-center gap-1 px-1">
           <Text className="text-muted-foreground text-xs">
-            {HELPER_MESSAGES.resendPrompt}
+            {t("auth.resendPrompt")}
           </Text>
           <Pressable
             onPress={handleResend}
             disabled={disabled}
             hitSlop={6}
             accessibilityRole="button"
-            accessibilityLabel={ACTION_LABELS.resendOtp}
+            accessibilityLabel={t("auth.resendOtp")}
             className={cn(
               "rounded-full px-1.5 py-0.5 active:bg-primary/10",
               disabled && "opacity-50"
             )}
           >
             <Text className="text-primary text-xs font-semibold">
-              {ACTION_LABELS.resendOtp}
+              {t("auth.resendOtp")}
             </Text>
           </Pressable>
         </View>
@@ -184,7 +176,7 @@ export function StaffOtpInput({
             isUrgent ? "text-destructive font-medium" : "text-muted-foreground"
           )}
         >
-          OTP expires in {countdownLabel}
+          {t("auth.otpExpiresIn", { time: countdownLabel })}
         </Text>
       )}
     </View>

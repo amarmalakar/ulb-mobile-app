@@ -12,6 +12,7 @@ import { Text } from "@/components/ui/text";
 import { cn } from "@/lib/utils";
 import { getTicketStatusConfig } from "@/features/tickets/utils";
 import { useAuthContext } from "@/components/provider/auth-provider";
+import { useTranslation } from "react-i18next";
 
 const DROPDOWN_SHADOW =
   Platform.OS === "ios"
@@ -34,6 +35,7 @@ export default function TicketStatusButton({
   onStatusChange,
   disabled = false,
 }: TicketStatusButtonProps) {
+  const { t } = useTranslation();
   const { authType } = useAuthContext();
   const [open, setOpen] = React.useState(false);
   const [minWidth, setMinWidth] = React.useState(160);
@@ -41,7 +43,7 @@ export default function TicketStatusButton({
   if (!status) {
     return (
       <View className="h-10 w-[140px] items-center justify-center rounded-md border border-border bg-muted/40">
-        <Text className="text-muted-foreground text-sm">…</Text>
+        <Text className="text-muted-foreground text-sm">{t("common.ellipsis")}</Text>
       </View>
     );
   }

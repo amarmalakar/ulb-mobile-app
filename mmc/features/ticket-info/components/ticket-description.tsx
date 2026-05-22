@@ -11,6 +11,7 @@ import {
 import { Image } from "expo-image";
 import { MapPin } from "lucide-react-native";
 import { useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import MapView, { Marker } from "react-native-maps";
 
 import { Text } from "../../../components/ui/text";
@@ -40,6 +41,7 @@ export default function TicketDescription({
 	ticketId: string;
 	authType: TicketInfoAuthType;
 }) {
+	const { t } = useTranslation();
 	const { width: windowWidth, height: windowHeight } = useWindowDimensions();
 	const sliderRef = useRef<FlatList<string>>(null);
 	const [viewerOpen, setViewerOpen] = useState(false);
@@ -72,7 +74,7 @@ export default function TicketDescription({
 			<ExpandableDescription description={description} />
 
 			<View>
-				<Text className="mb-3 text-sm font-semibold text-muted-foreground">Photos</Text>
+				<Text className="mb-3 text-sm font-semibold text-muted-foreground">{t("tickets.photos")}</Text>
 				<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 					<View className="flex-row gap-3">
 						{images.length > 0 ? (
@@ -92,7 +94,7 @@ export default function TicketDescription({
 							))
 						) : (
 							<View className="h-28 w-full items-center justify-center rounded-xl border border-dashed border-muted-foreground/40 bg-muted/30 px-4">
-								<Text className="text-sm text-muted-foreground">No images available</Text>
+								<Text className="text-sm text-muted-foreground">{t("tickets.noImages")}</Text>
 							</View>
 						)}
 					</View>
@@ -102,7 +104,7 @@ export default function TicketDescription({
 			<View className="overflow-hidden rounded-xl border border-border bg-card">
 				<View className="flex-row items-center gap-2 border-b border-border px-4 py-3">
 					<MapPin size={18} color="#0EA5E9" />
-					<Text className="text-base font-medium text-muted-foreground">Location</Text>
+					<Text className="text-base font-medium text-muted-foreground">{t("tickets.location")}</Text>
 				</View>
 
 				<View className="h-52 border-b border-border">
@@ -125,7 +127,7 @@ export default function TicketDescription({
 
 				<View className="px-4 py-3">
 					<Text className="text-base leading-7 text-foreground">
-						{locationAddress?.trim() || "No address provided"}
+						{locationAddress?.trim() || t("tickets.noAddress")}
 					</Text>
 				</View>
 			</View>
@@ -156,7 +158,7 @@ export default function TicketDescription({
 							className="rounded-full bg-white/20 px-3 py-1"
 							onPress={closeViewer}
 						>
-							<Text className="text-base font-semibold text-white">Close</Text>
+							<Text className="text-base font-semibold text-white">{t("common.close")}</Text>
 						</Pressable>
 					</View>
 

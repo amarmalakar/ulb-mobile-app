@@ -1,5 +1,7 @@
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
+import { useTranslation } from 'react-i18next';
+import type { TranslationKey } from '@/locales/keys';
 import { cn } from '@/lib/utils';
 import { MonitorIcon, MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
@@ -9,21 +11,22 @@ type ThemePreference = 'light' | 'dark' | 'system';
 
 const THEME_OPTIONS: {
   value: ThemePreference;
-  label: string;
+  labelKey: TranslationKey;
   icon: typeof SunIcon;
 }[] = [
-  { value: 'light', label: 'Light', icon: SunIcon },
-  { value: 'dark', label: 'Dark', icon: MoonStarIcon },
-  { value: 'system', label: 'System', icon: MonitorIcon },
+  { value: 'light', labelKey: 'account.themeLight', icon: SunIcon },
+  { value: 'dark', labelKey: 'account.themeDark', icon: MoonStarIcon },
+  { value: 'system', labelKey: 'account.themeSystem', icon: MonitorIcon },
 ];
 
 export function AccountThemePicker() {
+  const { t } = useTranslation();
   const { colorScheme, setColorScheme } = useColorScheme();
 
   return (
     <View className="gap-3">
       <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
-        Appearance
+        {t('account.appearance')}
       </Text>
 
       <View className="flex-row gap-2">
@@ -56,7 +59,7 @@ export function AccountThemePicker() {
                   isActive ? 'text-primary' : 'text-foreground',
                 )}
               >
-                {option.label}
+                {t(option.labelKey)}
               </Text>
             </Pressable>
           );

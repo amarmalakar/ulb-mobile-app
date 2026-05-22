@@ -4,17 +4,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { useTranslation } from "react-i18next";
 import type { ContactMethod } from "../types";
-
-interface ContactMethodOption {
-  id: ContactMethod;
-  label: string;
-}
-
-const OPTIONS: ContactMethodOption[] = [
-  { id: "email", label: "Email" },
-  { id: "phone", label: "Phone" },
-];
 
 interface ContactMethodToggleProps {
   value: ContactMethod;
@@ -27,9 +18,15 @@ export function ContactMethodToggle({
   onChange,
   disabled = false,
 }: ContactMethodToggleProps) {
+  const { t } = useTranslation();
+  const options: { id: ContactMethod; label: string }[] = [
+    { id: "email", label: t("account.email") },
+    { id: "phone", label: t("account.phone") },
+  ];
+
   return (
     <View style={styles.row}>
-      {OPTIONS.map((option) => {
+      {options.map((option) => {
         const isActive = value === option.id;
         return (
           <TouchableOpacity

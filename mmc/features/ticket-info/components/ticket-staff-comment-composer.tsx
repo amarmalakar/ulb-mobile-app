@@ -1,5 +1,6 @@
 import { Alert, Pressable, TextInput, View } from "react-native";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { SendHorizonal } from "lucide-react-native";
 
 import { Text } from "@/components/ui/text";
@@ -13,6 +14,7 @@ export function TicketStaffCommentComposer({
   ticketId: string;
   commentEnabled: boolean;
 }) {
+  const { t } = useTranslation();
   const { session } = useStaffAuth();
   const [draftComment, setDraftComment] = useState("");
 
@@ -28,7 +30,7 @@ export function TicketStaffCommentComposer({
       {
         onSuccess: () => setDraftComment(""),
         onError: (err) => {
-          Alert.alert("Could not add comment", err.message);
+          Alert.alert(t("tickets.couldNotAddComment"), err.message);
         },
       },
     );
@@ -41,7 +43,9 @@ export function TicketStaffCommentComposer({
         onChangeText={setDraftComment}
         multiline
         editable={canCompose}
-        placeholder={commentEnabled ? "Write a comment..." : "Comments are disabled"}
+        placeholder={
+          commentEnabled ? t("tickets.writeComment") : t("tickets.commentsDisabledPlaceholder")
+        }
         placeholderTextColor="#9CA3AF"
         className="min-h-20 text-base text-foreground"
         style={{ textAlignVertical: "top" }}
@@ -63,7 +67,7 @@ export function TicketStaffCommentComposer({
                 : "text-muted-foreground"
               }`}
           >
-            {isPostingComment ? "Adding..." : "Add Comment"}
+            {isPostingComment ? t("tickets.addingComment") : t("tickets.addComment")}
           </Text>
         </Pressable>
       </View>
