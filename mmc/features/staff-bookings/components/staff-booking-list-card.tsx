@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { useRouter } from 'expo-router';
 import { format, parseISO } from 'date-fns';
 import {
   Building2Icon,
@@ -29,6 +30,7 @@ function formatAmount(amount: number): string {
 
 export function StaffBookingListCard({ booking }: { booking: StaffBookingListItem }) {
   const { t } = useTranslation();
+  const router = useRouter();
   const statusConfig = getBookingStatusConfig(booking.status);
   const TypeIcon = booking.resource.type === 'VEHICLE' ? CarIcon : Building2Icon;
   const thumbnailUri = booking.resource.thumbnailUrl
@@ -36,6 +38,14 @@ export function StaffBookingListCard({ booking }: { booking: StaffBookingListIte
     : null;
 
   return (
+    <Pressable
+      className="active:opacity-90"
+      onPress={() => {
+        router.push({
+          pathname: '/staff/staff-booking-detail-screen' as never,
+          params: { bookingId: booking.id },
+        });
+      }}>
     <View className="overflow-hidden rounded-2xl border border-border bg-card p-4">
       <View className="flex-row gap-3">
         <View
@@ -111,5 +121,6 @@ export function StaffBookingListCard({ booking }: { booking: StaffBookingListIte
         </View>
       </View>
     </View>
+    </Pressable>
   );
 }

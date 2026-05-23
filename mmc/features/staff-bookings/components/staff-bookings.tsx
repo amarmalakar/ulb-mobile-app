@@ -1,16 +1,32 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { useLocalSearchParams } from 'expo-router';
 
 import { Text } from '@/components/ui/text';
 import { StaffBookingFilter } from '@/features/staff-bookings/components/staff-booking-filter';
 import { StaffBookingList } from '@/features/staff-bookings/components/staff-booking-list';
-import { useStaffBookingsFilter } from '@/features/staff-bookings/hooks/use-staff-bookings-filter';
+import {
+  createDefaultStaffBookingsFilter,
+  parseStaffBookingsScreenParams,
+  type StaffBookingsScreenSearchParams,
+  useStaffBookingsFilter,
+} from '@/features/staff-bookings/hooks/use-staff-bookings-filter';
 import { useStaffBookingsInfiniteQuery } from '@/features/staff-bookings/hooks/use-staff-bookings-query';
 
 export default function StaffBookings() {
   const { t } = useTranslation();
+  const searchParams = useLocalSearchParams<StaffBookingsScreenSearchParams>();
   const { filter, replaceFilter, resetFilter } = useStaffBookingsFilter();
+
+  useEffect(() => {
+    const patch = parseStaffBookingsScreenParams(searchParams);
+    if (Object.keys(patch).length === 0) return;
+    replaceFilter({
+      ...createDefaultStaffBookingsFilter(),
+      ...patch,
+    });
+  }, [searchParams.bookingResourceId, replaceFilter]);
   const bookingsQuery = useStaffBookingsInfiniteQuery(filter);
 
   const totalBookings = bookingsQuery.data?.pages[0]?.pagination.total;

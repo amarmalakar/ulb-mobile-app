@@ -225,10 +225,6 @@ export function StaffHomeDashboard() {
     });
   };
 
-  const handleBookingResourcePress = () => {
-    router.push("/staff/staff-bookings-screen");
-  };
-
   return (
     <View className="mb-56 gap-6 pb-6 pt-2">
       <View className="px-4 gap-6">
@@ -352,7 +348,15 @@ export function StaffHomeDashboard() {
                     <Pressable
                       key={item.id}
                       className="mb-3 w-1/3 px-1"
-                      onPress={handleBookingResourcePress}>
+                      onPress={() => {
+                        router.push({
+                          pathname: "/staff/staff-bookings-screen",
+                          params: {
+                            bookingResourceId: item.id,
+                          },
+                        });
+                      }}
+                    >
                       <View className="rounded-2xl border border-border bg-card p-3 shadow-sm">
                         <View
                           className={cn(

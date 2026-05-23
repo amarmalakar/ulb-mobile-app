@@ -36,6 +36,28 @@ export function countActiveStaffBookingFilters(
   return count;
 }
 
+export type StaffBookingsScreenSearchParams = {
+  bookingResourceId?: string | string[];
+};
+
+function firstSearchParam(value: string | string[] | undefined): string | undefined {
+  if (value === undefined) return undefined;
+  const raw = Array.isArray(value) ? value[0] : value;
+  const trimmed = raw?.trim();
+  return trimmed ? trimmed : undefined;
+}
+
+/** Parses route params from `staff-bookings-screen` into filter fields. */
+export function parseStaffBookingsScreenParams(
+  raw: StaffBookingsScreenSearchParams,
+): Partial<StaffBookingsListFilterParams> {
+  const resourceId = firstSearchParam(raw.bookingResourceId);
+  if (resourceId) {
+    return { resourceId };
+  }
+  return {};
+}
+
 export type StaffBookingsFilterSelection = {
   filter: StaffBookingsListFilterParams;
   replaceFilter: (next: StaffBookingsListFilterParams) => void;
