@@ -1,12 +1,15 @@
 import {
   Ban,
   BrushCleaningIcon,
+  Building2,
   CheckCircle2,
   Columns4Icon,
   DropletIcon,
   FolderOpen,
+  LayoutList,
   PawPrintIcon,
   UtilityPoleIcon,
+  XCircle,
   type LucideIcon,
 } from "lucide-react-native";
 import { Pressable, View } from "react-native";
@@ -20,6 +23,7 @@ import { useStaffHomeAnalyticsQuery } from "@/features/tickets/hooks/use-staff-h
 import { buildStaffTicketScreenParams } from "@/features/tickets/hooks/use-tickets-filter";
 import { useRouter } from "expo-router";
 import type { iTicketStatus } from "@/features/tickets/types";
+import { Separator } from "@/components/ui/separator";
 
 type ComplaintTheme = {
   icon: LucideIcon;
@@ -61,12 +65,19 @@ const defaultTheme: ComplaintTheme = {
   iconColor: "#0EA5E9",
 };
 
-type StatCardVariant = "open" | "completed" | "blocked";
+type StatCardVariant = "total" | "open" | "completed" | "blocked" | "cancelled";
 
 const statCardThemes: Record<
   StatCardVariant,
   { card: string; label: string; value: string; iconWrap: string; iconColor: string }
 > = {
+  total: {
+    card: "border-violet-200 bg-violet-50",
+    label: "text-violet-800",
+    value: "text-violet-950",
+    iconWrap: "bg-violet-200/90",
+    iconColor: "#6D28D9",
+  },
   open: {
     card: "border-sky-200 bg-sky-50",
     label: "text-sky-800",
@@ -88,6 +99,18 @@ const statCardThemes: Record<
     iconWrap: "bg-amber-200/90",
     iconColor: "#B45309",
   },
+  cancelled: {
+    card: "border-rose-200 bg-rose-50",
+    label: "text-rose-800",
+    value: "text-rose-950",
+    iconWrap: "bg-rose-200/90",
+    iconColor: "#BE123C",
+  },
+};
+
+const bookingResourceTheme = {
+  containerClass: "border-teal-200 bg-teal-100",
+  iconColor: "#0D9488",
 };
 
 type StatCardProps = {
@@ -128,13 +151,27 @@ function StaffHomeDashboardSkeleton() {
       <Skeleton className="h-8 w-48" />
       <View className="flex-row gap-3">
         {new Array(3).fill(0).map((_, index) => (
-          <Skeleton key={index} className="h-[75px] flex-1 rounded-2xl" />
+          <Skeleton key={`tickets-${index}`} className="h-[75px] flex-1 rounded-2xl" />
         ))}
       </View>
       <Skeleton className="h-6 w-32" />
       <View className="-mx-1 flex-row flex-wrap">
         {new Array(6).fill(0).map((_, index) => (
-          <View key={index} className="mb-3 w-1/3 px-1">
+          <View key={`complaints-${index}`} className="mb-3 w-1/3 px-1">
+            <Skeleton className="h-[100px] w-full rounded-2xl" />
+          </View>
+        ))}
+      </View>
+      <Skeleton className="h-8 w-52" />
+      <View className="flex-row flex-wrap gap-3">
+        {new Array(4).fill(0).map((_, index) => (
+          <Skeleton key={`bookings-${index}`} className="h-[75px] w-[47%] rounded-2xl" />
+        ))}
+      </View>
+      <Skeleton className="h-6 w-40" />
+      <View className="-mx-1 flex-row flex-wrap">
+        {new Array(3).fill(0).map((_, index) => (
+          <View key={`resources-${index}`} className="mb-3 w-1/3 px-1">
             <Skeleton className="h-[100px] w-full rounded-2xl" />
           </View>
         ))}
@@ -168,6 +205,8 @@ export function StaffHomeDashboard() {
 
   const tickets = analytics?.complaintTickets;
   const complaints = analytics?.complaint ?? [];
+  const bookingSummary = analytics?.bookingSummary;
+  const bookingResources = analytics?.bookingResources ?? [];
 
   const handleComplaintPress = (complaintId: string) => {
     const openStatuses: iTicketStatus[] = [
@@ -186,75 +225,165 @@ export function StaffHomeDashboard() {
     });
   };
 
+  const handleBookingResourcePress = () => {
+    router.push("/staff/staff-bookings-screen");
+  };
+
   return (
-    <View className="mb-56 gap-6 px-4 pb-6 pt-2">
-      {tickets ? (
-        <>
-          <Text className="text-foreground text-2xl font-bold">
-            {t("tickets.totalTicketsTitle", { total: tickets.total })}
-          </Text>
-
-          <View className="flex-row gap-3">
-            <StatCard label={t("tickets.open")} value={tickets.open} icon={FolderOpen} variant="open" />
-            <StatCard
-              label={t("tickets.done")}
-              value={tickets.completed}
-              icon={CheckCircle2}
-              variant="completed"
-            />
-            <StatCard label={t("tickets.blocked")} value={tickets.blocked} icon={Ban} variant="blocked" />
-          </View>
-        </>
-      ) : (
-        <Text className="text-muted-foreground text-sm">{t("tickets.noData")}</Text>
-      )}
-
-      <View className="gap-3">
-        <Text className="text-foreground text-xl font-bold">{t("complaints.title")}</Text>
-
-        {complaints.length === 0 ? (
-          <Text className="text-muted-foreground text-sm">{t("tickets.noComplaintTypes")}</Text>
+    <View className="mb-56 gap-6 pb-6 pt-2">
+      <View className="px-4 gap-6">
+        {tickets ? (
+          <>
+            <Text className="text-foreground text-2xl font-bold">
+              {t("tickets.totalTicketsTitle", { total: tickets.total })}
+            </Text>
+            <View className="flex-row gap-3">
+              <StatCard label={t("tickets.open")} value={tickets.open} icon={FolderOpen} variant="open" />
+              <StatCard
+                label={t("tickets.done")}
+                value={tickets.completed}
+                icon={CheckCircle2}
+                variant="completed"
+              />
+              <StatCard label={t("tickets.blocked")} value={tickets.blocked} icon={Ban} variant="blocked" />
+            </View>
+          </>
         ) : (
-          <View className="-mx-1 flex-row flex-wrap">
-            {complaints.map((item) => {
-              const theme = complaintThemes[item.title] ?? defaultTheme;
-              const Icon = theme.icon;
-
-              return (
-                <Pressable
-                  key={item.id}
-                  className="mb-3 w-1/3 px-1"
-                  onPress={() => handleComplaintPress(item.id)}
-                >
-                  <View className="rounded-2xl border border-border bg-card p-3 shadow-sm">
-                    <View
-                      className={cn(
-                        "mb-2 h-12 w-12 items-center justify-center self-center rounded-full border",
-                        theme.containerClass,
-                      )}>
-                      <Icon size={22} color={theme.iconColor} />
-                    </View>
-                    <Text
-                      className="mb-1 text-center text-xs font-semibold text-foreground"
-                      numberOfLines={2}>
-                      {item.title}
-                    </Text>
-                    <View
-                      className="self-center rounded-lg px-2 py-1"
-                      style={{ backgroundColor: `${theme.iconColor}24` }}>
-                      <Text
-                        className="text-center text-[11px] font-bold tabular-nums"
-                        style={{ color: theme.iconColor }}
-                        numberOfLines={1}>
-                        {t("tickets.openTicketsCount", { count: item.open })}
-                      </Text>
-                    </View>
-                  </View>
-                </Pressable>
-              );
-            })}
-          </View>
+          <Text className="text-muted-foreground text-sm">{t("tickets.noData")}</Text>
         )}
+        <View className="gap-3">
+          <Text className="text-foreground text-xl font-bold">{t("complaints.title")}</Text>
+          {complaints.length === 0 ? (
+            <Text className="text-muted-foreground text-sm">{t("tickets.noComplaintTypes")}</Text>
+          ) : (
+            <View className="-mx-1 flex-row flex-wrap">
+              {complaints.map((item) => {
+                const theme = complaintThemes[item.title] ?? defaultTheme;
+                const Icon = theme.icon;
+                return (
+                  <Pressable
+                    key={item.id}
+                    className="mb-3 w-1/3 px-1"
+                    onPress={() => handleComplaintPress(item.id)}
+                  >
+                    <View className="rounded-2xl border border-border bg-card p-3 shadow-sm">
+                      <View
+                        className={cn(
+                          "mb-2 h-12 w-12 items-center justify-center self-center rounded-full border",
+                          theme.containerClass,
+                        )}>
+                        <Icon size={22} color={theme.iconColor} />
+                      </View>
+                      <Text
+                        className="mb-1 text-center text-xs font-semibold text-foreground"
+                        numberOfLines={2}>
+                        {item.title}
+                      </Text>
+                      <View
+                        className="self-center rounded-lg px-2 py-1"
+                        style={{ backgroundColor: `${theme.iconColor}24` }}>
+                        <Text
+                          className="text-center text-[11px] font-bold tabular-nums"
+                          style={{ color: theme.iconColor }}
+                          numberOfLines={1}>
+                          {t("tickets.openTicketsCount", { count: item.open })}
+                        </Text>
+                      </View>
+                    </View>
+                  </Pressable>
+                );
+              })}
+            </View>
+          )}
+        </View>
+      </View>
+
+      <Separator />
+
+      <View className="px-4 gap-6">
+        {bookingSummary ? (
+          <>
+            <Text className="text-foreground text-2xl font-bold">
+              {t("bookings.staffTotalBookingsTitle", { total: bookingSummary.total })}
+            </Text>
+            <View className="flex-row flex-wrap gap-3">
+              <View className="w-[47%]">
+                <StatCard
+                  label={t("bookings.staffTotal")}
+                  value={bookingSummary.total}
+                  icon={LayoutList}
+                  variant="total"
+                />
+              </View>
+              <View className="w-[47%]">
+                <StatCard
+                  label={t("tickets.open")}
+                  value={bookingSummary.open}
+                  icon={FolderOpen}
+                  variant="open"
+                />
+              </View>
+              <View className="w-[47%]">
+                <StatCard
+                  label={t("tickets.done")}
+                  value={bookingSummary.completed}
+                  icon={CheckCircle2}
+                  variant="completed"
+                />
+              </View>
+              <View className="w-[47%]">
+                <StatCard
+                  label={t("bookings.cancelled")}
+                  value={bookingSummary.cancelled}
+                  icon={XCircle}
+                  variant="cancelled"
+                />
+              </View>
+            </View>
+            <View className="gap-3">
+              <Text className="text-foreground text-xl font-bold">
+                {t("bookings.staffResourcesTitle")}
+              </Text>
+              {bookingResources.length === 0 ? (
+                <Text className="text-muted-foreground text-sm">{t("bookings.emptyTitle")}</Text>
+              ) : (
+                <View className="-mx-1 flex-row flex-wrap">
+                  {bookingResources.map((item) => (
+                    <Pressable
+                      key={item.id}
+                      className="mb-3 w-1/3 px-1"
+                      onPress={handleBookingResourcePress}>
+                      <View className="rounded-2xl border border-border bg-card p-3 shadow-sm">
+                        <View
+                          className={cn(
+                            "mb-2 h-12 w-12 items-center justify-center self-center rounded-full border",
+                            bookingResourceTheme.containerClass,
+                          )}>
+                          <Building2 size={22} color={bookingResourceTheme.iconColor} />
+                        </View>
+                        <Text
+                          className="mb-1 text-center text-xs font-semibold text-foreground"
+                          numberOfLines={2}>
+                          {item.title}
+                        </Text>
+                        <View
+                          className="self-center rounded-lg px-2 py-1"
+                          style={{ backgroundColor: `${bookingResourceTheme.iconColor}24` }}>
+                          <Text
+                            className="text-center text-[11px] font-bold tabular-nums"
+                            style={{ color: bookingResourceTheme.iconColor }}
+                            numberOfLines={1}>
+                            {t("bookings.staffOpenBookingsCount", { count: item.open })}
+                          </Text>
+                        </View>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
+            </View>
+          </>
+        ) : null}
       </View>
     </View>
   );

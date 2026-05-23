@@ -253,9 +253,26 @@ export type StaffHomeAnalyticsComplaintBreakdown = {
   open: number;
 };
 
+export type StaffHomeAnalyticsBookingSummary = {
+  total: number;
+  /** Bookings that are not completed, cancelled, or rejected. */
+  open: number;
+  completed: number;
+  cancelled: number;
+};
+
+export type StaffHomeAnalyticsBookingResourceBreakdown = {
+  id: string;
+  title: string;
+  open: number;
+};
+
 export type StaffHomeAnalyticsData = {
   complaintTickets: StaffHomeAnalyticsComplaintTickets;
   complaint: StaffHomeAnalyticsComplaintBreakdown[];
+  /** Present when the staff member has `BOOKINGS` access. */
+  bookingSummary?: StaffHomeAnalyticsBookingSummary;
+  bookingResources?: StaffHomeAnalyticsBookingResourceBreakdown[];
 };
 
 export type StaffTicketsListFilterParams = {

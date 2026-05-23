@@ -101,6 +101,8 @@ export type StaffInfoReportTo = {
   name: string;
 };
 
+export type StaffAccess = 'COMPLAINTS' | 'DOCUMENTS' | 'BOOKINGS';
+
 export type StaffInfo = {
   id: string;
   ulbId: string;
@@ -116,6 +118,7 @@ export type StaffInfo = {
   reportTo: StaffInfoReportTo | null;
   zone: StaffInfoZone[];
   wards: number[];
+  access: StaffAccess[];
   createdAt: string;
   updatedAt: string;
 };
