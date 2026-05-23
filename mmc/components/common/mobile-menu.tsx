@@ -2,17 +2,37 @@ import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
 import { View, Text, Modal, Pressable } from "react-native";
-import { BellIcon, CircleHelpIcon, LogOutIcon, MessageSquareTextIcon, SettingsIcon, UserRoundIcon, XIcon } from "lucide-react-native";
+import { BellIcon, CircleHelpIcon, LogOutIcon, MessageSquareTextIcon, SchoolIcon, SettingsIcon, UserRoundIcon, XIcon } from "lucide-react-native";
 import { useAuthContext } from "../provider/auth-provider";
+import type { AuthType } from "@/types/auth";
 
 function generateMenuItems(
   router: ReturnType<typeof useRouter>,
   t: TFunction,
+  authType: AuthType,
 ) {
-  return [
-    { label: t("menu.profile"), icon: UserRoundIcon, onPress: () => { } },
+  const items = [
+    {
+      label: t("menu.profile"),
+      icon: UserRoundIcon,
+      onPress: () => {
+        if (authType === "User") {
+          router.push('/user/user-account-screen' as never);
+        } else if (authType === "Staff") {
+          router.push('/staff/staff-account-screen' as never);
+        }
+      },
+    },
     { label: t("menu.notifications"), icon: BellIcon, onPress: () => { } },
-    { label: t("menu.settings"), icon: SettingsIcon, onPress: () => { } },
+    ...(authType === "User"
+      ? [
+        {
+          label: t('bookings.yourBookings'),
+          icon: SchoolIcon,
+          onPress: () => { router.push('/user/user-your-booking-screen' as never) },
+        },
+      ]
+      : []),
     {
       label: t("menu.feedback"),
       icon: MessageSquareTextIcon,
@@ -20,6 +40,8 @@ function generateMenuItems(
     },
     { label: t("menu.help"), icon: CircleHelpIcon, onPress: () => { } },
   ];
+
+  return items;
 }
 
 type MobileMenuProps = {
@@ -54,7 +76,7 @@ export function MobileMenu({
   const router = useRouter();
   const { authType } = useAuthContext();
 
-  const menuItems = generateMenuItems(router, t);
+  const menuItems = generateMenuItems(router, t, authType);
   const roleKey =
     authType === "Staff" ? "common.staff" : authType === "User" ? "common.user" : "common.guest";
 

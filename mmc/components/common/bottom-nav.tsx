@@ -21,7 +21,7 @@ import type { TranslationKey } from "@/locales/keys";
 const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/user/home-screen' },
   // { id: 'near-me', label: 'Near me', icon: MapPinnedIcon, route: '/(user)/near-me-screen' },
-  // { id: 'booking-list', label: 'Booking', icon: SchoolIcon, route: '/(user)/booking-list-screen' },
+  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: '/user/user-booking-list-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartPieIcon, route: '/(user)/analytics-screen' },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
