@@ -17,11 +17,12 @@ import {
 import { useAuthContext } from "@/components/provider/auth-provider";
 import { useTranslation } from "react-i18next";
 import type { TranslationKey } from "@/locales/keys";
+import { BOOKING_RESOURCE_LIST_ROUTE } from '@/features/bookings/lib/booking-routes';
 
 const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/user/home-screen' },
   // { id: 'near-me', label: 'Near me', icon: MapPinnedIcon, route: '/(user)/near-me-screen' },
-  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: '/user/user-booking-list-screen' },
+  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: BOOKING_RESOURCE_LIST_ROUTE },
   // { id: 'analytics', label: 'Analytics', icon: ChartPieIcon, route: '/(user)/analytics-screen' },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
@@ -29,9 +30,9 @@ const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon;
 
 const staffItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/staff/home-screen' },
+  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: BOOKING_RESOURCE_LIST_ROUTE },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
   // { id: 'attendance', label: 'Attendance', icon: CalendarClockIcon, route: '/(staff)/attendance-screen' },
-  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: '/staff/staff-booking-list-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },
 ];
 

@@ -4,6 +4,7 @@ import { Building2Icon, CalendarRangeIcon, CarIcon, HashIcon } from 'lucide-reac
 import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
+import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 
 import { Icon } from '@/components/ui/icon';
 import { Text } from '@/components/ui/text';
@@ -34,10 +35,7 @@ export function UserBookingListCard({ booking }: { booking: UserBookingListItem 
     <Pressable
       className="active:opacity-90"
       onPress={() => {
-        router.push({
-          pathname: '/user/user-booking-detail-screen' as never,
-          params: { bookingId: booking.id },
-        });
+        router.push(bookingRoutes.detail(booking.id) as never);
       }}
     >
       <View className="overflow-hidden rounded-2xl border border-border bg-card p-4">

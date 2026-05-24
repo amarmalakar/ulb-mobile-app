@@ -1,5 +1,6 @@
 import { Pressable, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 import { format, parseISO } from 'date-fns';
 import {
   Building2Icon,
@@ -41,10 +42,7 @@ export function StaffBookingListCard({ booking }: { booking: StaffBookingListIte
     <Pressable
       className="active:opacity-90"
       onPress={() => {
-        router.push({
-          pathname: '/staff/staff-booking-detail-screen' as never,
-          params: { bookingId: booking.id },
-        });
+        router.push(bookingRoutes.detail(booking.id) as never);
       }}>
     <View className="overflow-hidden rounded-2xl border border-border bg-card p-4">
       <View className="flex-row gap-3">

@@ -1,5 +1,6 @@
 import { ActivityIndicator, Pressable, ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
+import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 import { format, parseISO } from 'date-fns';
 import {
   AlertCircleIcon,
@@ -101,10 +102,7 @@ function BookingDetailContent({ booking }: { booking: UserBookingByIdDetail }) {
       <Pressable
         className="active:opacity-90"
         onPress={() => {
-          router.push({
-            pathname: '/user/user-booking-info-screen' as never,
-            params: { bookingId: booking.resourceId },
-          });
+          router.push(bookingRoutes.resourceInfo(booking.resourceId) as never);
         }}
       >
         <View className="flex-row gap-3 rounded-2xl border border-border bg-card p-4">

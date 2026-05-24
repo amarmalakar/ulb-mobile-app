@@ -10,6 +10,7 @@ import {
 import { addHours, format, startOfDay, startOfMonth } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
+import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
@@ -129,17 +130,7 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
       });
 
       const onSuccessNavigate = () => {
-        if (isStaff) {
-          router.replace({
-            pathname: '/staff/staff-booking-detail-screen' as never,
-            params: { bookingId: result.id },
-          });
-          return;
-        }
-        router.replace({
-          pathname: '/user/user-booking-detail-screen' as never,
-          params: { bookingId: result.id },
-        });
+        router.replace(bookingRoutes.detail(result.id) as never);
       };
 
       Alert.alert(

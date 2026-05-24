@@ -22,6 +22,7 @@ import { useStaffAuth } from "@/components/provider/staff-auth-provider";
 import { useStaffHomeAnalyticsQuery } from "@/features/tickets/hooks/use-staff-home-analytics-query";
 import { buildStaffTicketScreenParams } from "@/features/tickets/hooks/use-tickets-filter";
 import { useRouter } from "expo-router";
+import { bookingRoutes } from "@/features/bookings/lib/booking-routes";
 import type { iTicketStatus } from "@/features/tickets/types";
 import { Separator } from "@/components/ui/separator";
 
@@ -349,12 +350,9 @@ export function StaffHomeDashboard() {
                       key={item.id}
                       className="mb-3 w-1/3 px-1"
                       onPress={() => {
-                        router.push({
-                          pathname: "/staff/staff-bookings-screen",
-                          params: {
-                            bookingResourceId: item.id,
-                          },
-                        });
+                        router.push(
+                          bookingRoutes.staffBookingsList(item.id) as never,
+                        );
                       }}
                     >
                       <View className="rounded-2xl border border-border bg-card p-3 shadow-sm">
