@@ -383,6 +383,7 @@ export const en = {
     notes: 'Notes',
     notesPlaceholder: 'Internal notes…',
     optional: 'Optional',
+    staffBookingAs: 'Booking on behalf of citizen ({{staffName}})',
     submitBooking: 'Submit booking',
     submitSuccessTitle: 'Booking submitted',
     submitSuccessBody: 'Your booking reference is {{id}}.',

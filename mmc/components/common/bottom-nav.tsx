@@ -31,7 +31,7 @@ const staffItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/staff/home-screen' },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
   // { id: 'attendance', label: 'Attendance', icon: CalendarClockIcon, route: '/(staff)/attendance-screen' },
-  // { id: 'analytics', label: 'Analytics', icon: ChartScatterIcon, route: '/(staff)/analytics-screen' },
+  { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: '/staff/staff-booking-list-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },
 ];
 

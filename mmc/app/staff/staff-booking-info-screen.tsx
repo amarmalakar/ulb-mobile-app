@@ -1,11 +1,11 @@
-import { View } from 'react-native';
-import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
-import { useTranslation } from 'react-i18next';
-
-import { TopNavigation } from '@/components/common/top-navigation';
-import { useUserAuth } from '@/components/provider/user-auth-provider';
-import { BookingResourceDetail } from '@/features/bookings/components/booking-resource-detail';
-import { useUserBookingResourceQuery } from '@/features/bookings/hooks/use-user-booking-resource-query';
+import { View } from "react-native";
+import { Text } from "@/components/ui/text";
+import { TopNavigation } from "@/components/common/top-navigation";
+import { Stack, useLocalSearchParams, useRouter } from "expo-router";
+import { useTranslation } from "react-i18next";
+import { useStaffAuth } from "@/components/provider/staff-auth-provider";
+import { useStaffBookingResourceQuery } from "@/features/bookings/hooks/use-user-booking-resource-query";
+import { BookingResourceDetail } from "@/features/bookings/components/booking-resource-detail";
 
 function firstParam(value: string | string[] | undefined): string | undefined {
   if (typeof value === 'string') return value;
@@ -13,20 +13,21 @@ function firstParam(value: string | string[] | undefined): string | undefined {
   return undefined;
 }
 
-export default function UserBookingInfoScreen() {
+export default function StaffBookingInfoScreen() {
   const { t } = useTranslation();
   const router = useRouter();
   const { bookingId } = useLocalSearchParams<{ bookingId?: string | string[] }>();
   const resourceId = firstParam(bookingId);
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { sessionHydrated, mpinUnlocked } = useStaffAuth();
 
-  const resourceQuery = useUserBookingResourceQuery({
+  const resourceQuery = useStaffBookingResourceQuery({
     resourceId,
     enabled: sessionHydrated && mpinUnlocked,
   });
 
-  const navLabel = resourceQuery.data?.name ?? t('bookings.infoTitle');
 
+  const navLabel = resourceQuery.data?.name ?? t('bookings.infoTitle');
+  // const navLabel = t('bookings.infoTitle');
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -38,7 +39,7 @@ export default function UserBookingInfoScreen() {
           onBookNow={() => {
             if (!resourceId) return;
             router.push({
-              pathname: '/user/user-booking-screen',
+              pathname: '/staff/staff-booking-screen',
               params: { bookingId: resourceId },
             });
           }}

@@ -386,6 +386,7 @@ export const hi: TranslationSchema = {
     notes: 'नोट्स',
     notesPlaceholder: 'आंतरिक नोट्स…',
     optional: 'वैकल्पिक',
+    staffBookingAs: 'नागरिक की ओर से बुकिंग ({{staffName}})',
     submitBooking: 'बुकिंग जमा करें',
     submitSuccessTitle: 'बुकिंग जमा हो गई',
     submitSuccessBody: 'आपका बुकिंग संदर्भ {{id}} है।',

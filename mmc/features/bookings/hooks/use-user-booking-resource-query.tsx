@@ -5,6 +5,7 @@ import { useNetworkContext } from '@/components/provider/network-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
 import type { UserBookingResourceDetail } from '@/features/bookings/types';
 import { throwUnlessOk, userBearerHeaders } from '@/features/user-auth/utils/api-response';
+import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 
 type UserBookingResourceApiResponse = {
   ok: boolean;
@@ -20,9 +21,9 @@ export type UseUserBookingResourceQueryOptions = {
 export async function fetchUserBookingResource(
   client: AxiosInstance,
   accessToken: string,
-  resourceId: string,
+  path: string,
 ): Promise<UserBookingResourceDetail> {
-  const res = (await client.get(`/user/booking-resources/${resourceId}`, {
+  const res = (await client.get(path, {
     headers: userBearerHeaders(accessToken),
   })) as UserBookingResourceApiResponse;
 
@@ -52,7 +53,35 @@ export function useUserBookingResourceQuery({
       if (!token || !id) {
         throw new Error('Missing access token or resource id');
       }
-      return fetchUserBookingResource(client, token, id);
+      return fetchUserBookingResource(client, token, `/user/booking-resources/${resourceId}`);
+    },
+  });
+}
+
+/** Loads one resource from `GET /user/booking-resources/:resourceId`. */
+export function useStaffBookingResourceQuery({
+  resourceId,
+  enabled = true,
+}: UseUserBookingResourceQueryOptions) {
+  const { client } = useNetworkContext();
+  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const accessToken = session?.accessToken;
+  const id = resourceId?.trim();
+
+  return useQuery<UserBookingResourceDetail, Error>({
+    queryKey: ['staff', 'booking-resources', id, accessToken],
+    enabled:
+      Boolean(accessToken) &&
+      Boolean(id) &&
+      sessionHydrated &&
+      mpinUnlocked &&
+      enabled,
+    queryFn: async () => {
+      const token = accessToken;
+      if (!token || !id) {
+        throw new Error('Missing access token or resource id');
+      }
+      return fetchUserBookingResource(client, token, `/staff/booking-resources/${resourceId}`);
     },
   });
 }

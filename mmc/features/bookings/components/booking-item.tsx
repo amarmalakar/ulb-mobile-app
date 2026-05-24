@@ -8,6 +8,7 @@ import { Text } from '@/components/ui/text';
 import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
 import type { UserBookingResourceListItem } from '@/features/bookings/types';
 import { useRouter } from 'expo-router';
+import { useAuthContext } from '@/components/provider/auth-provider';
 
 const IMAGE_HEIGHT = 160;
 
@@ -26,6 +27,7 @@ function formatCurrency(amount: number, currency: string): string {
 export function BookingItem({ booking }: { booking: UserBookingResourceListItem }) {
   const { t } = useTranslation();
   const router = useRouter();
+  const { authType } = useAuthContext();
   const TypeIcon = booking.type === 'VEHICLE' ? CarIcon : Building2Icon;
   const typeLabel =
     booking.type === 'VEHICLE' ? t('bookings.typeVehicle') : t('bookings.typeBuilding');
@@ -39,7 +41,7 @@ export function BookingItem({ booking }: { booking: UserBookingResourceListItem 
       className="active:opacity-90"
       onPress={() => {
         router.push({
-          pathname: '/user/user-booking-info-screen',
+          pathname: authType === "User" ? '/user/user-booking-info-screen' : '/staff/staff-booking-info-screen',
           params: { bookingId: booking.id },
         });
       }}

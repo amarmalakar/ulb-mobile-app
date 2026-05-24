@@ -13,28 +13,34 @@ import { useRouter } from 'expo-router';
 
 import { Button } from '@/components/ui/button';
 import { Text } from '@/components/ui/text';
+import { useAuthContext } from '@/components/provider/auth-provider';
+import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { BookingCalendar } from '@/features/bookings/components/booking-calendar';
 import { BookingCreateForm } from '@/features/bookings/components/booking-create-form';
 import { useBookingForm } from '@/features/bookings/hooks/use-booking-form';
-import { useCreateUserBookingMutation } from '@/features/bookings/hooks/use-create-user-booking-mutation';
-import { useUserBookingResourceScheduleQuery } from '@/features/bookings/hooks/use-user-booking-resource-schedule-query';
+import { useCreateBookingMutation } from '@/features/bookings/hooks/use-create-booking-mutation';
+import { useBookingResourceScheduleQuery } from '@/features/bookings/hooks/use-booking-resource-schedule-query';
 import { buildDayBookingRange, monthScheduleRange } from '@/features/bookings/lib/booking-date-utils';
 
-type UserBookingFlowProps = {
+type BookingFlowProps = {
   resourceId: string;
 };
 
-export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
+export function BookingFlow({ resourceId }: BookingFlowProps) {
   const { t } = useTranslation();
   const router = useRouter();
+  const { authType } = useAuthContext();
   const { userInfo } = useUserAuth();
+  const { staffInfo } = useStaffAuth();
+  const isStaff = authType === 'Staff';
+
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const range = useMemo(() => monthScheduleRange(visibleMonth), [visibleMonth]);
-  const scheduleQuery = useUserBookingResourceScheduleQuery({
+  const scheduleQuery = useBookingResourceScheduleQuery({
     resourceId,
     from: range.from,
     to: range.to,
@@ -43,18 +49,24 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
   const resource = scheduleQuery.data?.resource;
   const isHourly = resource?.pricingUnit === 'HOUR';
 
-  const phoneDigits = useMemo(
-    () => (userInfo?.phone ?? '').replace(/\D/g, '').slice(-10),
-    [userInfo?.phone],
-  );
+  const defaultContact = useMemo(() => {
+    if (isStaff) {
+      return { contactName: '', contactPhone: '' };
+    }
+    const phoneDigits = (userInfo?.phone ?? '').replace(/\D/g, '').slice(-10);
+    return {
+      contactName: userInfo?.name ?? '',
+      contactPhone: phoneDigits,
+    };
+  }, [isStaff, userInfo?.name, userInfo?.phone]);
 
   const form = useBookingForm({
-    contactName: userInfo?.name ?? '',
-    contactPhone: phoneDigits,
+    contactName: defaultContact.contactName,
+    contactPhone: defaultContact.contactPhone,
     durationDays: '1',
   });
 
-  const createBooking = useCreateUserBookingMutation(resourceId);
+  const createBooking = useCreateBookingMutation(resourceId);
 
   const handleSubmit = form.handleSubmit(async (values) => {
     setSubmitError(null);
@@ -116,10 +128,24 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
         contactPhone: values.contactPhone.trim(),
       });
 
+      const onSuccessNavigate = () => {
+        if (isStaff) {
+          router.replace({
+            pathname: '/staff/staff-booking-detail-screen' as never,
+            params: { bookingId: result.id },
+          });
+          return;
+        }
+        router.replace({
+          pathname: '/user/user-booking-detail-screen' as never,
+          params: { bookingId: result.id },
+        });
+      };
+
       Alert.alert(
         t('bookings.submitSuccessTitle'),
         t('bookings.submitSuccessBody', { id: result.bookingTokenId }),
-        [{ text: t('common.ok'), onPress: () => router.back() }],
+        [{ text: t('common.ok'), onPress: onSuccessNavigate }],
       );
     } catch (error) {
       const message = error instanceof Error ? error.message : t('bookings.submitFailed');
@@ -139,15 +165,19 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
   return (
     <KeyboardAvoidingView
       className="flex-1"
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-    >
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <ScrollView
         className="flex-1"
         contentContainerClassName="gap-5 px-4 pb-32 pt-2"
-        keyboardShouldPersistTaps="handled"
-      >
+        keyboardShouldPersistTaps="handled">
         {resource ? (
-          <Text className="text-foreground text-lg font-bold">{resource.name}</Text>
+          <Text className="text-lg font-bold text-foreground">{resource.name}</Text>
+        ) : null}
+
+        {isStaff && staffInfo?.name ? (
+          <Text className="text-sm text-muted-foreground">
+            {t('bookings.staffBookingAs', { staffName: staffInfo.name })}
+          </Text>
         ) : null}
 
         <BookingCalendar
@@ -164,13 +194,13 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
         />
 
         {selectedDate ? (
-          <Text className="text-muted-foreground text-sm">
+          <Text className="text-sm text-muted-foreground">
             {t('bookings.selectedDate', { date: format(selectedDate, 'PPP') })}
           </Text>
         ) : null}
 
         <View className="rounded-2xl border border-border bg-card p-4">
-          <Text className="text-foreground mb-4 text-base font-semibold">
+          <Text className="mb-4 text-base font-semibold text-foreground">
             {t('bookings.formTitle')}
           </Text>
           <BookingCreateForm
@@ -183,7 +213,7 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
         </View>
 
         {submitError ? (
-          <Text className="text-destructive text-center text-sm">{submitError}</Text>
+          <Text className="text-center text-sm text-destructive">{submitError}</Text>
         ) : null}
       </ScrollView>
 
@@ -191,12 +221,11 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
         <Button
           className="h-14 rounded-2xl"
           disabled={createBooking.isPending}
-          onPress={() => void handleSubmit()}
-        >
+          onPress={() => void handleSubmit()}>
           {createBooking.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text className="text-primary-foreground text-base font-semibold">
+            <Text className="text-base font-semibold text-primary-foreground">
               {t('bookings.submitBooking')}
             </Text>
           )}
@@ -205,3 +234,6 @@ export function UserBookingFlow({ resourceId }: UserBookingFlowProps) {
     </KeyboardAvoidingView>
   );
 }
+
+/** @deprecated Use `BookingFlow` */
+export const UserBookingFlow = BookingFlow;
