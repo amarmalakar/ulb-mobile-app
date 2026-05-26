@@ -128,7 +128,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
             />
 
             {sendError ? (
-              <Typography className="px-1 text-sm text-destructive">{sendError}</Typography>
+              <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
           </ScrollView>
         ) : (
@@ -153,7 +153,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
               )}
             />
             {sendError ? (
-              <Typography className="px-1 text-sm text-destructive">{sendError}</Typography>
+              <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
           </View>
         )}
@@ -164,15 +164,15 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
         className="mt-auto h-14 rounded-lg bg-primary"
         onPress={stepsActions.onPress}
       >
-        <Typography className="text-lg font-bold text-white">
+        <Typography variant="h5" weight="bold" className="text-white">
           {isLoading ? stepsActions.loadingText : stepsActions.title}
         </Typography>
       </Button>
 
       <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Typography className="text-sm text-muted-foreground">{t('auth.alreadyRegistered')}</Typography>
+        <Typography variant="body2" color="muted">{t('auth.alreadyRegistered')}</Typography>
         <Pressable onPress={onPressSignIn} disabled={isLoading} hitSlop={8}>
-          <Typography className="text-sm font-semibold text-primary">{t('auth.signInLink')}</Typography>
+          <Typography variant="body2" weight="semibold" color="primary">{t('auth.signInLink')}</Typography>
         </Pressable>
       </View>
     </View>

@@ -53,7 +53,7 @@ export function UserSigninForm({
           )}
         />
         {submitError ? (
-          <Typography className="px-1 text-sm text-destructive">{submitError}</Typography>
+          <Typography variant="body2" color="destructive" className="px-1">{submitError}</Typography>
         ) : null}
       </View>
 
@@ -62,15 +62,15 @@ export function UserSigninForm({
         className="mt-auto h-14 rounded-lg bg-primary"
         onPress={submit}
       >
-        <Typography className="text-lg font-bold text-white">
+        <Typography variant="h5" weight="bold" className="text-white">
           {isLoading ? buttonLoading : buttonTitle}
         </Typography>
       </Button>
 
       <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Typography className="text-sm text-muted-foreground">{t('auth.newHere')}</Typography>
+        <Typography variant="h6" color="muted">{t('auth.newHere')}</Typography>
         <Pressable onPress={onPressSignUp} disabled={isLoading} hitSlop={8}>
-          <Typography className="text-sm font-semibold text-primary">{t('auth.createAccount')}</Typography>
+          <Typography variant="h6" color="primary">{t('auth.createAccount')}</Typography>
         </Pressable>
       </View>
     </View>

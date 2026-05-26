@@ -33,7 +33,7 @@ export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
             <ArrowLeftIcon size={20} className="" />
           </Button>
 
-          <Typography className="text-center text-xl font-extrabold text-foreground">
+          <Typography variant="h4" weight="extrabold" align="center">
             {t("auth.staffMpinTitle")}
           </Typography>
         </View>

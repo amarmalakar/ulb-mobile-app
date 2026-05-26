@@ -174,7 +174,6 @@ function Typography({
   weight,
   italic = false,
   asChild = false,
-  numberOfLines,
   ...props
 }: TypographyProps) {
   const inheritedClass = React.useContext(TextClassContext);
@@ -183,25 +182,32 @@ function Typography({
   const resolvedWeight: TypographyWeight =
     weight ?? VARIANT_DEFAULT_WEIGHT[variant ?? 'body1'];
   const rnFontWeight = WEIGHT_TO_RN[resolvedWeight];
-  const fontFamily = getGeistFontFamily(rnFontWeight, italic);
 
+  // Pick the exact Geist face for the requested weight + italic combo and use
+  // ONLY `fontFamily`. Setting `fontWeight` / `fontStyle: 'italic'` alongside
+  // a weight-specific family confuses Android's font resolver: it either tries
+  // to synthesize faux-bold on top of an already-bold face, or fails to find a
+  // match and falls back to system sans (which is what makes Geist headings
+  // and bold buttons look "off" on Android).
   const fontStyle: TextStyle = {
-    fontFamily,
-    fontWeight: rnFontWeight,
-    ...(italic ? { fontStyle: 'italic' } : null),
+    fontFamily: getGeistFontFamily(rnFontWeight, italic),
   };
 
   return (
     <Component
       className={cn(
-        typographyVariants({ variant, color, align, transform, underline }),
+        // Order matters: inheritedClass (e.g. Button's TextClassContext) comes
+        // FIRST so explicit Typography props like `color="primary"` win over
+        // the parent context. Without this, a `<Typography color="primary">`
+        // inside `<Button variant="default">` would lose to the button's
+        // `text-primary-foreground` and silently render the wrong color.
         inheritedClass,
+        typographyVariants({ variant, color, align, transform, underline }),
         className
       )}
       style={style ? [fontStyle, style] : fontStyle}
       role={variant ? ROLE[variant] : undefined}
       aria-level={variant ? ARIA_LEVEL[variant] : undefined}
-      numberOfLines={numberOfLines}
       {...props}
     />
   );

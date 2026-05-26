@@ -5,7 +5,13 @@ import {
   useUserLogoutMutation,
 } from '@/features/user-auth/hooks/use-user-auth-queries';
 import { userQueryKeys } from '@/features/user-auth/query-keys';
-import type { UserAuthSession, UserInfo } from '@/features/user-auth/types/index';
+import type {
+  UserAuthSession,
+  UserInfo,
+  UserSessionRefreshData,
+} from '@/features/user-auth/types/index';
+import { throwUnlessOk } from '@/features/user-auth/utils/api-response';
+import { isApiError } from '@/lib/api-client';
 import {
   clearUserSession,
   loadUserSession,
@@ -53,8 +59,37 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     void (async () => {
       try {
         const stored = await loadUserSession();
-        if (!cancelled) {
-          setSessionState(stored);
+        if (!stored) {
+          if (!cancelled) setSessionState(null);
+          return;
+        }
+
+        // The stored access token is typically expired after the app was
+        // killed or backgrounded for a while. Rotate it once during hydration
+        // so the first authenticated call (e.g. /user/auth/mpin/status) does
+        // not hit the server with a stale token and get a 401.
+        try {
+          const res = (await client.post('/user/auth/session/refresh', {
+            refreshToken: stored.refreshToken,
+          })) as { ok?: boolean; data?: UserSessionRefreshData; message?: string };
+          const data = throwUnlessOk(res, 'Session refresh failed');
+          const next: UserAuthSession = {
+            ...stored,
+            accessToken: data.accessToken,
+          };
+          await persistUserSession(next);
+          if (!cancelled) setSessionState(next);
+        } catch (refreshError) {
+          if (isApiError(refreshError) && refreshError.status === 401) {
+            // Refresh token has been revoked/expired server-side — drop the
+            // session so the user is routed back to login.
+            await clearUserSession();
+            if (!cancelled) setSessionState(null);
+          } else {
+            // Network or other transient failure — keep the stored session so
+            // the user can retry once connectivity is restored.
+            if (!cancelled) setSessionState(stored);
+          }
         }
       } catch {
         if (!cancelled) setSessionState(null);
@@ -65,7 +100,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [client]);
 
   const setSession = useCallback(
     async (next: UserAuthSession | null) => {

@@ -40,11 +40,11 @@ export default function Screen() {
           <View className="flex-1 items-center justify-center">
             <Image source={loginHero} resizeMode="contain" className="h-72 w-full max-w-[280px]" />
 
-            <Typography className="mt-10 text-center text-xl font-extrabold text-foreground">
+            <Typography variant="h4" align="center" className="mt-10">
               {t('welcome.tagline', { ulb: ulb?.key ?? '' })}
             </Typography>
 
-            <Typography className="text-muted-foreground mt-5 max-w-[320px] text-center">
+            <Typography variant="body1" color="muted" align="center" className="mt-5 max-w-[320px]">
               {t('welcome.description')}
             </Typography>
           </View>
@@ -59,7 +59,7 @@ export default function Screen() {
                   variant={isEven ? "outline" : "default"}
                   className={cn("h-14 rounded-2xl", isEven ? "border-primary" : "")}
                 >
-                  <Typography className={cn("font-semibold text-lg", isEven ? "text-primary" : "")}>{step.title}</Typography>
+                  <Typography variant="h5" className={cn(isEven ? "text-primary" : "text-white")}>{step.title}</Typography>
                 </Button>
               )
             })}

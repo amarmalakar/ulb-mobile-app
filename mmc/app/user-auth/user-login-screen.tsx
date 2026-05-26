@@ -44,7 +44,7 @@ export default function UserLoginScreen() {
               <ArrowLeftIcon size={20} className="" />
             </Button>
 
-            <Typography className="text-center text-xl font-extrabold text-foreground">
+            <Typography variant="h4" weight="extrabold" align="center">
               User Login
             </Typography>
           </View>

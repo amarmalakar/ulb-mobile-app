@@ -85,9 +85,9 @@ export function UserTextInput({
       </View>
 
       {hasError ? (
-        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
+        <Typography variant="body2" color="destructive" className="px-1">{error}</Typography>
       ) : helperText ? (
-        <Typography className="px-1 text-xs leading-relaxed text-muted-foreground">{helperText}</Typography>
+        <Typography variant="caption" color="muted" className="px-1 leading-relaxed">{helperText}</Typography>
       ) : null}
     </View>
   );

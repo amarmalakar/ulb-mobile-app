@@ -81,7 +81,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
             )}
 
             {sendError ? (
-              <Typography className="text-destructive px-1 text-sm">{sendError}</Typography>
+              <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
           </>
         ) : activeContact ? (
@@ -100,7 +100,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
               onResend={resendOtp}
             />
             {sendError ? (
-              <Typography className="text-destructive px-1 text-sm">{sendError}</Typography>
+              <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
           </>
         ) : null}
@@ -111,7 +111,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
         className="mt-auto h-14 rounded-lg bg-primary"
         onPress={stepsActions.onPress}
       >
-        <Typography className="text-lg font-bold text-white">
+        <Typography variant="h5" weight="bold" className="text-white">
           {isLoading ? stepsActions.loadingText : stepsActions.title}
         </Typography>
       </Button>

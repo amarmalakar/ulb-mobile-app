@@ -74,9 +74,9 @@ export function UserEmailInput({
       </View>
 
       {hasError ? (
-        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
+        <Typography variant="body2" color="destructive" className="px-1">{error}</Typography>
       ) : (
-        <Typography className="px-1 text-xs leading-relaxed text-muted-foreground">
+        <Typography variant="caption" color="muted" className="px-1 leading-relaxed">
           {t('auth.emailOptionalHint')}
         </Typography>
       )}

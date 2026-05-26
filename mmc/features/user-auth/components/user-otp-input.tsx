@@ -85,15 +85,15 @@ export function UserOtpInput({
             disabled && 'opacity-50',
           )}
         >
-          <Typography className="text-sm font-semibold text-primary">
+          <Typography variant="body2" weight="semibold" color="primary">
             {t('auth.changeMobile')}
           </Typography>
         </Pressable>
       </View>
 
-      <Typography className="px-1 text-sm text-muted-foreground">
+      <Typography variant="body2" color="muted" className="px-1">
         {t('auth.otpHint')}{' '}
-        <Typography className="font-semibold tracking-wide text-foreground">{phoneDisplay}</Typography>
+        <Typography weight="semibold" className="tracking-wide">{phoneDisplay}</Typography>
       </Typography>
 
       <CodeField
@@ -125,7 +125,7 @@ export function UserOtpInput({
               !hasError && !isFocused && 'border-border',
             )}
           >
-            <Typography className="text-2xl font-semibold tabular-nums text-foreground">
+            <Typography variant="h3" className="tabular-nums">
               {symbol || (isFocused ? <Cursor /> : null)}
             </Typography>
           </View>
@@ -133,10 +133,10 @@ export function UserOtpInput({
       />
 
       {hasError ? (
-        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
+        <Typography variant="body2" color="destructive" className="px-1">{error}</Typography>
       ) : isExpired ? (
         <View className="flex-row items-center gap-1 px-1">
-          <Typography className="text-xs text-muted-foreground">{t('auth.resendPrompt')}</Typography>
+          <Typography variant="caption" color="muted">{t('auth.resendPrompt')}</Typography>
           <Pressable
             onPress={handleResend}
             disabled={disabled}
@@ -148,17 +148,17 @@ export function UserOtpInput({
               disabled && 'opacity-50',
             )}
           >
-            <Typography className="text-xs font-semibold text-primary">
+            <Typography variant="caption" weight="semibold" color="primary">
               {t('auth.resendOtp')}
             </Typography>
           </Pressable>
         </View>
       ) : (
         <Typography
-          className={cn(
-            'px-1 text-xs leading-relaxed tabular-nums',
-            isUrgent ? 'font-medium text-destructive' : 'text-muted-foreground',
-          )}
+          variant="caption"
+          weight={isUrgent ? 'medium' : 'regular'}
+          color={isUrgent ? 'destructive' : 'muted'}
+          className="px-1 leading-relaxed tabular-nums"
         >
           {t('auth.otpExpiresIn', { time: countdownLabel })}
         </Typography>

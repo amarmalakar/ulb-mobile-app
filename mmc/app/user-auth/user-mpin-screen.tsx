@@ -60,7 +60,7 @@ export default function UserMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Typography className="mt-4 text-sm text-muted-foreground">{t('auth.loadingProfile')}</Typography>
+            <Typography variant="body2" color="muted" className="mt-4">{t('auth.loadingProfile')}</Typography>
           ) : null}
         </View>
       </>
@@ -92,7 +92,7 @@ export default function UserMpinScreen() {
               <ArrowLeftIcon size={20} />
             </Button>
 
-            <Typography className="text-center text-xl font-extrabold text-foreground">
+            <Typography variant="h4" weight="extrabold" align="center">
               {t('auth.userMpinTitle')}
             </Typography>
           </View>
@@ -101,7 +101,7 @@ export default function UserMpinScreen() {
 
           {completeError ? (
             <View className="mb-4 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-              <Typography className="text-center text-sm text-destructive">{completeError}</Typography>
+              <Typography variant="body2" color="destructive" align="center">{completeError}</Typography>
               <Button variant="outline" onPress={() => void finishToHome()}>
                 <Typography>{t('common.retry')}</Typography>
               </Button>

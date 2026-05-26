@@ -46,7 +46,7 @@ export default function StaffMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Typography className="text-muted-foreground mt-4 text-sm">{t('auth.loadingProfile')}</Typography>
+            <Typography variant="body2" color="muted" className="mt-4">{t('auth.loadingProfile')}</Typography>
           ) : null}
         </View>
       </>
@@ -62,7 +62,7 @@ export default function StaffMpinScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       {completeError ? (
         <View className="absolute inset-x-6 bottom-8 z-10 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-          <Typography className="text-destructive text-center text-sm">{completeError}</Typography>
+          <Typography variant="body2" color="destructive" align="center">{completeError}</Typography>
           <Button variant="outline" onPress={() => void onComplete()}>
             <Typography>{t('common.retry')}</Typography>
           </Button>

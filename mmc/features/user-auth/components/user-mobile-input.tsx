@@ -27,7 +27,7 @@ export function UserMobileInput({
 
   return (
     <View className="gap-2">
-      <Label>{t('common.mobileNumber')}</Label>
+      <Typography variant="h6">{t('common.mobileNumber')}</Typography>
 
       <View
         className={cn(
@@ -42,7 +42,7 @@ export function UserMobileInput({
           <View className="justify-center bg-background/80 px-3 py-3">
             <View className="flex-row items-center gap-2 rounded-2xl border border-border/80 bg-muted/50 px-3 py-1.5">
               <Typography className="text-xl leading-none">🇮🇳</Typography>
-              <Typography className="text-foreground font-semibold tabular-nums">+91</Typography>
+              <Typography weight="semibold" className="tabular-nums">+91</Typography>
             </View>
           </View>
 
@@ -68,9 +68,9 @@ export function UserMobileInput({
       </View>
 
       {hasError ? (
-        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
+        <Typography variant="body2" color="destructive" className="px-1">{error}</Typography>
       ) : (
-        <Typography className="px-1 text-xs leading-relaxed text-muted-foreground">
+        <Typography variant="caption" color="muted" className="px-1 leading-relaxed">
           {t('auth.mobileHint')}
         </Typography>
       )}
