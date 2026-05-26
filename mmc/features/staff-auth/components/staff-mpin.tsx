@@ -1,4 +1,5 @@
-import { Image, ScrollView, View } from "react-native";
+import { Image, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useTranslation } from "react-i18next";
 import bubbleShape1 from "@/assets/images/bubble-shape-1.png";
 import loginHero from "@/assets/images/login-hero.png";
@@ -14,6 +15,7 @@ export type StaffMpinScreenProps = Pick<MpinFormProps, "accessToken" | "onComple
 export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
   const { t } = useTranslation();
   const { clearAuthType } = useAuthContext();
+  const insets = useSafeAreaInsets();
 
   return (
     <View className="bg-background flex-1">
@@ -23,29 +25,39 @@ export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
         className="absolute -left-24 -top-20 size-80 opacity-70"
       />
 
-      <ScrollView className="flex-1 px-6 pb-8 pt-20">
-        <View className="">
-          <Button
-            onPress={() => void clearAuthType()}
-            variant="ghost"
-            className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
-          >
-            <ArrowLeftIcon size={20} className="" />
-          </Button>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        className="flex-1"
+      >
+        <ScrollView
+          className="flex-1 px-6 pt-20"
+          contentContainerStyle={{ paddingBottom: insets.bottom + 32 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <View className="">
+            <Button
+              onPress={() => void clearAuthType()}
+              variant="ghost"
+              className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
+            >
+              <ArrowLeftIcon size={20} className="" />
+            </Button>
 
-          <Typography variant="h4" weight="extrabold" align="center">
-            {t("auth.staffMpinTitle")}
-          </Typography>
-        </View>
+            <Typography variant="h4" weight="extrabold" align="center">
+              {t("auth.staffMpinTitle")}
+            </Typography>
+          </View>
 
-        <Image
-          source={loginHero}
-          resizeMode="contain"
-          className="mt-10 h-48 w-full"
-        />
+          <Image
+            source={loginHero}
+            resizeMode="contain"
+            className="mt-10 h-48 w-full"
+          />
 
-        <MpinForm accessToken={accessToken} onComplete={onComplete} />
-      </ScrollView>
+          <MpinForm accessToken={accessToken} onComplete={onComplete} />
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 }

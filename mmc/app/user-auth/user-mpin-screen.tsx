@@ -1,7 +1,16 @@
 import { type Href, Stack, router } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, Image, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -29,6 +38,7 @@ export default function UserMpinScreen() {
   } = useUserAuth();
   const [completing, setCompleting] = useState(false);
   const [completeError, setCompleteError] = useState<string | null>(null);
+  const insets = useSafeAreaInsets();
 
   useEffect(() => {
     if (!sessionHydrated) return;
@@ -82,41 +92,51 @@ export default function UserMpinScreen() {
           className="absolute -left-24 -top-20 size-80 opacity-70"
         />
 
-        <View className="flex-1 px-6 pb-8 pt-20">
-          <View>
-            <Button
-              onPress={() => void clearAuthType()}
-              variant="ghost"
-              className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          className="flex-1"
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View
+              className="flex-1 px-6 pt-20"
+              style={{ paddingBottom: insets.bottom + 32 }}
             >
-              <ArrowLeftIcon size={20} />
-            </Button>
+              <View>
+                <Button
+                  onPress={() => void clearAuthType()}
+                  variant="ghost"
+                  className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
+                >
+                  <ArrowLeftIcon size={20} />
+                </Button>
 
-            <Typography variant="h4" weight="extrabold" align="center">
-              {t('auth.userMpinTitle')}
-            </Typography>
-          </View>
+                <Typography variant="h4" weight="extrabold" align="center">
+                  {t('auth.userMpinTitle')}
+                </Typography>
+              </View>
 
-          <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
+              <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
 
-          {completeError ? (
-            <View className="mb-4 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-              <Typography variant="body2" color="destructive" align="center">{completeError}</Typography>
-              <Button variant="outline" onPress={() => void finishToHome()}>
-                <Typography>{t('common.retry')}</Typography>
-              </Button>
+              {completeError ? (
+                <View className="mb-4 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
+                  <Typography variant="body2" color="destructive" align="center">{completeError}</Typography>
+                  <Button variant="outline" onPress={() => void finishToHome()}>
+                    <Typography>{t('common.retry')}</Typography>
+                  </Button>
+                </View>
+              ) : null}
+
+              <UserMpinForm
+                accessToken={session.accessToken}
+                refreshToken={session.refreshToken}
+                onComplete={() => void finishToHome()}
+                onSessionTokens={async (tokens) => {
+                  await updateSessionTokens(tokens);
+                }}
+              />
             </View>
-          ) : null}
-
-          <UserMpinForm
-            accessToken={session.accessToken}
-            refreshToken={session.refreshToken}
-            onComplete={() => void finishToHome()}
-            onSessionTokens={async (tokens) => {
-              await updateSessionTokens(tokens);
-            }}
-          />
-        </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
     </>
   );

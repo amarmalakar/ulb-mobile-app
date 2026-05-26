@@ -1,5 +1,13 @@
 import { Stack, router } from 'expo-router';
-import { View, Image } from 'react-native';
+import {
+  Image,
+  Keyboard,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { StaffAuthSession } from '@/features/staff-auth/types/index';
 
 import { Button } from '@/components/ui/button';
@@ -17,6 +25,7 @@ import StaffAuth from '@/features/staff-auth';
 export default function StaffLoginScreen() {
   const { clearAuthType, handleAuthType } = useAuthContext();
   const { setSession } = useStaffAuth();
+  const insets = useSafeAreaInsets();
 
   const handleVerified = async (session: StaffAuthSession) => {
     await setSession(session);
@@ -37,25 +46,35 @@ export default function StaffLoginScreen() {
           />
         </View>
 
-        <View className="flex-1 px-6 pb-8 pt-20">
-          <View className="">
-            <Button
-              onPress={clearAuthType}
-              variant="ghost"
-              className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+          className="flex-1"
+        >
+          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+            <View
+              className="flex-1 px-6 pt-20"
+              style={{ paddingBottom: insets.bottom + 32 }}
             >
-              <ArrowLeftIcon size={20} className="" />
-            </Button>
+              <View className="">
+                <Button
+                  onPress={clearAuthType}
+                  variant="ghost"
+                  className="absolute left-0 z-10 aspect-square rounded-full bg-primary/20 shadow-lg"
+                >
+                  <ArrowLeftIcon size={20} className="" />
+                </Button>
 
-            <Typography variant="h4" weight="extrabold" align="center">
-              Staff Login
-            </Typography>
-          </View>
+                <Typography variant="h4" weight="extrabold" align="center">
+                  Staff Login
+                </Typography>
+              </View>
 
-          <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
+              <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
 
-          <StaffAuth onVerified={handleVerified} />
-        </View>
+              <StaffAuth onVerified={handleVerified} />
+            </View>
+          </TouchableWithoutFeedback>
+        </KeyboardAvoidingView>
       </View>
     </>
   );

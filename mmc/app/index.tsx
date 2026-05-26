@@ -6,6 +6,7 @@ import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import * as React from 'react';
 import { Image, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import bubbleShape1 from '@/assets/images/bubble-shape-1.png';
 import loginHero from '@/assets/images/login-hero.png';
 import { useAppInitContext } from '@/components/provider/app-init-provider';
@@ -23,6 +24,7 @@ export default function Screen() {
   const { t } = useTranslation();
   const { ulb } = useAppInitContext();
   const { currentStep } = useAuthContext();
+  const insets = useSafeAreaInsets();
   useStaffBootstrap();
   useUserBootstrap();
 
@@ -36,7 +38,10 @@ export default function Screen() {
           className="absolute -left-24 -top-20 size-80 opacity-70"
         />
 
-        <View className="flex-1 px-6 pb-8 pt-16">
+        <View
+          className="flex-1 px-6 pt-16"
+          style={{ paddingBottom: insets.bottom + 32 }}
+        >
           <View className="flex-1 items-center justify-center">
             <Image source={loginHero} resizeMode="contain" className="h-72 w-full max-w-[280px]" />
 
