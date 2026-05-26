@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { useAuthContext } from '@/components/provider/auth-provider';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
@@ -60,38 +60,38 @@ export function FeedbackAndSuggestionListCard({ item, onPress }: FeedbackAndSugg
 
           <View className="min-w-0 flex-1 gap-2">
             <View className="flex-row items-start justify-between gap-2">
-              <Text className="flex-1 text-base font-semibold text-foreground" numberOfLines={2}>
+              <Typography className="flex-1 text-base font-semibold text-foreground" numberOfLines={2}>
                 {item.title}
-              </Text>
+              </Typography>
               <Badge
                 className={cn(
                   'shrink-0 rounded-md px-2 py-0.5',
                   isFeedback ? 'bg-blue-500/15' : 'bg-amber-500/15',
                 )}
               >
-                <Text
+                <Typography
                   className={cn(
                     'text-[11px] font-semibold',
                     isFeedback ? 'text-blue-700' : 'text-amber-700',
                   )}
                 >
                   {kindLabel}
-                </Text>
+                </Typography>
               </Badge>
             </View>
 
-            <Text className="text-sm leading-5 text-muted-foreground" numberOfLines={3}>
+            <Typography className="text-sm leading-5 text-muted-foreground" numberOfLines={3}>
               {item.message}
-            </Text>
+            </Typography>
 
             <View className="flex-row flex-wrap items-center gap-x-3 gap-y-1">
               <View className="flex-row items-center gap-1">
                 <Icon as={UserRoundIcon} className="size-3.5 text-muted-foreground" />
-                <Text className="text-xs font-medium text-muted-foreground">{authorLabel}</Text>
+                <Typography className="text-xs font-medium text-muted-foreground">{authorLabel}</Typography>
               </View>
               <View className="flex-row items-center gap-1">
                 <Icon as={CalendarIcon} className="size-3.5 text-muted-foreground" />
-                <Text className="text-xs text-muted-foreground">{createdLabel}</Text>
+                <Typography className="text-xs text-muted-foreground">{createdLabel}</Typography>
               </View>
             </View>
           </View>

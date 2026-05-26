@@ -5,7 +5,7 @@ import loginHero from "@/assets/images/login-hero.png";
 import { ArrowLeftIcon } from "lucide-react-native";
 
 import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { MpinForm, type MpinFormProps } from "./mpin-form";
 import { useAuthContext } from "@/components/provider/auth-provider";
 
@@ -33,9 +33,9 @@ export function StaffMpin({ accessToken, onComplete }: StaffMpinScreenProps) {
             <ArrowLeftIcon size={20} className="" />
           </Button>
 
-          <Text className="text-center text-xl font-extrabold text-foreground">
+          <Typography className="text-center text-xl font-extrabold text-foreground">
             {t("auth.staffMpinTitle")}
-          </Text>
+          </Typography>
         </View>
 
         <Image

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { StaffBookingListCard } from '@/features/staff-bookings/components/staff-booking-list-card';
 import type { StaffBookingsListData } from '@/features/staff-bookings/types';
 
@@ -31,16 +31,16 @@ function StaffBookingListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-center text-lg font-bold text-destructive">
+        <Typography className="text-center text-lg font-bold text-destructive">
           {t('common.errorTitle')}
-        </Text>
-        <Text className="text-center text-sm text-muted-foreground">
+        </Typography>
+        <Typography className="text-center text-sm text-muted-foreground">
           {message ?? t('bookings.staffListLoadError')}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -54,12 +54,12 @@ function StaffBookingListEmpty() {
         <Icon as={CalendarCheckIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-center text-xl font-bold text-foreground">
+        <Typography className="text-center text-xl font-bold text-foreground">
           {t('bookings.staffListEmptyTitle')}
-        </Text>
-        <Text className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
+        </Typography>
+        <Typography className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
           {t('bookings.staffListEmptyHint')}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

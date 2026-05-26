@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { FeedbackAndSuggestionDetailModal } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-detail-modal';
 import { FeedbackAndSuggestionListCard } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-list-card';
 import { countActiveFeedbackAndSuggestionFilters } from '@/features/feedback-and-suggestion-form/hooks/use-feedback-and-suggestion-filters';
@@ -44,16 +44,16 @@ function FeedbackListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-center text-lg font-bold text-destructive">
+        <Typography className="text-center text-lg font-bold text-destructive">
           {t('common.errorTitle')}
-        </Text>
-        <Text className="text-center text-sm text-muted-foreground">
+        </Typography>
+        <Typography className="text-center text-sm text-muted-foreground">
           {message ?? t('feedback.listLoadError')}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" className="flex-row gap-2" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -71,12 +71,12 @@ function FeedbackListEmpty({ hasActiveFilters }: { hasActiveFilters: boolean }) 
         />
       </View>
       <View className="gap-1.5">
-        <Text className="text-center text-xl font-bold text-foreground">
+        <Typography className="text-center text-xl font-bold text-foreground">
           {hasActiveFilters ? t('feedback.listFilterEmptyTitle') : t('feedback.listEmptyTitle')}
-        </Text>
-        <Text className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
+        </Typography>
+        <Typography className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
           {hasActiveFilters ? t('feedback.listFilterEmptyHint') : t('feedback.listEmpty')}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

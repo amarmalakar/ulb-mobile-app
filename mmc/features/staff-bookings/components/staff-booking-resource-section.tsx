@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Badge } from '@/components/ui/badge';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
 import type { StaffBookingResourceInfo } from '@/features/staff-bookings/types';
 
@@ -20,8 +20,8 @@ function formatCurrency(amount: number, currency: string): string {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <View className="py-1.5">
-      <Text className="text-xs text-muted-foreground">{label}</Text>
-      <Text className="text-sm font-medium text-foreground">{value}</Text>
+      <Typography className="text-xs text-muted-foreground">{label}</Typography>
+      <Typography className="text-sm font-medium text-foreground">{value}</Typography>
     </View>
   );
 }
@@ -43,9 +43,9 @@ export function StaffBookingResourceSection({ resource }: { resource: StaffBooki
 
   return (
     <View className="gap-4 rounded-2xl border border-border bg-card p-4">
-      <Text className="text-sm font-semibold uppercase tracking-wide text-primary">
+      <Typography className="text-sm font-semibold uppercase tracking-wide text-primary">
         {t('bookings.staffResourceSectionTitle')}
-      </Text>
+      </Typography>
 
       {sortedImages.length > 0 ? (
         <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1">
@@ -69,24 +69,24 @@ export function StaffBookingResourceSection({ resource }: { resource: StaffBooki
       <View className="flex-row flex-wrap items-center gap-2">
         <Badge variant="secondary">
           <Icon as={TypeIcon} className="mr-1 size-3.5" />
-          <Text className="text-xs font-semibold">{typeLabel}</Text>
+          <Typography className="text-xs font-semibold">{typeLabel}</Typography>
         </Badge>
-        <Text className="text-lg font-bold text-primary">
+        <Typography className="text-lg font-bold text-primary">
           {formatCurrency(resource.unitPrice, resource.currency)}
-          <Text className="text-sm font-medium text-muted-foreground"> / {unit}</Text>
-        </Text>
+          <Typography className="text-sm font-medium text-muted-foreground"> / {unit}</Typography>
+        </Typography>
       </View>
 
       {resource.requiresApproval ? (
-        <Text className="text-sm text-muted-foreground">{t('bookings.requiresApproval')}</Text>
+        <Typography className="text-sm text-muted-foreground">{t('bookings.requiresApproval')}</Typography>
       ) : null}
 
-      <Text className="text-base leading-6 text-foreground">{resource.description}</Text>
+      <Typography className="text-base leading-6 text-foreground">{resource.description}</Typography>
 
       {resource.locationAddress ? (
         <View className="flex-row items-start gap-2">
           <Icon as={MapPinIcon} className="mt-0.5 size-4 text-muted-foreground" />
-          <Text className="flex-1 text-sm text-foreground">{resource.locationAddress}</Text>
+          <Typography className="flex-1 text-sm text-foreground">{resource.locationAddress}</Typography>
         </View>
       ) : null}
 
@@ -104,27 +104,27 @@ export function StaffBookingResourceSection({ resource }: { resource: StaffBooki
         <View className="rounded-xl border border-border bg-muted/30 p-3">
           <View className="mb-2 flex-row items-center gap-2">
             <Icon as={Building2Icon} className="size-5 text-primary" />
-            <Text className="text-sm font-semibold uppercase tracking-wide text-primary">
+            <Typography className="text-sm font-semibold uppercase tracking-wide text-primary">
               {t('bookings.buildingInfo')}
-            </Text>
+            </Typography>
           </View>
           {resource.buildingDetail.capacity != null ? (
             <View className="mb-2 flex-row items-center gap-2">
               <Icon as={UsersIcon} className="size-4 text-muted-foreground" />
-              <Text className="text-sm text-foreground">
+              <Typography className="text-sm text-foreground">
                 {t('bookings.capacity', { count: resource.buildingDetail.capacity })}
-              </Text>
+              </Typography>
             </View>
           ) : null}
           {resource.buildingDetail.amenities.length > 0 ? (
-            <Text className="text-sm text-foreground">
+            <Typography className="text-sm text-foreground">
               {resource.buildingDetail.amenities.join(' · ')}
-            </Text>
+            </Typography>
           ) : null}
           {resource.buildingDetail.rulesText ? (
-            <Text className="mt-2 text-sm text-muted-foreground">
+            <Typography className="mt-2 text-sm text-muted-foreground">
               {resource.buildingDetail.rulesText}
-            </Text>
+            </Typography>
           ) : null}
         </View>
       ) : null}
@@ -133,9 +133,9 @@ export function StaffBookingResourceSection({ resource }: { resource: StaffBooki
         <View className="rounded-xl border border-border bg-muted/30 p-3">
           <View className="mb-2 flex-row items-center gap-2">
             <Icon as={CarIcon} className="size-5 text-primary" />
-            <Text className="text-sm font-semibold uppercase tracking-wide text-primary">
+            <Typography className="text-sm font-semibold uppercase tracking-wide text-primary">
               {t('bookings.vehicleInfo')}
-            </Text>
+            </Typography>
           </View>
           {resource.vehicleDetail.vehicleType ? (
             <DetailRow label={t('bookings.vehicleType')} value={resource.vehicleDetail.vehicleType} />

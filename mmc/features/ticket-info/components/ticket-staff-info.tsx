@@ -3,7 +3,7 @@ import type { UserTicketAssignedStaff } from "@/features/tickets/types";
 import { PhoneCallIcon } from "lucide-react-native";
 
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 function initials(name: string): string {
@@ -21,9 +21,9 @@ export function TicketStaffInfo({ staff }: {
   if (!staff) {
     return (
       <View className="rounded-xl bg-card">
-        <Text className="text-sm text-muted-foreground">
+        <Typography className="text-sm text-muted-foreground">
           {t("tickets.noStaffAssigned")}
-        </Text>
+        </Typography>
       </View>
     )
   }
@@ -41,44 +41,44 @@ export function TicketStaffInfo({ staff }: {
             <AvatarImage src={staff.imgProfileUrl} />
           ) : null}
           <AvatarFallback>
-            <Text className="text-sm font-semibold text-foreground">{initials(staff.name)}</Text>
+            <Typography className="text-sm font-semibold text-foreground">{initials(staff.name)}</Typography>
           </AvatarFallback>
         </Avatar>
         <View className="flex-1">
-          <Text className="text-lg font-semibold text-foreground">{staff.name}</Text>
-          <Text className="text-sm text-muted-foreground">{staff.staffPosition.name}</Text>
+          <Typography className="text-lg font-semibold text-foreground">{staff.name}</Typography>
+          <Typography className="text-sm text-muted-foreground">{staff.staffPosition.name}</Typography>
         </View>
       </View>
 
       <View className="gap-3 rounded-xl bg-card p-4">
         <View className="gap-1">
-          <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <Typography className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {t("account.phone")}
-          </Text>
+          </Typography>
           <View className="flex-row items-center justify-between">
-            <Text className="text-base text-foreground">{staff.phoneNumber}</Text>
+            <Typography className="text-base text-foreground">{staff.phoneNumber}</Typography>
             <Pressable
               onPress={handleCallNow}
               className="flex-row items-center gap-1.5 rounded-md bg-primary px-3 py-1.5"
             >
               <PhoneCallIcon size={14} color="white" />
-              <Text className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Text>
+              <Typography className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Typography>
             </Pressable>
           </View>
         </View>
 
         <View className="gap-1">
-          <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <Typography className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {t("account.email")}
-          </Text>
-          <Text className="text-base text-foreground">{staff.email}</Text>
+          </Typography>
+          <Typography className="text-base text-foreground">{staff.email}</Typography>
         </View>
 
         <View className="gap-1">
-          <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <Typography className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             Address
-          </Text>
-          <Text className="text-base text-foreground">{staff.address ?? "—"}</Text>
+          </Typography>
+          <Typography className="text-base text-foreground">{staff.address ?? "—"}</Typography>
         </View>
       </View>
     </View>

@@ -13,7 +13,7 @@ import { useRouter } from 'expo-router';
 import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 
 import { Button } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useAuthContext } from '@/components/provider/auth-provider';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
@@ -162,13 +162,13 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
         contentContainerClassName="gap-5 px-4 pb-32 pt-2"
         keyboardShouldPersistTaps="handled">
         {resource ? (
-          <Text className="text-lg font-bold text-foreground">{resource.name}</Text>
+          <Typography className="text-lg font-bold text-foreground">{resource.name}</Typography>
         ) : null}
 
         {isStaff && staffInfo?.name ? (
-          <Text className="text-sm text-muted-foreground">
+          <Typography className="text-sm text-muted-foreground">
             {t('bookings.staffBookingAs', { staffName: staffInfo.name })}
-          </Text>
+          </Typography>
         ) : null}
 
         <BookingCalendar
@@ -185,15 +185,15 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
         />
 
         {selectedDate ? (
-          <Text className="text-sm text-muted-foreground">
+          <Typography className="text-sm text-muted-foreground">
             {t('bookings.selectedDate', { date: format(selectedDate, 'PPP') })}
-          </Text>
+          </Typography>
         ) : null}
 
         <View className="rounded-2xl border border-border bg-card p-4">
-          <Text className="mb-4 text-base font-semibold text-foreground">
+          <Typography className="mb-4 text-base font-semibold text-foreground">
             {t('bookings.formTitle')}
-          </Text>
+          </Typography>
           <BookingCreateForm
             form={form}
             showDurationDays
@@ -204,7 +204,7 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
         </View>
 
         {submitError ? (
-          <Text className="text-center text-sm text-destructive">{submitError}</Text>
+          <Typography className="text-center text-sm text-destructive">{submitError}</Typography>
         ) : null}
       </ScrollView>
 
@@ -216,9 +216,9 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
           {createBooking.isPending ? (
             <ActivityIndicator color="#fff" />
           ) : (
-            <Text className="text-base font-semibold text-primary-foreground">
+            <Typography className="text-base font-semibold text-primary-foreground">
               {t('bookings.submitBooking')}
-            </Text>
+            </Typography>
           )}
         </Button>
       </View>

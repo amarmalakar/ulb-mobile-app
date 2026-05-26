@@ -1,6 +1,6 @@
 import { ActivityIndicator, ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { TopNavigation } from "@/components/common/top-navigation";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { useUserTicketQuery } from "@/features/tickets/hooks/use-ticket-queries";
@@ -25,21 +25,21 @@ export default function UserTicketInfoScreen() {
             </View>
           ) : isError ? (
             <View className="mx-4 mt-10 items-center rounded-2xl border border-dashed border-destructive bg-muted/30 p-6">
-              <Text className="text-4xl">🎟️</Text>
-              <Text className="mt-3 text-lg font-semibold text-destructive">{t("tickets.loadErrorTitle")}</Text>
-              <Text className="mt-1 text-center text-sm text-muted-foreground">
+              <Typography className="text-4xl">🎟️</Typography>
+              <Typography className="mt-3 text-lg font-semibold text-destructive">{t("tickets.loadErrorTitle")}</Typography>
+              <Typography className="mt-1 text-center text-sm text-muted-foreground">
                 {error?.message ?? t("tickets.loadErrorHint")}
-              </Text>
+              </Typography>
             </View>
           ) : data ? (
             <TicketInfo ticket={data} authType="User" />
           ) : (
             <View className="mx-4 mt-10 items-center rounded-2xl border border-dashed border-muted-foreground/40 bg-muted/30 p-6">
-              <Text className="text-4xl">🎟️</Text>
-              <Text className="mt-3 text-lg font-semibold text-foreground">{t("tickets.notFoundTitle")}</Text>
-              <Text className="mt-1 text-center text-sm text-muted-foreground">
+              <Typography className="text-4xl">🎟️</Typography>
+              <Typography className="mt-3 text-lg font-semibold text-foreground">{t("tickets.notFoundTitle")}</Typography>
+              <Typography className="mt-1 text-center text-sm text-muted-foreground">
                 {t("tickets.notFoundHint")}
-              </Text>
+              </Typography>
             </View>
           )}
         </ScrollView>

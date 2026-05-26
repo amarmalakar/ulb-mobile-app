@@ -18,7 +18,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { BookingTimeline } from '@/features/bookings/components/booking-timeline';
@@ -55,8 +55,8 @@ function DetailRow({
     <View className="flex-row items-start gap-2 py-1.5">
       {RowIcon ? <Icon as={RowIcon} className="mt-0.5 size-4 shrink-0 text-muted-foreground" /> : null}
       <View className="min-w-0 flex-1">
-        <Text className="text-xs text-muted-foreground">{label}</Text>
-        <Text className="text-sm font-medium text-foreground">{value}</Text>
+        <Typography className="text-xs text-muted-foreground">{label}</Typography>
+        <Typography className="text-sm font-medium text-foreground">{value}</Typography>
       </View>
     </View>
   );
@@ -75,13 +75,13 @@ function StaffBookingDetailError({
       <View className="size-20 items-center justify-center rounded-full bg-destructive/10">
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
-      <Text className="text-center text-lg font-bold text-destructive">{t('common.errorTitle')}</Text>
-      <Text className="text-center text-sm text-muted-foreground">
+      <Typography className="text-center text-lg font-bold text-destructive">{t('common.errorTitle')}</Typography>
+      <Typography className="text-center text-sm text-muted-foreground">
         {message ?? t('bookings.detailLoadError')}
-      </Text>
+      </Typography>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -124,19 +124,19 @@ function StaffBookingDetailContent({ booking }: { booking: StaffBookingDetail })
           </View>
 
           <View className="min-w-0 flex-1 gap-2">
-            <Text className="text-lg font-bold text-foreground" numberOfLines={2}>
+            <Typography className="text-lg font-bold text-foreground" numberOfLines={2}>
               {booking.resource.name}
-            </Text>
+            </Typography>
             <Badge className={cn('self-start rounded-md px-2 py-0.5', statusConfig.badgeClass)}>
-              <Text className={cn('text-xs font-semibold', statusConfig.textClass)}>
+              <Typography className={cn('text-xs font-semibold', statusConfig.textClass)}>
                 {t(statusConfig.labelKey)}
-              </Text>
+              </Typography>
             </Badge>
             <View className="flex-row items-center gap-1">
               <Icon as={HashIcon} className="size-3.5 text-muted-foreground" />
-              <Text className="text-xs font-medium text-muted-foreground">
+              <Typography className="text-xs font-medium text-muted-foreground">
                 {booking.bookingTokenId}
-              </Text>
+              </Typography>
             </View>
           </View>
         </View>
@@ -144,48 +144,48 @@ function StaffBookingDetailContent({ booking }: { booking: StaffBookingDetail })
         <View className="flex-row gap-3">
           {canUpdateStatus ? (
             <Button variant="outline" className="flex-1" onPress={() => setStatusSheetOpen(true)}>
-              <Text className="font-semibold">{t('bookings.staffUpdateStatus')}</Text>
+              <Typography className="font-semibold">{t('bookings.staffUpdateStatus')}</Typography>
             </Button>
           ) : null}
           {canAddPayment ? (
             <Button className="flex-1" onPress={() => setPaymentSheetOpen(true)}>
-              <Text className="font-semibold text-primary-foreground">
+              <Typography className="font-semibold text-primary-foreground">
                 {t('bookings.staffAddPayment')}
-              </Text>
+              </Typography>
             </Button>
           ) : null}
         </View>
 
         <View className="rounded-2xl border border-border bg-card p-4">
-          <Text className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
+          <Typography className="mb-3 text-sm font-semibold uppercase tracking-wide text-primary">
             {t('bookings.amountSummary')}
-          </Text>
+          </Typography>
           <View className="flex-row flex-wrap gap-4">
             <View>
-              <Text className="text-xs text-muted-foreground">{t('bookings.totalAmountLabel')}</Text>
-              <Text className="text-lg font-bold text-foreground">
+              <Typography className="text-xs text-muted-foreground">{t('bookings.totalAmountLabel')}</Typography>
+              <Typography className="text-lg font-bold text-foreground">
                 ₹{formatAmount(booking.totalAmount)}
-              </Text>
+              </Typography>
             </View>
             <View>
-              <Text className="text-xs text-muted-foreground">{t('bookings.paidAmountLabel')}</Text>
-              <Text className="text-lg font-bold text-emerald-600">
+              <Typography className="text-xs text-muted-foreground">{t('bookings.paidAmountLabel')}</Typography>
+              <Typography className="text-lg font-bold text-emerald-600">
                 ₹{formatAmount(booking.paidAmount)}
-              </Text>
+              </Typography>
             </View>
             <View>
-              <Text className="text-xs text-muted-foreground">{t('bookings.balanceLabel')}</Text>
-              <Text className="text-lg font-bold text-primary">
+              <Typography className="text-xs text-muted-foreground">{t('bookings.balanceLabel')}</Typography>
+              <Typography className="text-lg font-bold text-primary">
                 ₹{formatAmount(booking.balance)}
-              </Text>
+              </Typography>
             </View>
           </View>
         </View>
 
         <View className="rounded-2xl border border-border bg-card p-4">
-          <Text className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
+          <Typography className="mb-2 text-sm font-semibold uppercase tracking-wide text-primary">
             {t('bookings.bookingInfo')}
-          </Text>
+          </Typography>
           <DetailRow
             icon={CalendarRangeIcon}
             label={t('bookings.dateRange')}
@@ -272,9 +272,9 @@ export function StaffBookingDetailView({ query }: StaffBookingDetailProps) {
     return (
       <View className="flex-1 items-center justify-center px-6">
         <Icon as={Building2Icon} className="mb-3 text-muted-foreground" size={40} />
-        <Text className="text-center text-lg font-semibold text-foreground">
+        <Typography className="text-center text-lg font-semibold text-foreground">
           {t('bookings.bookingNotFound')}
-        </Text>
+        </Typography>
       </View>
     );
   }

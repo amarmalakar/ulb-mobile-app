@@ -1,7 +1,7 @@
 import { Link, Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 
 export default function NotFoundScreen() {
   const { t } = useTranslation();
@@ -10,10 +10,10 @@ export default function NotFoundScreen() {
     <>
       <Stack.Screen options={{ title: t('notFound.oops') }} />
       <View>
-        <Text>{t('notFound.title')}</Text>
+        <Typography>{t('notFound.title')}</Typography>
 
         <Link href="/">
-          <Text>{t('notFound.goHome')}</Text>
+          <Typography>{t('notFound.goHome')}</Typography>
         </Link>
       </View>
     </>

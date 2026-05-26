@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { BookingItem } from '@/features/bookings/components/booking-item';
 import type { UserBookingResourceListItem } from '@/features/bookings/types';
 import { cn } from '@/lib/utils';
@@ -48,16 +48,16 @@ function BookingResourceListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">
+        <Typography className="text-destructive text-center text-lg font-bold">
           {t('common.errorTitle')}
-        </Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        </Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? t('bookings.loadError')}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -72,12 +72,12 @@ function BookingResourceListEmpty() {
         <Icon as={SchoolIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-foreground text-center text-xl font-bold">
+        <Typography className="text-foreground text-center text-xl font-bold">
           {t('bookings.emptyTitle')}
-        </Text>
-        <Text className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
+        </Typography>
+        <Typography className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
           {t('bookings.emptyHint')}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

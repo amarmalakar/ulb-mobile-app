@@ -5,7 +5,7 @@ import { HistoryIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { getBookingStatusConfig } from '@/features/bookings/lib/booking-status';
 import type {
@@ -64,7 +64,7 @@ export function BookingTimeline({
 
   if (entries.length === 0) {
     return (
-      <Text className="text-muted-foreground text-sm">{t('bookings.timelineEmpty')}</Text>
+      <Typography className="text-muted-foreground text-sm">{t('bookings.timelineEmpty')}</Typography>
     );
   }
 
@@ -72,9 +72,9 @@ export function BookingTimeline({
     <View>
       <View className="mb-4 flex-row items-center gap-2">
         <Icon as={HistoryIcon} className="text-muted-foreground size-4" />
-        <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
+        <Typography className="text-muted-foreground text-xs font-semibold uppercase tracking-wider">
           {t('bookings.timeline')}
-        </Text>
+        </Typography>
       </View>
 
       <View className="pl-1">
@@ -117,14 +117,14 @@ export function BookingTimeline({
               </View>
 
               <View className="ml-4 flex-1 pb-6">
-                <Text className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">
+                <Typography className="text-muted-foreground text-[11px] font-medium uppercase tracking-wide">
                   {formatTimelineTimestamp(entry.createdAt)}
-                </Text>
-                <Text className="mt-0.5 text-base font-semibold text-foreground">{title}</Text>
+                </Typography>
+                <Typography className="mt-0.5 text-base font-semibold text-foreground">{title}</Typography>
                 {subtitle ? (
-                  <Text className="text-muted-foreground mt-0.5 text-sm" numberOfLines={2}>
+                  <Typography className="text-muted-foreground mt-0.5 text-sm" numberOfLines={2}>
                     {subtitle}
-                  </Text>
+                  </Typography>
                 ) : null}
               </View>
             </View>

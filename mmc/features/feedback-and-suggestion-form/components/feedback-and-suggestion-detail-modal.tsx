@@ -9,7 +9,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import {
   formatFeedbackDate,
@@ -27,10 +27,10 @@ export type FeedbackAndSuggestionDetailModalProps = {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <View className="gap-1">
-      <Text className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+      <Typography className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
         {label}
-      </Text>
-      <Text className="text-sm leading-5 text-foreground">{value}</Text>
+      </Typography>
+      <Typography className="text-sm leading-5 text-foreground">{value}</Typography>
     </View>
   );
 }
@@ -68,9 +68,9 @@ export function FeedbackAndSuggestionDetailModal({
           <View className="flex-row items-center justify-between px-4 py-3">
             <View className="min-w-0 flex-1 flex-row items-center gap-2">
               <Icon as={MessageSquareTextIcon} className="size-6 shrink-0 text-primary" />
-              <Text className="text-lg font-bold text-primary" numberOfLines={1}>
+              <Typography className="text-lg font-bold text-primary" numberOfLines={1}>
                 {t('feedback.detailTitle')}
-              </Text>
+              </Typography>
             </View>
             <Pressable
               onPress={onClose}
@@ -91,29 +91,29 @@ export function FeedbackAndSuggestionDetailModal({
           >
             <View className="gap-4">
               <View className="flex-row items-start justify-between gap-3">
-                <Text className="flex-1 text-xl font-semibold text-foreground">{item.title}</Text>
+                <Typography className="flex-1 text-xl font-semibold text-foreground">{item.title}</Typography>
                 <Badge
                   className={cn(
                     'shrink-0 rounded-md px-2.5 py-1',
                     isFeedback ? 'bg-blue-500/15' : 'bg-amber-500/15',
                   )}
                 >
-                  <Text
+                  <Typography
                     className={cn(
                       'text-xs font-semibold',
                       isFeedback ? 'text-blue-700' : 'text-amber-700',
                     )}
                   >
                     {kindLabel}
-                  </Text>
+                  </Typography>
                 </Badge>
               </View>
 
               <View className="gap-1.5">
-                <Text className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
+                <Typography className="text-xs font-bold uppercase tracking-wide text-muted-foreground">
                   {t('feedback.messageLabel')}
-                </Text>
-                <Text className="text-base leading-6 text-foreground">{item.message}</Text>
+                </Typography>
+                <Typography className="text-base leading-6 text-foreground">{item.message}</Typography>
               </View>
 
               <Separator />
@@ -133,7 +133,7 @@ export function FeedbackAndSuggestionDetailModal({
 
           <View className="px-4 py-3">
             <Button variant="outline" className="w-full" onPress={onClose}>
-              <Text className="font-semibold">{t('feedback.close')}</Text>
+              <Typography className="font-semibold">{t('feedback.close')}</Typography>
             </Button>
           </View>
         </View>

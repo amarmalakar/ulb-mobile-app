@@ -7,7 +7,7 @@ import { View } from "react-native";
 
 import type { StaffTicketComment, UserTicketComment } from "@/features/tickets/types";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import type { TicketInfoAuthType } from "../types";
 
@@ -67,7 +67,7 @@ export function TicketComments({
   return (
     <View className="gap-4">
       {!commentEnabled ? (
-        <Text className="text-sm text-muted-foreground">{t("tickets.commentsDisabled")}</Text>
+        <Typography className="text-sm text-muted-foreground">{t("tickets.commentsDisabled")}</Typography>
       ) : null}
 
       {authType === "User" ? (
@@ -93,26 +93,26 @@ export function TicketComments({
                   <Avatar alt={`${commentBy} avatar`}>
                     {avatar ? <AvatarImage src={avatar} /> : null}
                     <AvatarFallback>
-                      <Text className="text-xs font-semibold text-foreground">{initials}</Text>
+                      <Typography className="text-xs font-semibold text-foreground">{initials}</Typography>
                     </AvatarFallback>
                   </Avatar>
 
                   <View className="flex-1">
-                    <Text className="text-sm font-semibold text-foreground">{commentBy}</Text>
-                    <Text className="text-xs text-muted-foreground">
+                    <Typography className="text-sm font-semibold text-foreground">{commentBy}</Typography>
+                    <Typography className="text-xs text-muted-foreground">
                       {formatCommentTime(item.createdAt)}
-                    </Text>
+                    </Typography>
                   </View>
                 </View>
 
-                <Text className="mt-3 text-sm leading-6 text-foreground">{item.comment}</Text>
+                <Typography className="mt-3 text-sm leading-6 text-foreground">{item.comment}</Typography>
               </View>
             );
           })}
         </View>
       ) : (
         <View className="rounded-xl border border-dashed border-muted-foreground/40 bg-muted/30 p-4">
-          <Text className="text-sm text-muted-foreground">{t("tickets.noComments")}</Text>
+          <Typography className="text-sm text-muted-foreground">{t("tickets.noComments")}</Typography>
         </View>
       )}
     </View>

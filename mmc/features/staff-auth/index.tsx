@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import { Controller } from "react-hook-form";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
 import { EMAIL_MAX_LENGTH, MOBILE_NUMBER_LENGTH, OTP_LENGTH } from "./constants";
 import { useStaffLoginForm, type UseStaffLoginFormOptions } from "./hooks/use-staff-login-form";
@@ -81,7 +81,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
             )}
 
             {sendError ? (
-              <Text className="text-destructive px-1 text-sm">{sendError}</Text>
+              <Typography className="text-destructive px-1 text-sm">{sendError}</Typography>
             ) : null}
           </>
         ) : activeContact ? (
@@ -100,7 +100,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
               onResend={resendOtp}
             />
             {sendError ? (
-              <Text className="text-destructive px-1 text-sm">{sendError}</Text>
+              <Typography className="text-destructive px-1 text-sm">{sendError}</Typography>
             ) : null}
           </>
         ) : null}
@@ -111,9 +111,9 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
         className="mt-auto h-14 rounded-lg bg-primary"
         onPress={stepsActions.onPress}
       >
-        <Text className="text-lg font-bold text-white">
+        <Typography className="text-lg font-bold text-white">
           {isLoading ? stepsActions.loadingText : stepsActions.title}
-        </Text>
+        </Typography>
       </Button>
     </View>
   );

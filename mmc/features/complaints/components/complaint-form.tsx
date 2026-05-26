@@ -6,7 +6,7 @@ import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-n
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 
@@ -151,7 +151,7 @@ export function ComplaintForm({
                         keyboardType="number-pad"
                       />
                       {error ? (
-                        <Text className="text-destructive text-sm">{error.message}</Text>
+                        <Typography className="text-destructive text-sm">{error.message}</Typography>
                       ) : null}
                     </View>
                   )}
@@ -169,7 +169,7 @@ export function ComplaintForm({
                         keyboardType="phone-pad"
                       />
                       {error ? (
-                        <Text className="text-destructive text-sm">{error.message}</Text>
+                        <Typography className="text-destructive text-sm">{error.message}</Typography>
                       ) : null}
                     </View>
                   )}
@@ -189,7 +189,7 @@ export function ComplaintForm({
                       className="min-h-28"
                     />
                     {errors.description ? (
-                      <Text className="text-destructive text-sm">{errors.description.message}</Text>
+                      <Typography className="text-destructive text-sm">{errors.description.message}</Typography>
                     ) : null}
                   </View>
                 )}
@@ -214,7 +214,7 @@ export function ComplaintForm({
         </KeyboardAvoidingView>
 
         {submitError ? (
-          <Text className="text-destructive mb-2 text-center text-sm">{submitError}</Text>
+          <Typography className="text-destructive mb-2 text-center text-sm">{submitError}</Typography>
         ) : null}
 
         <View className="flex-row gap-2 ">
@@ -225,7 +225,7 @@ export function ComplaintForm({
             disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
             onPress={onCancel}
           >
-            <Text>{t("common.cancel")}</Text>
+            <Typography>{t("common.cancel")}</Typography>
           </Button>
           <Button
             size="lg"
@@ -233,13 +233,13 @@ export function ComplaintForm({
             disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
             onPress={() => void handleSubmit()}
           >
-            <Text>
+            <Typography>
               {submitPhase === "photos"
                 ? t("complaints.uploadingPhotos")
                 : submitPhase === "submit" || createComplaintMutation.isPending
                   ? t("complaints.submitting")
                   : t("complaints.submitComplaint")}
-            </Text>
+            </Typography>
           </Button>
         </View>
       </View>

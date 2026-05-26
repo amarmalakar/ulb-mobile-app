@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Pressable, View } from "react-native";
 import { useRouter } from "expo-router";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Icon } from "@/components/ui/icon";
 
 import { ArrowLeftIcon, MenuIcon } from "lucide-react-native";
@@ -52,9 +52,9 @@ export function TopNavigation({
                 <ArrowLeftIcon size={20} color="#4FC3C9" />
               </Pressable>
             ) : null}
-            <Text className="text-lg font-semibold text-primary">
+            <Typography className="text-lg font-semibold text-primary">
               {label}
-            </Text>
+            </Typography>
           </View>
 
           <Pressable

@@ -14,7 +14,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { useTranslation } from "react-i18next";
 import { useUserComplaintQueries } from "@/features/complaints/hooks/use-user-complaint-queries";
 import { cn } from "@/lib/utils";
@@ -78,14 +78,14 @@ function ComplaintListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={32} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-base font-bold">{title}</Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        <Typography className="text-destructive text-center text-base font-bold">{title}</Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? defaultMessage}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{retryLabel}</Text>
+        <Typography>{retryLabel}</Typography>
       </Button>
     </View>
   );
@@ -116,7 +116,7 @@ export function ComplaintList() {
   if (isError) {
     return (
       <View className="gap-4 p-4">
-        <Text className="text-xl font-bold text-primary">{t('complaints.title')}</Text>
+        <Typography className="text-xl font-bold text-primary">{t('complaints.title')}</Typography>
         <ComplaintListError
           onRetry={() => void refetch()}
           message={error?.message}
@@ -132,10 +132,10 @@ export function ComplaintList() {
 
   return (
     <View className="gap-4 p-4">
-      <Text className="text-xl font-bold text-primary">{t('complaints.title')}</Text>
+      <Typography className="text-xl font-bold text-primary">{t('complaints.title')}</Typography>
 
       {items.length === 0 ? (
-        <Text className="text-muted-foreground text-sm">{t('complaints.empty')}</Text>
+        <Typography className="text-muted-foreground text-sm">{t('complaints.empty')}</Typography>
       ) : (
         <View className="flex-row flex-wrap gap-y-4">
           {items.map((item) => {
@@ -165,7 +165,7 @@ export function ComplaintList() {
                   >
                     <Icon size={24} color={theme.iconColor} />
                   </View>
-                  <Text className="text-center text-foreground text-sm font-medium">{item.title}</Text>
+                  <Typography className="text-center text-foreground text-sm font-medium">{item.title}</Typography>
                 </Pressable>
               </View>
             );

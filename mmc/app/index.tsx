@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Stack } from 'expo-router';
 import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
@@ -40,13 +40,13 @@ export default function Screen() {
           <View className="flex-1 items-center justify-center">
             <Image source={loginHero} resizeMode="contain" className="h-72 w-full max-w-[280px]" />
 
-            <Text className="mt-10 text-center text-xl font-extrabold text-foreground">
+            <Typography className="mt-10 text-center text-xl font-extrabold text-foreground">
               {t('welcome.tagline', { ulb: ulb?.key ?? '' })}
-            </Text>
+            </Typography>
 
-            <Text className="text-muted-foreground mt-5 max-w-[320px] text-center">
+            <Typography className="text-muted-foreground mt-5 max-w-[320px] text-center">
               {t('welcome.description')}
-            </Text>
+            </Typography>
           </View>
 
           <View className="gap-3">
@@ -59,7 +59,7 @@ export default function Screen() {
                   variant={isEven ? "outline" : "default"}
                   className={cn("h-14 rounded-2xl", isEven ? "border-primary" : "")}
                 >
-                  <Text className={cn("font-semibold text-lg", isEven ? "text-primary" : "")}>{step.title}</Text>
+                  <Typography className={cn("font-semibold text-lg", isEven ? "text-primary" : "")}>{step.title}</Typography>
                 </Button>
               )
             })}

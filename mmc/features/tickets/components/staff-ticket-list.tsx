@@ -1,6 +1,6 @@
 import { ActivityIndicator, FlatList, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import { StaffTicketsPage, TicketListItem } from "../types";
@@ -30,14 +30,14 @@ function StaffTicketListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">{t("common.errorTitle")}</Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        <Typography className="text-destructive text-center text-lg font-bold">{t("common.errorTitle")}</Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? t("common.errorDefault")}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t("common.retry")}</Text>
+        <Typography>{t("common.retry")}</Typography>
       </Button>
     </View>
   );
@@ -51,10 +51,10 @@ function StaffTicketListEmpty() {
         <Icon as={HistoryIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-foreground text-center text-xl font-bold">{t("tickets.emptyStaffTitle")}</Text>
-        <Text className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
+        <Typography className="text-foreground text-center text-xl font-bold">{t("tickets.emptyStaffTitle")}</Typography>
+        <Typography className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
           {t("tickets.emptyStaffHint")}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

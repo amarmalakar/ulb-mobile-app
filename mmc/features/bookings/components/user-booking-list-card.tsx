@@ -7,7 +7,7 @@ import { useRouter } from 'expo-router';
 import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import type { UserBookingListItem } from '@/features/bookings/types';
@@ -59,46 +59,46 @@ export function UserBookingListCard({ booking }: { booking: UserBookingListItem 
 
           <View className="min-w-0 flex-1 gap-1.5">
             <View className="flex-row items-start justify-between gap-2">
-              <Text className="flex-1 text-base font-semibold text-foreground" numberOfLines={2}>
+              <Typography className="flex-1 text-base font-semibold text-foreground" numberOfLines={2}>
                 {booking.resource.name}
-              </Text>
+              </Typography>
               <Badge className={cn('rounded-md px-2 py-0.5', statusConfig.badgeClass)}>
-                <Text className={cn('text-[11px] font-semibold', statusConfig.textClass)}>
+                <Typography className={cn('text-[11px] font-semibold', statusConfig.textClass)}>
                   {t(statusConfig.labelKey)}
-                </Text>
+                </Typography>
               </Badge>
             </View>
 
             <View className="flex-row items-center gap-1">
               <Icon as={HashIcon} className="text-muted-foreground size-3.5" />
-              <Text className="text-muted-foreground text-xs font-medium">
+              <Typography className="text-muted-foreground text-xs font-medium">
                 {booking.bookingTokenId}
-              </Text>
+              </Typography>
             </View>
 
             <View className="flex-row items-center gap-1">
               <Icon as={CalendarRangeIcon} className="text-muted-foreground size-3.5" />
-              <Text className="text-muted-foreground text-xs">
+              <Typography className="text-muted-foreground text-xs">
                 {format(parseISO(booking.startsAt), 'dd MMM yyyy')}
                 {' – '}
                 {format(parseISO(booking.endsAt), 'dd MMM yyyy')}
-              </Text>
+              </Typography>
             </View>
 
             {booking.purpose ? (
-              <Text className="text-muted-foreground text-xs" numberOfLines={1}>
+              <Typography className="text-muted-foreground text-xs" numberOfLines={1}>
                 {booking.purpose}
-              </Text>
+              </Typography>
             ) : null}
 
             <View className="mt-1 flex-row items-center justify-between">
-              <Text className="text-primary text-sm font-bold">
+              <Typography className="text-primary text-sm font-bold">
                 {t('bookings.totalAmount', { amount: formatAmount(booking.totalAmount) })}
-              </Text>
+              </Typography>
               {booking.paidAmount > 0 ? (
-                <Text className="text-muted-foreground text-xs">
+                <Typography className="text-muted-foreground text-xs">
                   {t('bookings.paidAmount', { amount: formatAmount(booking.paidAmount) })}
-                </Text>
+                </Typography>
               ) : null}
             </View>
           </View>

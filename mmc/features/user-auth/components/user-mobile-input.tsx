@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { MOBILE_NUMBER_LENGTH } from '../constants';
 interface UserMobileInputProps {
@@ -41,8 +41,8 @@ export function UserMobileInput({
         <View className="flex-row items-stretch">
           <View className="justify-center bg-background/80 px-3 py-3">
             <View className="flex-row items-center gap-2 rounded-2xl border border-border/80 bg-muted/50 px-3 py-1.5">
-              <Text className="text-xl leading-none">🇮🇳</Text>
-              <Text className="text-foreground font-semibold tabular-nums">+91</Text>
+              <Typography className="text-xl leading-none">🇮🇳</Typography>
+              <Typography className="text-foreground font-semibold tabular-nums">+91</Typography>
             </View>
           </View>
 
@@ -68,11 +68,11 @@ export function UserMobileInput({
       </View>
 
       {hasError ? (
-        <Text className="px-1 text-sm text-destructive">{error}</Text>
+        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
       ) : (
-        <Text className="px-1 text-xs leading-relaxed text-muted-foreground">
+        <Typography className="px-1 text-xs leading-relaxed text-muted-foreground">
           {t('auth.mobileHint')}
-        </Text>
+        </Typography>
       )}
     </View>
   );

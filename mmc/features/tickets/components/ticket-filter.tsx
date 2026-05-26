@@ -10,7 +10,7 @@ import {
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Icon } from "@/components/ui/icon";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
@@ -105,7 +105,7 @@ function FilterChipRow({
 }) {
   return (
     <View className="gap-2 py-3">
-      <Text className="text-primary text-xs font-bold uppercase tracking-wide">{label}</Text>
+      <Typography className="text-primary text-xs font-bold uppercase tracking-wide">{label}</Typography>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View className="flex-row gap-2 pb-1">{children}</View>
       </ScrollView>
@@ -169,7 +169,7 @@ function FilterChip({
           : "border-border bg-muted/40",
       )}
     >
-      <Text
+      <Typography
         className={cn(
           "text-sm font-medium",
           selected ? "text-primary" : "text-foreground",
@@ -177,7 +177,7 @@ function FilterChip({
         numberOfLines={1}
       >
         {label}
-      </Text>
+      </Typography>
     </Pressable>
   );
 }
@@ -197,14 +197,14 @@ export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilte
 
   return (
     <View className="gap-2 py-3">
-      <Text className="text-primary text-xs font-bold uppercase tracking-wide">
+      <Typography className="text-primary text-xs font-bold uppercase tracking-wide">
         {t("tickets.filterWard")}
-      </Text>
+      </Typography>
 
       {isStaffInfoLoading ? (
         <View className="flex-row items-center py-2">
           <ActivityIndicator size="small" />
-          <Text className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingWards")}</Text>
+          <Typography className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingWards")}</Typography>
         </View>
       ) : null}
 
@@ -213,9 +213,9 @@ export function WardsFilter({ selectedWards, onChangeSelectedWards }: WardsFilte
           onPress={() => void refetchStaffInfo()}
           className="self-start rounded-md bg-destructive/10 px-3 py-2 active:opacity-80"
         >
-          <Text className="text-destructive text-sm font-medium">
+          <Typography className="text-destructive text-sm font-medium">
             {t("tickets.wardsLoadRetry")}
-          </Text>
+          </Typography>
         </Pressable>
       ) : null}
 
@@ -263,14 +263,14 @@ export function ComplaintFilter({
 
   return (
     <View className="gap-2 py-3">
-      <Text className="text-primary text-xs font-bold uppercase tracking-wide">
+      <Typography className="text-primary text-xs font-bold uppercase tracking-wide">
         {t("tickets.filterComplaintType")}
-      </Text>
+      </Typography>
 
       {isPending ? (
         <View className="flex-row items-center py-2">
           <ActivityIndicator size="small" />
-          <Text className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingFilters")}</Text>
+          <Typography className="text-muted-foreground ml-2 text-sm">{t("tickets.loadingFilters")}</Typography>
         </View>
       ) : null}
 
@@ -279,9 +279,9 @@ export function ComplaintFilter({
           onPress={() => void refetch()}
           className="self-start rounded-md bg-destructive/10 px-3 py-2 active:opacity-80"
         >
-          <Text className="text-destructive text-sm font-medium">
+          <Typography className="text-destructive text-sm font-medium">
             {isRefetching ? t("tickets.retrying") : t("tickets.filtersLoadRetry")}
-          </Text>
+          </Typography>
         </Pressable>
       ) : null}
 
@@ -319,9 +319,9 @@ function AppliedFilterChip({
 }) {
   return (
     <View className={cn("rounded-md px-2 py-0.5", bgClassName)}>
-      <Text className={cn("text-xs font-medium", textClassName)} numberOfLines={1}>
+      <Typography className={cn("text-xs font-medium", textClassName)} numberOfLines={1}>
         {label}
-      </Text>
+      </Typography>
     </View>
   );
 }
@@ -419,17 +419,17 @@ function TicketFilterSummaryBar({
           as={SlidersHorizontalIcon}
           className={cn("size-3.5", activeCount > 0 ? "text-primary" : "text-muted-foreground")}
         />
-        <Text
+        <Typography
           className={cn(
             "text-xs font-semibold",
             activeCount > 0 ? "text-primary" : "text-foreground",
           )}
         >
           {t("tickets.filters")}
-        </Text>
+        </Typography>
         {activeCount > 0 ? (
           <View className="h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1">
-            <Text className="text-[10px] font-bold text-primary-foreground">{activeCount}</Text>
+            <Typography className="text-[10px] font-bold text-primary-foreground">{activeCount}</Typography>
           </View>
         ) : null}
       </Pressable>
@@ -489,7 +489,7 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
             <View className="flex-row items-center justify-between px-4 py-3">
               <View className="flex-row items-center gap-2">
                 <Icon as={CogIcon} className="size-6 text-primary" />
-                <Text className="text-primary text-lg font-bold">{t("tickets.filterTitle")}</Text>
+                <Typography className="text-primary text-lg font-bold">{t("tickets.filterTitle")}</Typography>
               </View>
               <Pressable onPress={handleClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
                 <XIcon size={18} color="#737373" />
@@ -548,10 +548,10 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
 
             <View className="flex-row gap-3 bg-card px-4 py-3">
               <Button variant="outline" className="flex-1" onPress={handleResetAll}>
-                <Text className="font-semibold">{t("common.resetAll")}</Text>
+                <Typography className="font-semibold">{t("common.resetAll")}</Typography>
               </Button>
               <Button variant="default" className="flex-1" onPress={handleApply}>
-                <Text className="font-semibold text-primary-foreground">{t("common.apply")}</Text>
+                <Typography className="font-semibold text-primary-foreground">{t("common.apply")}</Typography>
               </Button>
             </View>
           </View>

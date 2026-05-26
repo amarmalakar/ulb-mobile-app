@@ -4,7 +4,7 @@ import { WalletIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import type { UserBookingPayment } from '@/features/bookings/types';
@@ -28,9 +28,9 @@ export function StaffBookingPaymentsSection({ payments }: { payments: UserBookin
     <View className="gap-3 rounded-2xl border border-border bg-card p-4">
       <View className="flex-row items-center gap-2">
         <Icon as={WalletIcon} className="size-4 text-primary" />
-        <Text className="text-sm font-semibold uppercase tracking-wide text-primary">
+        <Typography className="text-sm font-semibold uppercase tracking-wide text-primary">
           {t('bookings.staffPaymentsTitle')}
-        </Text>
+        </Typography>
       </View>
 
       {payments.map((payment) => (
@@ -38,9 +38,9 @@ export function StaffBookingPaymentsSection({ payments }: { payments: UserBookin
           key={payment.id}
           className="gap-1 rounded-xl border border-border bg-muted/20 p-3">
           <View className="flex-row items-start justify-between gap-2">
-            <Text className="flex-1 text-sm font-semibold text-foreground">
+            <Typography className="flex-1 text-sm font-semibold text-foreground">
               {t(`bookings.paymentMessage.${payment.message}`)} · {formatAmount(payment.amount)}
-            </Text>
+            </Typography>
             <Badge
               className={cn(
                 'rounded-md px-2 py-0.5',
@@ -50,7 +50,7 @@ export function StaffBookingPaymentsSection({ payments }: { payments: UserBookin
                     ? 'bg-destructive/15'
                     : 'bg-amber-100',
               )}>
-              <Text
+              <Typography
                 className={cn(
                   'text-[10px] font-semibold',
                   payment.status === 'CLEARED'
@@ -60,22 +60,22 @@ export function StaffBookingPaymentsSection({ payments }: { payments: UserBookin
                       : 'text-amber-800',
                 )}>
                 {t(`bookings.paymentStatus.${payment.status}`)}
-              </Text>
+              </Typography>
             </Badge>
           </View>
-          <Text className="text-xs text-muted-foreground">
+          <Typography className="text-xs text-muted-foreground">
             {t(`bookings.paymentType.${payment.type}`)}
             {payment.takenByStaffName ? ` · ${payment.takenByStaffName}` : ''}
-          </Text>
+          </Typography>
           {payment.takenByAccount ? (
-            <Text className="text-xs text-muted-foreground">{payment.takenByAccount}</Text>
+            <Typography className="text-xs text-muted-foreground">{payment.takenByAccount}</Typography>
           ) : null}
           {payment.remarks ? (
-            <Text className="text-xs text-muted-foreground">{payment.remarks}</Text>
+            <Typography className="text-xs text-muted-foreground">{payment.remarks}</Typography>
           ) : null}
-          <Text className="text-[11px] text-muted-foreground">
+          <Typography className="text-[11px] text-muted-foreground">
             {format(parseISO(payment.createdAt), 'dd MMM yyyy · h:mm a')}
-          </Text>
+          </Typography>
         </View>
       ))}
     </View>

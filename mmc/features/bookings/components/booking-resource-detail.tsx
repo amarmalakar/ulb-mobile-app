@@ -24,7 +24,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import type { UserBookingResourceDetail } from '@/features/bookings/types';
 import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
@@ -47,8 +47,8 @@ function formatCurrency(amount: number, currency: string): string {
 function DetailRow({ label, value }: { label: string; value: string }) {
   return (
     <View className="flex-row justify-between gap-4 py-2">
-      <Text className="text-muted-foreground shrink-0 text-sm">{label}</Text>
-      <Text className="flex-1 text-right text-sm font-medium text-foreground">{value}</Text>
+      <Typography className="text-muted-foreground shrink-0 text-sm">{label}</Typography>
+      <Typography className="flex-1 text-right text-sm font-medium text-foreground">{value}</Typography>
     </View>
   );
 }
@@ -82,16 +82,16 @@ function BookingResourceDetailError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">
+        <Typography className="text-destructive text-center text-lg font-bold">
           {t('common.errorTitle')}
-        </Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        </Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? t('bookings.detailLoadError')}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -139,7 +139,7 @@ function ImageGallery({ images }: { images: UserBookingResourceDetail['images'] 
         style={{ width: '100%', height: HERO_HEIGHT }}
         className="items-center justify-center bg-muted"
       >
-        <Text className="text-muted-foreground text-sm">{t('bookings.noPhotos')}</Text>
+        <Typography className="text-muted-foreground text-sm">{t('bookings.noPhotos')}</Typography>
       </View>
     );
   }
@@ -221,10 +221,10 @@ function ResourceDetailContent({
 
         <View className="gap-4 p-4">
           <View className="flex-row flex-wrap items-start justify-between gap-2">
-            <Text className="flex-1 text-2xl font-bold text-foreground">{resource.name}</Text>
+            <Typography className="flex-1 text-2xl font-bold text-foreground">{resource.name}</Typography>
             {resource.isFeatured ? (
               <Badge className="rounded-full bg-primary/15">
-                <Text className="text-xs font-semibold text-primary">{t('bookings.featured')}</Text>
+                <Typography className="text-xs font-semibold text-primary">{t('bookings.featured')}</Typography>
               </Badge>
             ) : null}
           </View>
@@ -232,24 +232,24 @@ function ResourceDetailContent({
           <View className="flex-row flex-wrap items-center gap-2">
             <Badge variant="secondary">
               <Icon as={TypeIcon} className="mr-1 size-3.5" />
-              <Text className="text-xs font-semibold">{typeLabel}</Text>
+              <Typography className="text-xs font-semibold">{typeLabel}</Typography>
             </Badge>
-            <Text className="text-primary text-lg font-bold">
+            <Typography className="text-primary text-lg font-bold">
               {formatCurrency(resource.unitPrice, resource.currency)}
-              <Text className="text-muted-foreground text-sm font-medium"> / {unit}</Text>
-            </Text>
+              <Typography className="text-muted-foreground text-sm font-medium"> / {unit}</Typography>
+            </Typography>
           </View>
 
           {resource.requiresApproval ? (
-            <Text className="text-muted-foreground text-sm">{t('bookings.requiresApproval')}</Text>
+            <Typography className="text-muted-foreground text-sm">{t('bookings.requiresApproval')}</Typography>
           ) : null}
 
-          <Text className="text-base leading-6 text-foreground">{resource.description}</Text>
+          <Typography className="text-base leading-6 text-foreground">{resource.description}</Typography>
 
           <View className="rounded-xl border border-border bg-card p-3">
-            <Text className="text-primary mb-2 text-sm font-semibold uppercase tracking-wide">
+            <Typography className="text-primary mb-2 text-sm font-semibold uppercase tracking-wide">
               {t('bookings.details')}
-            </Text>
+            </Typography>
             <DetailRow
               label={t('bookings.minAdvance')}
               value={t('bookings.minAdvanceHours', { hours: resource.minAdvanceHours })}
@@ -263,31 +263,31 @@ function ResourceDetailContent({
             <View className="rounded-xl border border-border bg-card p-3">
               <View className="mb-2 flex-row items-center gap-2">
                 <Icon as={Building2Icon} className="text-primary size-5" />
-                <Text className="text-primary text-sm font-semibold uppercase tracking-wide">
+                <Typography className="text-primary text-sm font-semibold uppercase tracking-wide">
                   {t('bookings.buildingInfo')}
-                </Text>
+                </Typography>
               </View>
               {resource.buildingDetail.capacity != null ? (
                 <View className="mb-2 flex-row items-center gap-2">
                   <Icon as={UsersIcon} className="text-muted-foreground size-4" />
-                  <Text className="text-foreground text-sm">
+                  <Typography className="text-foreground text-sm">
                     {t('bookings.capacity', { count: resource.buildingDetail.capacity })}
-                  </Text>
+                  </Typography>
                 </View>
               ) : null}
               {resource.buildingDetail.amenities.length > 0 ? (
                 <View className="mb-2 flex-row flex-wrap gap-1.5">
                   {resource.buildingDetail.amenities.map((amenity) => (
                     <Badge key={amenity} variant="outline" className="rounded-md">
-                      <Text className="text-xs">{amenity}</Text>
+                      <Typography className="text-xs">{amenity}</Typography>
                     </Badge>
                   ))}
                 </View>
               ) : null}
               {resource.buildingDetail.rulesText ? (
-                <Text className="text-muted-foreground text-sm leading-5">
+                <Typography className="text-muted-foreground text-sm leading-5">
                   {resource.buildingDetail.rulesText}
-                </Text>
+                </Typography>
               ) : null}
             </View>
           ) : null}
@@ -296,9 +296,9 @@ function ResourceDetailContent({
             <View className="rounded-xl border border-border bg-card p-3">
               <View className="mb-2 flex-row items-center gap-2">
                 <Icon as={CarIcon} className="text-primary size-5" />
-                <Text className="text-primary text-sm font-semibold uppercase tracking-wide">
+                <Typography className="text-primary text-sm font-semibold uppercase tracking-wide">
                   {t('bookings.vehicleInfo')}
-                </Text>
+                </Typography>
               </View>
               {resource.vehicleDetail.vehicleType ? (
                 <DetailRow label={t('bookings.vehicleType')} value={resource.vehicleDetail.vehicleType} />
@@ -325,12 +325,12 @@ function ResourceDetailContent({
             <View className="overflow-hidden rounded-xl border border-border bg-card">
               <View className="flex-row items-center gap-2 border-b border-border px-4 py-3">
                 <Icon as={MapPinIcon} className="text-primary size-5" />
-                <Text className="text-base font-medium text-foreground">{t('bookings.location')}</Text>
+                <Typography className="text-base font-medium text-foreground">{t('bookings.location')}</Typography>
               </View>
               {resource.locationAddress ? (
-                <Text className="px-4 py-3 text-sm text-muted-foreground">
+                <Typography className="px-4 py-3 text-sm text-muted-foreground">
                   {resource.locationAddress}
-                </Text>
+                </Typography>
               ) : null}
               {hasMap ? (
                 <View className="h-48 border-t border-border">
@@ -368,9 +368,9 @@ function ResourceDetailContent({
           ) : (
             <>
               <Icon as={CalendarCheckIcon} className="text-primary-foreground size-5" />
-              <Text className="text-primary-foreground text-base font-semibold">
+              <Typography className="text-primary-foreground text-base font-semibold">
                 {t('bookings.bookNow')}
-              </Text>
+              </Typography>
             </>
           )}
         </Button>
@@ -402,9 +402,9 @@ export function BookingResourceDetail({ query, onBookNow, isBooking }: BookingRe
   if (!data) {
     return (
       <View className="flex-1 items-center justify-center px-6 py-12">
-        <Text className="text-center text-lg font-semibold text-foreground">
+        <Typography className="text-center text-lg font-semibold text-foreground">
           {t('bookings.notFound')}
-        </Text>
+        </Typography>
       </View>
     );
   }

@@ -2,7 +2,7 @@ import { Pressable, View } from 'react-native';
 
 import { cn } from "@/lib/utils";
 import { router } from 'expo-router';
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import {
   ChartPieIcon,
   HistoryIcon,
@@ -68,9 +68,9 @@ export function BottomNav({ activeItemId }: {
             >
               <Icon size={20} color={isActive ? '#FFFFFF' : '#94A3B8'} />
               {isActive ? (
-                <Text className="text-primary-foreground ml-2 text-sm font-semibold">
+                <Typography className="text-primary-foreground ml-2 text-sm font-semibold">
                   {t(item.labelKey)}
-                </Text>
+                </Typography>
               ) : null}
             </Pressable>
           );

@@ -3,7 +3,7 @@ import { format, isValid, parseISO } from "date-fns";
 import { enGB } from "date-fns/locale";
 import { useMemo } from "react";
 import { View } from "react-native";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 
 function formatTimelineTime(value: string) {
   const parsed = parseISO(value);
@@ -43,12 +43,12 @@ export function TicketsTimelines({
             </View>
 
             <View className="ml-5 flex-1 pb-8">
-              <Text className="text-xs font-semibold uppercase tracking-wide text-sky-600">
+              <Typography className="text-xs font-semibold uppercase tracking-wide text-sky-600">
                 {formatTimelineTime(item.occurredAt)}
-              </Text>
-              <Text className="font-semibold text-foreground">
+              </Typography>
+              <Typography className="font-semibold text-foreground">
                 {item.description}
-              </Text>
+              </Typography>
             </View>
           </View>
         );

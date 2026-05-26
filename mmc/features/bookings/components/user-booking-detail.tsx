@@ -19,7 +19,7 @@ import type { UseQueryResult } from '@tanstack/react-query';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { BookingTimeline } from '@/features/bookings/components/booking-timeline';
@@ -50,8 +50,8 @@ function DetailRow({
     <View className="flex-row items-start gap-2 py-1.5">
       {RowIcon ? <Icon as={RowIcon} className="text-muted-foreground mt-0.5 size-4 shrink-0" /> : null}
       <View className="min-w-0 flex-1">
-        <Text className="text-muted-foreground text-xs">{label}</Text>
-        <Text className="text-foreground text-sm font-medium">{value}</Text>
+        <Typography className="text-muted-foreground text-xs">{label}</Typography>
+        <Typography className="text-foreground text-sm font-medium">{value}</Typography>
       </View>
     </View>
   );
@@ -70,15 +70,15 @@ function UserBookingDetailError({
       <View className="bg-destructive/10 size-20 items-center justify-center rounded-full">
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
-      <Text className="text-destructive text-center text-lg font-bold">
+      <Typography className="text-destructive text-center text-lg font-bold">
         {t('common.errorTitle')}
-      </Text>
-      <Text className="text-muted-foreground text-center text-sm">
+      </Typography>
+      <Typography className="text-muted-foreground text-center text-sm">
         {message ?? t('bookings.bookingDetailLoadError')}
-      </Text>
+      </Typography>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -124,54 +124,54 @@ function BookingDetailContent({ booking }: { booking: UserBookingByIdDetail }) {
           </View>
 
           <View className="min-w-0 flex-1 gap-2">
-            <Text className="text-lg font-bold text-foreground" numberOfLines={2}>
+            <Typography className="text-lg font-bold text-foreground" numberOfLines={2}>
               {booking.resource.name}
-            </Text>
+            </Typography>
             <Badge className={cn('self-start rounded-md px-2 py-0.5', statusConfig.badgeClass)}>
-              <Text className={cn('text-xs font-semibold', statusConfig.textClass)}>
+              <Typography className={cn('text-xs font-semibold', statusConfig.textClass)}>
                 {t(statusConfig.labelKey)}
-              </Text>
+              </Typography>
             </Badge>
             <View className="flex-row items-center gap-1">
               <Icon as={HashIcon} className="text-muted-foreground size-3.5" />
-              <Text className="text-muted-foreground text-xs font-medium">
+              <Typography className="text-muted-foreground text-xs font-medium">
                 {booking.bookingTokenId}
-              </Text>
+              </Typography>
             </View>
           </View>
         </View>
       </Pressable>
 
       <View className="rounded-2xl border border-border bg-card p-4">
-        <Text className="text-primary mb-3 text-sm font-semibold uppercase tracking-wide">
+        <Typography className="text-primary mb-3 text-sm font-semibold uppercase tracking-wide">
           {t('bookings.amountSummary')}
-        </Text>
+        </Typography>
         <View className="flex-row flex-wrap gap-4">
           <View>
-            <Text className="text-muted-foreground text-xs">{t('bookings.totalAmountLabel')}</Text>
-            <Text className="text-foreground text-lg font-bold">
+            <Typography className="text-muted-foreground text-xs">{t('bookings.totalAmountLabel')}</Typography>
+            <Typography className="text-foreground text-lg font-bold">
               ₹{formatAmount(booking.totalAmount)}
-            </Text>
+            </Typography>
           </View>
           <View>
-            <Text className="text-muted-foreground text-xs">{t('bookings.paidAmountLabel')}</Text>
-            <Text className="text-emerald-600 text-lg font-bold">
+            <Typography className="text-muted-foreground text-xs">{t('bookings.paidAmountLabel')}</Typography>
+            <Typography className="text-emerald-600 text-lg font-bold">
               ₹{formatAmount(booking.paidAmount)}
-            </Text>
+            </Typography>
           </View>
           <View>
-            <Text className="text-muted-foreground text-xs">{t('bookings.balanceLabel')}</Text>
-            <Text className="text-primary text-lg font-bold">
+            <Typography className="text-muted-foreground text-xs">{t('bookings.balanceLabel')}</Typography>
+            <Typography className="text-primary text-lg font-bold">
               ₹{formatAmount(booking.balance)}
-            </Text>
+            </Typography>
           </View>
         </View>
       </View>
 
       <View className="rounded-2xl border border-border bg-card p-4">
-        <Text className="text-primary mb-2 text-sm font-semibold uppercase tracking-wide">
+        <Typography className="text-primary mb-2 text-sm font-semibold uppercase tracking-wide">
           {t('bookings.bookingInfo')}
-        </Text>
+        </Typography>
         <DetailRow
           icon={CalendarRangeIcon}
           label={t('bookings.dateRange')}
@@ -236,9 +236,9 @@ export function UserBookingDetail({ query }: UserBookingDetailProps) {
   if (!data) {
     return (
       <View className="flex-1 items-center justify-center px-6">
-        <Text className="text-center text-lg font-semibold text-foreground">
+        <Typography className="text-center text-lg font-semibold text-foreground">
           {t('bookings.bookingNotFound')}
-        </Text>
+        </Typography>
       </View>
     );
   }

@@ -5,7 +5,7 @@ import { MessageSquarePlusIcon, XIcon } from 'lucide-react-native';
 import FeedbackAndSuggestionForm from '@/features/feedback-and-suggestion-form';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 
 export type FeedbackAndSuggestionFormModalProps = {
   visible: boolean;
@@ -31,7 +31,7 @@ export function FeedbackAndSuggestionFormModal({
           <View className="flex-row items-center justify-between px-4 py-3">
             <View className="flex-row items-center gap-2">
               <Icon as={MessageSquarePlusIcon} className="size-6 text-primary" />
-              <Text className="text-lg font-bold text-primary">{t('feedback.createTitle')}</Text>
+              <Typography className="text-lg font-bold text-primary">{t('feedback.createTitle')}</Typography>
             </View>
             <Pressable
               onPress={onClose}

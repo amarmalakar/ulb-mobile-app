@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useLogout } from '@/hooks/use-logout';
 import {
   BellIcon,
@@ -48,14 +48,14 @@ export function Account() {
         contentContainerClassName="px-5 pb-28 pt-4"
         showsVerticalScrollIndicator={false}
       >
-        <Text className="text-foreground text-2xl font-extrabold">{t('account.title')}</Text>
-        <Text className="text-muted-foreground mt-1 text-sm">{t('account.subtitle')}</Text>
+        <Typography className="text-foreground text-2xl font-extrabold">{t('account.title')}</Typography>
+        <Typography className="text-muted-foreground mt-1 text-sm">{t('account.subtitle')}</Typography>
 
         <View className="bg-card border-border mt-6 rounded-2xl border p-4">
           <View className="flex-row items-center gap-4">
             <Avatar alt={`${name} avatar`} className="size-16">
               <AvatarFallback className="bg-primary/15 rounded-2xl">
-                <Text className="text-primary text-lg font-bold">{initials}</Text>
+                <Typography className="text-primary text-lg font-bold">{initials}</Typography>
               </AvatarFallback>
             </Avatar>
 
@@ -64,13 +64,13 @@ export function Account() {
                 <ActivityIndicator className="self-start" />
               ) : (
                 <>
-                  <Text className="text-foreground text-xl font-bold">{name}</Text>
-                  <Text className="text-primary mt-0.5 text-sm font-semibold">
+                  <Typography className="text-foreground text-xl font-bold">{name}</Typography>
+                  <Typography className="text-primary mt-0.5 text-sm font-semibold">
                     {authType}
                     {ulb?.key ? ` · ${ulb.key}` : ''}
-                  </Text>
+                  </Typography>
                   {subtitle ? (
-                    <Text className="text-muted-foreground mt-1 text-sm">{subtitle}</Text>
+                    <Typography className="text-muted-foreground mt-1 text-sm">{subtitle}</Typography>
                   ) : null}
                 </>
               )}
@@ -80,30 +80,30 @@ export function Account() {
           {!isLoading && !error ? (
             <View className="border-border mt-4 gap-2 border-t pt-4">
               {phone ? (
-                <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">{t('account.phone')} </Text>
+                <Typography className="text-muted-foreground text-sm">
+                  <Typography className="text-foreground font-semibold">{t('account.phone')} </Typography>
                   {phone}
-                </Text>
+                </Typography>
               ) : null}
               {email ? (
-                <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">{t('account.email')} </Text>
+                <Typography className="text-muted-foreground text-sm">
+                  <Typography className="text-foreground font-semibold">{t('account.email')} </Typography>
                   {email}
-                </Text>
+                </Typography>
               ) : null}
               {ulb?.name ? (
-                <Text className="text-muted-foreground text-sm">
-                  <Text className="text-foreground font-semibold">{t('account.ulb')} </Text>
+                <Typography className="text-muted-foreground text-sm">
+                  <Typography className="text-foreground font-semibold">{t('account.ulb')} </Typography>
                   {ulb.name}
-                </Text>
+                </Typography>
               ) : null}
             </View>
           ) : null}
 
           {error ? (
-            <Text className="text-destructive mt-3 text-sm">
+            <Typography className="text-destructive mt-3 text-sm">
               {t('account.profileError')}
-            </Text>
+            </Typography>
           ) : null}
         </View>
 
@@ -113,9 +113,9 @@ export function Account() {
         </View>
 
         <View className="mt-6 gap-2">
-          <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+          <Typography className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
             {t('account.preferences')}
-          </Text>
+          </Typography>
 
           {/* <AccountSettingsRow
             label="Notifications"
@@ -144,9 +144,9 @@ export function Account() {
           ) : (
             <>
               <Icon as={LogOutIcon} className="text-primary-foreground size-5" />
-              <Text className="text-primary-foreground ml-2 text-base font-semibold">
+              <Typography className="text-primary-foreground ml-2 text-base font-semibold">
                 {t('account.logout')}
-              </Text>
+              </Typography>
             </>
           )}
         </Button>

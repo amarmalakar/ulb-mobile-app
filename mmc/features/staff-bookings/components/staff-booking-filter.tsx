@@ -12,7 +12,7 @@ import { CogIcon, SlidersHorizontalIcon, XIcon } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { getBookingStatusConfig } from '@/features/bookings/lib/booking-status';
 import type { BookingStatus } from '@/features/bookings/types';
@@ -43,7 +43,7 @@ function FilterChipRow({
 }) {
   return (
     <View className="gap-2 py-3">
-      <Text className="text-primary text-xs font-bold uppercase tracking-wide">{label}</Text>
+      <Typography className="text-primary text-xs font-bold uppercase tracking-wide">{label}</Typography>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View className="flex-row gap-2 pb-1">{children}</View>
       </ScrollView>
@@ -67,11 +67,11 @@ function FilterChip({
         'shrink-0 rounded-full border px-3.5 py-2 active:opacity-80',
         selected ? 'border-primary bg-primary/15' : 'border-border bg-muted/40',
       )}>
-      <Text
+      <Typography
         className={cn('text-sm font-medium', selected ? 'text-primary' : 'text-foreground')}
         numberOfLines={1}>
         {label}
-      </Text>
+      </Typography>
     </Pressable>
   );
 }
@@ -96,7 +96,7 @@ function ResourceFilter({
       {analyticsQuery.isLoading ? (
         <View className="flex-row items-center py-2">
           <ActivityIndicator size="small" />
-          <Text className="text-muted-foreground ml-2 text-sm">{t('bookings.staffLoadingResources')}</Text>
+          <Typography className="text-muted-foreground ml-2 text-sm">{t('bookings.staffLoadingResources')}</Typography>
         </View>
       ) : (
         <>
@@ -161,9 +161,9 @@ function AppliedFilterChip({
 }) {
   return (
     <View className={cn('rounded-md px-2 py-0.5', bgClassName)}>
-      <Text className={cn('text-xs font-medium', textClassName)} numberOfLines={1}>
+      <Typography className={cn('text-xs font-medium', textClassName)} numberOfLines={1}>
         {label}
-      </Text>
+      </Typography>
     </View>
   );
 }
@@ -263,16 +263,16 @@ function StaffBookingFilterSummaryBar({
           as={SlidersHorizontalIcon}
           className={cn('size-3.5', activeCount > 0 ? 'text-primary' : 'text-muted-foreground')}
         />
-        <Text
+        <Typography
           className={cn(
             'text-xs font-semibold',
             activeCount > 0 ? 'text-primary' : 'text-foreground',
           )}>
           {t('tickets.filters')}
-        </Text>
+        </Typography>
         {activeCount > 0 ? (
           <View className="h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1">
-            <Text className="text-[10px] font-bold text-primary-foreground">{activeCount}</Text>
+            <Typography className="text-[10px] font-bold text-primary-foreground">{activeCount}</Typography>
           </View>
         ) : null}
       </Pressable>
@@ -330,7 +330,7 @@ export function StaffBookingFilter({ filter, replaceFilter }: StaffBookingFilter
             <View className="flex-row items-center justify-between px-4 py-3">
               <View className="flex-row items-center gap-2">
                 <Icon as={CogIcon} className="size-6 text-primary" />
-                <Text className="text-lg font-bold text-primary">{t('bookings.staffFilterTitle')}</Text>
+                <Typography className="text-lg font-bold text-primary">{t('bookings.staffFilterTitle')}</Typography>
               </View>
               <Pressable
                 onPress={handleClose}
@@ -365,10 +365,10 @@ export function StaffBookingFilter({ filter, replaceFilter }: StaffBookingFilter
 
             <View className="flex-row gap-3 bg-card px-4 py-3">
               <Button variant="outline" className="flex-1" onPress={handleResetAll}>
-                <Text className="font-semibold">{t('common.resetAll')}</Text>
+                <Typography className="font-semibold">{t('common.resetAll')}</Typography>
               </Button>
               <Button variant="default" className="flex-1" onPress={handleApply}>
-                <Text className="font-semibold text-primary-foreground">{t('common.apply')}</Text>
+                <Typography className="font-semibold text-primary-foreground">{t('common.apply')}</Typography>
               </Button>
             </View>
           </View>

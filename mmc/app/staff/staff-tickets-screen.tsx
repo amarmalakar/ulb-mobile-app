@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 
 import { BottomNav } from "@/components/common/bottom-nav";
 import { TopNavigation } from "@/components/common/top-navigation";

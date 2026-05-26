@@ -1,5 +1,5 @@
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useTranslation } from 'react-i18next';
 import { useAppLocale } from '@/hooks/use-app-locale';
 import { cn } from '@/lib/utils';
@@ -19,9 +19,9 @@ export function AccountLanguagePicker() {
 
   return (
     <View className="gap-3">
-      <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+      <Typography className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
         {t('locale.language')}
-      </Text>
+      </Typography>
 
       <View className="flex-row gap-2">
         {LANGUAGE_OPTIONS.map((option) => {
@@ -47,14 +47,14 @@ export function AccountLanguagePicker() {
                   className={cn('size-5', isActive ? 'text-primary-foreground' : 'text-foreground')}
                 />
               </View>
-              <Text
+              <Typography
                 className={cn(
                   'text-sm font-semibold',
                   isActive ? 'text-primary' : 'text-foreground',
                 )}
               >
                 {t(option.labelKey)}
-              </Text>
+              </Typography>
             </Pressable>
           );
         })}

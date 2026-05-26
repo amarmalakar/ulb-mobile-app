@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SendHorizonal } from "lucide-react-native";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { useStaffAuth } from "@/components/provider/staff-auth-provider";
 import { usePostStaffTicketCommentMutation } from "@/features/tickets/hooks/use-staff-ticket-queries";
 
@@ -47,7 +47,7 @@ export function TicketStaffCommentComposer({
           commentEnabled ? t("tickets.writeComment") : t("tickets.commentsDisabledPlaceholder")
         }
         placeholderTextColor="#9CA3AF"
-        className="min-h-20 text-base text-foreground"
+        className="min-h-20 text-base text-foreground font-sans"
         style={{ textAlignVertical: "top" }}
       />
       <View className="mt-2 flex-row justify-end">
@@ -61,14 +61,17 @@ export function TicketStaffCommentComposer({
             size={14}
             color={draftComment.trim() && !isPostingComment && canCompose ? "white" : "#64748B"}
           />
-          <Text
-            className={`text-xs font-semibold ${draftComment.trim() && !isPostingComment && canCompose
+          <Typography
+            variant="caption"
+            weight="semibold"
+            className={
+              draftComment.trim() && !isPostingComment && canCompose
                 ? "text-primary-foreground"
                 : "text-muted-foreground"
-              }`}
+            }
           >
             {isPostingComment ? t("tickets.addingComment") : t("tickets.addComment")}
-          </Text>
+          </Typography>
         </Pressable>
       </View>
     </View>

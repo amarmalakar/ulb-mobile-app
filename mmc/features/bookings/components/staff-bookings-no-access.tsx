@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 
 export function StaffBookingsNoAccess() {
   const { t } = useTranslation();
@@ -14,12 +14,12 @@ export function StaffBookingsNoAccess() {
         <Icon as={ShieldX} className="text-rose-600 dark:text-rose-400" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-center text-xl font-bold text-foreground">
+        <Typography className="text-center text-xl font-bold text-foreground">
           {t('bookings.staffNoAccessTitle')}
-        </Text>
-        <Text className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
+        </Typography>
+        <Typography className="max-w-[300px] text-center text-sm leading-relaxed text-muted-foreground">
           {t('bookings.staffNoAccessMessage')}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

@@ -6,7 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { File } from "expo-file-system";
 import { COMPLAINT_PHOTO_RAW_MAX_BYTES } from "@/features/complaints/constants";
 import { cn } from "@/lib/utils";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Image } from "expo-image";
 import { XIcon } from "lucide-react-native";
 
@@ -142,15 +142,15 @@ export function PhotoPicker<
           photos.length >= MAX_PHOTOS && "opacity-50",
         )}
       >
-        <Text className="text-foreground font-medium">{t("complaints.addPhotos")}</Text>
+        <Typography className="text-foreground font-medium">{t("complaints.addPhotos")}</Typography>
       </Pressable>
-      <Text className="text-muted-foreground text-center text-xs">
+      <Typography className="text-muted-foreground text-center text-xs">
         {t("complaints.photosHint", {
           count: photos.length,
           max: MAX_PHOTOS,
           maxMb: MAX_PHOTO_MB,
         })}
-      </Text>
+      </Typography>
 
       {photos.length > 0 ? (
         <View className="flex-row flex-wrap gap-2">
@@ -172,9 +172,9 @@ export function PhotoPicker<
           ))}
         </View>
       ) : null}
-      {pickerError ? <Text className="text-destructive text-sm">{pickerError}</Text> : null}
+      {pickerError ? <Typography className="text-destructive text-sm">{pickerError}</Typography> : null}
       {errors[name] ? (
-        <Text className="text-destructive text-sm">{String(errors[name]?.message)}</Text>
+        <Typography className="text-destructive text-sm">{String(errors[name]?.message)}</Typography>
       ) : null}
     </View>
   );

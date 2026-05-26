@@ -7,7 +7,7 @@ import { PlusIcon } from 'lucide-react-native';
 import { TopNavigation } from '@/components/common/top-navigation';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { FeedbackAndSuggestionFilters } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-filters';
 import { FeedbackAndSuggestionFormModal } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-form-modal';
 import { FeedbackAndSuggestionList } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-list';
@@ -33,7 +33,7 @@ export default function FeedbackAndSuggestionScreen() {
             onPress={() => setIsCreateModalVisible(true)}
           >
             <Icon as={PlusIcon} className="size-4 text-primary-foreground" />
-            <Text className="font-semibold text-primary-foreground">{t('feedback.create')}</Text>
+            <Typography className="font-semibold text-primary-foreground">{t('feedback.create')}</Typography>
           </Button>
           <FeedbackAndSuggestionFilters filter={filter} replaceFilter={setFilter} />
         </View>

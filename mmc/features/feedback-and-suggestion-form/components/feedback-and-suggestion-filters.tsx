@@ -17,7 +17,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Separator } from '@/components/ui/separator';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import {
   countActiveFeedbackAndSuggestionFilters,
@@ -42,7 +42,7 @@ function FilterChipRow({
 }) {
   return (
     <View className="gap-2 py-3">
-      <Text className="text-xs font-bold uppercase tracking-wide text-primary">{label}</Text>
+      <Typography className="text-xs font-bold uppercase tracking-wide text-primary">{label}</Typography>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         <View className="flex-row gap-2 pb-1">{children}</View>
       </ScrollView>
@@ -67,12 +67,12 @@ function FilterChip({
         selected ? 'border-primary bg-primary/15' : 'border-border bg-muted/40',
       )}
     >
-      <Text
+      <Typography
         className={cn('text-sm font-medium', selected ? 'text-primary' : 'text-foreground')}
         numberOfLines={1}
       >
         {label}
-      </Text>
+      </Typography>
     </Pressable>
   );
 }
@@ -217,10 +217,10 @@ export function FeedbackAndSuggestionFilters({
           as={FilterIcon}
           className={cn('size-4', activeCount > 0 ? 'text-primary' : 'text-primary')}
         />
-        <Text className="text-sm font-semibold text-primary">{t('feedback.filters.title')}</Text>
+        <Typography className="text-sm font-semibold text-primary">{t('feedback.filters.title')}</Typography>
         {activeCount > 0 ? (
           <View className="h-4 min-w-4 items-center justify-center rounded-full bg-primary px-1">
-            <Text className="text-[10px] font-bold text-primary-foreground">{activeCount}</Text>
+            <Typography className="text-[10px] font-bold text-primary-foreground">{activeCount}</Typography>
           </View>
         ) : null}
       </Pressable>
@@ -237,7 +237,7 @@ export function FeedbackAndSuggestionFilters({
             <View className="flex-row items-center justify-between px-4 py-3">
               <View className="flex-row items-center gap-2">
                 <Icon as={CogIcon} className="size-6 text-primary" />
-                <Text className="text-lg font-bold text-primary">{t('feedback.filters.modalTitle')}</Text>
+                <Typography className="text-lg font-bold text-primary">{t('feedback.filters.modalTitle')}</Typography>
               </View>
               <Pressable
                 onPress={handleClose}
@@ -272,11 +272,11 @@ export function FeedbackAndSuggestionFilters({
             <View className="flex-row gap-3 bg-card px-4 py-3">
               <Button variant="outline" className="flex-1 flex-row gap-2" onPress={handleReset}>
                 <Icon as={RotateCcwIcon} className="size-4 text-foreground" />
-                <Text className="font-semibold">{t('feedback.filters.reset')}</Text>
+                <Typography className="font-semibold">{t('feedback.filters.reset')}</Typography>
               </Button>
               <Button variant="default" className="flex-1 flex-row gap-2" onPress={handleApply}>
                 <Icon as={CheckIcon} className="size-4 text-primary-foreground" />
-                <Text className="font-semibold text-primary-foreground">{t('common.apply')}</Text>
+                <Typography className="font-semibold text-primary-foreground">{t('common.apply')}</Typography>
               </Button>
             </View>
           </View>

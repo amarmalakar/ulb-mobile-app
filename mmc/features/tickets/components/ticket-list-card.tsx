@@ -13,7 +13,7 @@ import { useRouter } from "expo-router";
 
 import { Icon } from "@/components/ui/icon";
 import { Separator } from "@/components/ui/separator";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Badge } from "@/components/ui/badge";
 import { useUserAuth } from "@/components/provider/user-auth-provider";
 
@@ -53,29 +53,29 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
       <View className="min-w-0 flex-1 justify-center gap-1">
         <View className="flex-row items-center gap-1.5">
           <Icon as={FileTextIcon} className="text-muted-foreground size-4.5 shrink-0" />
-          <Text className="text-muted-foreground shrink text-sm" numberOfLines={1}>
+          <Typography className="text-muted-foreground shrink text-sm" numberOfLines={1}>
             {metadataLabel}
             {/* {" \u2022 "}
             {formatRelativeTime(ticket.createdAt)} */}
-          </Text>
+          </Typography>
         </View>
         <View className="flex-row flex-wrap items-center gap-2 my-2">
           <View className="flex-row items-center gap-1 rounded-md bg-sky-100 px-2 py-0.5">
             <Icon as={HashIcon} className="size-3 text-sky-600" />
-            <Text className="text-[13px] font-semibold text-sky-700">
+            <Typography className="text-[13px] font-semibold text-sky-700">
               {t("common.ticketId", { id: ticket.ticketTokenId })}
-            </Text>
+            </Typography>
           </View>
 
           <View className="flex-row items-center gap-1 rounded-md bg-emerald-100 px-2 py-0.5">
             <Icon as={MapPinIcon} className="size-3 text-emerald-600" />
-            <Text className="text-[13px] font-semibold text-emerald-700">
+            <Typography className="text-[13px] font-semibold text-emerald-700">
               {t("common.wardNumber", { ward: ticket.ward })}
-            </Text>
+            </Typography>
           </View>
         </View>
 
-        <Text
+        <Typography
           className="text-primary text-xl font-bold underline"
           numberOfLines={2}
             onPress={() => router.push({
@@ -86,7 +86,7 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
           })}
         >
           {ticket.title}
-        </Text>
+        </Typography>
 
 
       </View>
@@ -94,18 +94,18 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
       <View className="flex-row items-center justify-between">
         <View className="flex-row items-center gap-2">
           <Badge className={cn(configs.badge.bgClassName, "rounded-sm")}>
-            <Text className={configs.badge.textClassName}>{configs.label}</Text>
+            <Typography className={configs.badge.textClassName}>{configs.label}</Typography>
           </Badge>
           <View className="self-start rounded-sm bg-primary/10 px-2 py-1">
-            <Text className="text-xs font-medium text-primary">{ticket.complaint.title}</Text>
+            <Typography className="text-xs font-medium text-primary">{ticket.complaint.title}</Typography>
           </View>
 
           {typeof ticket.rating === "number" ? (
             <View className="self-start flex-row items-center gap-1 rounded-sm bg-amber-100 px-2 py-1">
               <StarIcon size={12} color="#D97706" fill="#D97706" />
-              <Text className="text-xs font-semibold text-amber-700">
+              <Typography className="text-xs font-semibold text-amber-700">
                 {t("tickets.ratingScore", { rating: ticket.rating })}
-              </Text>
+              </Typography>
             </View>
           ) : null}
         </View>
@@ -113,7 +113,7 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
         {ticket.status === "COMPLETED" ? null : (
           <View className="self-start flex-row items-center gap-1 rounded-full bg-purple-100 px-2.5 py-1">
             <ClockIcon size={16} color="#8b5cf6" />
-            <Text className="text-xs font-semibold text-purple-700">{formatRelativeTime(ticket.createdAt)}</Text>
+            <Typography className="text-xs font-semibold text-purple-700">{formatRelativeTime(ticket.createdAt)}</Typography>
           </View>
         )}
 
@@ -121,14 +121,14 @@ function TicketCardText({ ticket }: { ticket: TicketListItem }) {
           isOverdue(ticket.dueDateTime) ? (
             <View className="self-start flex-row items-center gap-1 rounded-full bg-red-100 px-2.5 py-1">
               <AlertCircleIcon size={16} color="#b91c1c" />
-              <Text className="text-xs font-semibold text-red-700">
+              <Typography className="text-xs font-semibold text-red-700">
                 Overdue: {formatOverdueDuration(ticket.dueDateTime) ?? "—"}
-              </Text>
+              </Typography>
             </View>
           ) : (
             <View className="self-start flex-row items-center gap-1 rounded-full bg-purple-100 px-2.5 py-1">
               <ClockIcon size={16} color="#8b5cf6" />
-              <Text className="text-xs font-semibold text-purple-700">{formatRelativeTime(ticket.createdAt)}</Text>
+              <Typography className="text-xs font-semibold text-purple-700">{formatRelativeTime(ticket.createdAt)}</Typography>
             </View>
           )
         )} */}

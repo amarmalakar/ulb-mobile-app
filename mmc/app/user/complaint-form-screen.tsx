@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { TopNavigation } from "@/components/common/top-navigation";
 import { Stack, useLocalSearchParams, useRouter } from "expo-router";
 import { ComplaintForm } from "@/features/complaints/components/complaint-form";

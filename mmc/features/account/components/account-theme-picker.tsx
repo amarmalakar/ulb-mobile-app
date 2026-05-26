@@ -1,5 +1,5 @@
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useTranslation } from 'react-i18next';
 import type { TranslationKey } from '@/locales/keys';
 import { cn } from '@/lib/utils';
@@ -25,9 +25,9 @@ export function AccountThemePicker() {
 
   return (
     <View className="gap-3">
-      <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+      <Typography className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
         {t('account.appearance')}
-      </Text>
+      </Typography>
 
       <View className="flex-row gap-2">
         {THEME_OPTIONS.map((option) => {
@@ -53,14 +53,14 @@ export function AccountThemePicker() {
                   className={cn('size-5', isActive ? 'text-primary-foreground' : 'text-foreground')}
                 />
               </View>
-              <Text
+              <Typography
                 className={cn(
                   'text-sm font-semibold',
                   isActive ? 'text-primary' : 'text-foreground',
                 )}
               >
                 {t(option.labelKey)}
-              </Text>
+              </Typography>
             </Pressable>
           );
         })}

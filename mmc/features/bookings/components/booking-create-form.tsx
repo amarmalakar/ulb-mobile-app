@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import type { BookingFormValues } from '@/features/bookings/hooks/use-booking-form';
 import { MOBILE_NUMBER_LENGTH } from '@/features/user-auth/constants';
 
@@ -45,7 +45,7 @@ export function BookingCreateForm({
             )}
           />
           {errors.contactName ? (
-            <Text className="text-destructive text-xs">{errors.contactName.message}</Text>
+            <Typography className="text-destructive text-xs">{errors.contactName.message}</Typography>
           ) : null}
         </View>
 
@@ -66,7 +66,7 @@ export function BookingCreateForm({
             )}
           />
           {errors.contactPhone ? (
-            <Text className="text-destructive text-xs">{errors.contactPhone.message}</Text>
+            <Typography className="text-destructive text-xs">{errors.contactPhone.message}</Typography>
           ) : null}
         </View>
       </View>
@@ -88,7 +88,7 @@ export function BookingCreateForm({
             )}
           />
           {errors.durationDays ? (
-            <Text className="text-destructive text-xs">{errors.durationDays.message}</Text>
+            <Typography className="text-destructive text-xs">{errors.durationDays.message}</Typography>
           ) : null}
         </View>
       ) : null}
@@ -125,7 +125,7 @@ export function BookingCreateForm({
           )}
         />
         {errors.guestCount ? (
-          <Text className="text-destructive text-xs">{errors.guestCount.message}</Text>
+          <Typography className="text-destructive text-xs">{errors.guestCount.message}</Typography>
         ) : null}
       </View>
 

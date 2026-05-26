@@ -3,7 +3,7 @@ import { View } from 'react-native';
 
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 
 type UserTextInputProps = {
@@ -85,9 +85,9 @@ export function UserTextInput({
       </View>
 
       {hasError ? (
-        <Text className="px-1 text-sm text-destructive">{error}</Text>
+        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
       ) : helperText ? (
-        <Text className="px-1 text-xs leading-relaxed text-muted-foreground">{helperText}</Text>
+        <Typography className="px-1 text-xs leading-relaxed text-muted-foreground">{helperText}</Typography>
       ) : null}
     </View>
   );

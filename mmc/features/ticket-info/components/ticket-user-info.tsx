@@ -4,7 +4,7 @@ import { PhoneCallIcon } from "lucide-react-native";
 import type { UserTicketDetailUser } from "@/features/tickets/types";
 
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 function initials(name: string): string {
@@ -27,38 +27,38 @@ export function TicketUserInfo({ user }: { user: UserTicketDetailUser }) {
       <View className="flex-row items-center gap-3 rounded-xl bg-card p-4">
         <Avatar alt={`${user.name} avatar`}>
           <AvatarFallback>
-            <Text className="text-sm font-semibold text-foreground">{initials(user.name)}</Text>
+            <Typography className="text-sm font-semibold text-foreground">{initials(user.name)}</Typography>
           </AvatarFallback>
         </Avatar>
         <View className="flex-1">
-          <Text className="text-lg font-semibold text-foreground">{user.name}</Text>
-          <Text className="text-sm text-muted-foreground">{t("common.citizen")}</Text>
+          <Typography className="text-lg font-semibold text-foreground">{user.name}</Typography>
+          <Typography className="text-sm text-muted-foreground">{t("common.citizen")}</Typography>
         </View>
       </View>
 
       <View className="gap-3 rounded-xl bg-card p-4">
         <View className="gap-1">
-          <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <Typography className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {t("account.phone")}
-          </Text>
+          </Typography>
           <View className="flex-row items-center justify-between">
-            <Text className="text-base text-foreground">{user.phone}</Text>
+            <Typography className="text-base text-foreground">{user.phone}</Typography>
             <Pressable
               onPress={handleCallNow}
               className="flex-row items-center gap-1.5 rounded-md bg-primary px-3 py-1.5"
             >
               <PhoneCallIcon size={14} color="white" />
-              <Text className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Text>
+              <Typography className="text-xs font-semibold text-primary-foreground">{t("common.callNow")}</Typography>
             </Pressable>
           </View>
         </View>
 
         {user.email ? (
           <View className="gap-1">
-            <Text className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+            <Typography className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               {t("account.email")}
-            </Text>
-            <Text className="text-base text-foreground">{user.email}</Text>
+            </Typography>
+            <Typography className="text-base text-foreground">{user.email}</Typography>
           </View>
         ) : null}
       </View>

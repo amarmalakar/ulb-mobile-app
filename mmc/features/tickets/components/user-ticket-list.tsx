@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import type { InfiniteData, UseInfiniteQueryResult } from "@tanstack/react-query";
 import { AlertCircleIcon, HistoryIcon, RefreshCcwIcon } from "lucide-react-native";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Icon } from "@/components/ui/icon";
 import { Button } from "@/components/ui/button";
 import type { TicketListItem, UserTicketsPage } from "@/features/tickets/types";
@@ -31,14 +31,14 @@ function UserTicketListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">{t("common.errorTitle")}</Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        <Typography className="text-destructive text-center text-lg font-bold">{t("common.errorTitle")}</Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? t("common.errorDefault")}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t("common.retry")}</Text>
+        <Typography>{t("common.retry")}</Typography>
       </Button>
     </View>
   );
@@ -52,10 +52,10 @@ function UserTicketListEmpty() {
         <Icon as={HistoryIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-foreground text-center text-xl font-bold">{t("tickets.emptyTitle")}</Text>
-        <Text className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
+        <Typography className="text-foreground text-center text-xl font-bold">{t("tickets.emptyTitle")}</Typography>
+        <Typography className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
           {t("tickets.emptyHint")}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

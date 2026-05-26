@@ -1,6 +1,6 @@
 import { ActivityIndicator, Alert, ScrollView, View } from "react-native";
 import { useTranslation } from "react-i18next";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 import { usePatchStaffTicketStatusMutation } from "@/features/tickets/hooks/use-staff-ticket-queries";
 import { usePatchUserTicketStatusMutation } from "@/features/tickets/hooks/use-ticket-queries";
@@ -31,7 +31,7 @@ export default function TicketInfo({
       <View className="gap-4">
         <View className="px-4 pt-4">
           <View className="flex-row flex-wrap items-center justify-between">
-            <Text className="text-foreground text-2xl font-bold">{ticket.title}</Text>
+            <Typography className="text-foreground text-2xl font-bold">{ticket.title}</Typography>
 
             {ticket ? (
               <View className="flex-row items-center gap-2">
@@ -68,16 +68,16 @@ export default function TicketInfo({
         <Separator className="my-2" />
 
         <View className="px-4">
-          <Text className="text-primary text-2xl font-bold pb-2">{t("tickets.timelines")}</Text>
+          <Typography className="text-primary text-2xl font-bold pb-2">{t("tickets.timelines")}</Typography>
           <TicketsTimelines timelines={ticket.timelines} />
         </View>
 
         <Separator className="my-2" />
 
         <View className="px-4">
-          <Text className="text-primary text-2xl font-bold pb-2">
+          <Typography className="text-primary text-2xl font-bold pb-2">
             {authType === "User" ? t("tickets.assignedTo") : t("tickets.reportedBy")}
-          </Text>
+          </Typography>
           {authType === "User" ? (
             <TicketStaffInfo staff={ticket.assignedStaff} />
           ) : (
@@ -88,7 +88,7 @@ export default function TicketInfo({
         <Separator className="my-2" />
 
         <View className="px-4">
-          <Text className="text-primary text-2xl font-bold pb-2">{t("tickets.comments")}</Text>
+          <Typography className="text-primary text-2xl font-bold pb-2">{t("tickets.comments")}</Typography>
           <TicketComments
             comments={ticket.comments}
             ticketId={ticket.id}

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, View } from 'react-native';
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Button } from '@/components/ui/button';
 import { StaffMpin } from '@/features/staff-auth/components/staff-mpin';
 
@@ -46,7 +46,7 @@ export default function StaffMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Text className="text-muted-foreground mt-4 text-sm">{t('auth.loadingProfile')}</Text>
+            <Typography className="text-muted-foreground mt-4 text-sm">{t('auth.loadingProfile')}</Typography>
           ) : null}
         </View>
       </>
@@ -62,9 +62,9 @@ export default function StaffMpinScreen() {
       <Stack.Screen options={{ headerShown: false }} />
       {completeError ? (
         <View className="absolute inset-x-6 bottom-8 z-10 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-          <Text className="text-destructive text-center text-sm">{completeError}</Text>
+          <Typography className="text-destructive text-center text-sm">{completeError}</Typography>
           <Button variant="outline" onPress={() => void onComplete()}>
-            <Text>{t('common.retry')}</Text>
+            <Typography>{t('common.retry')}</Typography>
           </Button>
         </View>
       ) : null}

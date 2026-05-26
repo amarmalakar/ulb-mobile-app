@@ -1,8 +1,9 @@
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import type { TFunction } from "i18next";
-import { View, Text, Modal, Pressable } from "react-native";
+import { View, Modal, Pressable } from "react-native";
 import { BellIcon, CircleHelpIcon, LogOutIcon, MessageSquareTextIcon, SchoolIcon, SettingsIcon, UserRoundIcon, XIcon } from "lucide-react-native";
+import { Typography } from "@/components/ui/typography";
 import { useAuthContext } from "../provider/auth-provider";
 import type { AuthType } from "@/types/auth";
 
@@ -61,7 +62,7 @@ function MenuItem({ label, icon: Icon, onPress }: MenuItemProps) {
   return (
     <Pressable onPress={onPress} className="bg-muted mt-2 flex-row items-center rounded-xl px-3 py-3">
       <Icon size={18} color="#737373" />
-      <Text className="text-foreground ml-2 text-base font-medium">{label}</Text>
+      <Typography weight="medium" className="text-foreground ml-2 text-base">{label}</Typography>
     </Pressable>
   );
 }
@@ -86,17 +87,17 @@ export function MobileMenu({
         <Pressable className="flex-1" onPress={onClose} />
         <View className="bg-card h-full w-[78%] px-4 pb-8 pt-14">
           <View className="flex-row items-center justify-between">
-            <Text className="text-foreground text-lg font-bold">{t("menu.title")}</Text>
+            <Typography weight="bold" className="text-foreground text-lg">{t("menu.title")}</Typography>
             <Pressable onPress={onClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
               <XIcon size={18} color="#737373" />
             </Pressable>
           </View>
 
           <View className="bg-muted mt-5 rounded-2xl px-4 py-4">
-            <Text className="text-muted-foreground text-xs font-semibold uppercase tracking-wide">
+            <Typography variant="overline" weight="semibold" className="text-muted-foreground">
               {t("menu.loggedInAs", { role: t(roleKey) })}
-            </Text>
-            <Text className="text-foreground mt-1 text-lg font-bold">{userName}</Text>
+            </Typography>
+            <Typography weight="bold" className="text-foreground mt-1 text-lg">{userName}</Typography>
           </View>
 
           <View className="mt-4">
@@ -110,7 +111,7 @@ export function MobileMenu({
 
           <Pressable onPress={onLogout} className="bg-destructive mt-auto flex-row items-center justify-center rounded-xl py-3">
             <LogOutIcon size={18} color="#FFFFFF" />
-            <Text className="text-white ml-2 text-base font-semibold">{t("menu.logout")}</Text>
+            <Typography weight="semibold" className="text-white ml-2 text-base">{t("menu.logout")}</Typography>
           </Pressable>
         </View>
       </View>

@@ -4,7 +4,7 @@ import { Image } from 'expo-image';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
 import type { UserBookingResourceListItem } from '@/features/bookings/types';
 import { useRouter } from 'expo-router';
@@ -63,38 +63,38 @@ export function BookingItem({ booking }: { booking: UserBookingResourceListItem 
 
         <View className="gap-2 p-4">
           <View className="flex-row items-start justify-between gap-3">
-            <Text className="flex-1 text-lg font-semibold text-foreground">{booking.name}</Text>
+            <Typography className="flex-1 text-lg font-semibold text-foreground">{booking.name}</Typography>
             {booking.isFeatured ? (
               <View className="rounded-full bg-primary/15 px-2 py-1">
-                <Text className="text-xs font-semibold text-primary">{t('bookings.featured')}</Text>
+                <Typography className="text-xs font-semibold text-primary">{t('bookings.featured')}</Typography>
               </View>
             ) : null}
           </View>
 
-          <Text className="text-sm leading-6 text-muted-foreground" numberOfLines={3}>
+          <Typography className="text-sm leading-6 text-muted-foreground" numberOfLines={3}>
             {booking.description}
-          </Text>
+          </Typography>
 
           <View className="mt-1 flex-row items-center justify-between gap-3">
             <View className="min-w-0 flex-1 flex-row items-center gap-1">
               {booking.locationAddress ? (
                 <>
                   <Icon as={MapPinIcon} className="text-muted-foreground size-3.5 shrink-0" />
-                  <Text className="text-sm font-medium text-foreground" numberOfLines={1}>
+                  <Typography className="text-sm font-medium text-foreground" numberOfLines={1}>
                     {booking.locationAddress}
-                  </Text>
+                  </Typography>
                 </>
               ) : (
                 <>
                   <Icon as={TypeIcon} className="text-muted-foreground size-3.5 shrink-0" />
-                  <Text className="text-sm font-medium text-foreground">{typeLabel}</Text>
+                  <Typography className="text-sm font-medium text-foreground">{typeLabel}</Typography>
                 </>
               )}
             </View>
 
-            <Text className="shrink-0 text-base font-semibold text-primary">
+            <Typography className="shrink-0 text-base font-semibold text-primary">
               {formatCurrency(booking.unitPrice, booking.currency)}/{unit}
-            </Text>
+            </Typography>
           </View>
         </View>
       </View>

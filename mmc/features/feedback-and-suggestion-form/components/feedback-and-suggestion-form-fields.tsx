@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Textarea } from '@/components/ui/textarea';
 import type { FeedbackAndSuggestionFormValues } from '@/features/feedback-and-suggestion-form/schemas';
 import { FEEDBACK_AND_SUGGESTION_KINDS } from '@/features/feedback-and-suggestion-form/types';
@@ -56,7 +56,7 @@ export function FeedbackAndSuggestionFormFields({ form }: FeedbackAndSuggestionF
           )}
         />
         {errors.kind ? (
-          <Text className="text-destructive text-xs">{errors.kind.message}</Text>
+          <Typography className="text-destructive text-xs">{errors.kind.message}</Typography>
         ) : null}
       </View>
 
@@ -77,7 +77,7 @@ export function FeedbackAndSuggestionFormFields({ form }: FeedbackAndSuggestionF
           )}
         />
         {errors.title ? (
-          <Text className="text-destructive text-xs">{errors.title.message}</Text>
+          <Typography className="text-destructive text-xs">{errors.title.message}</Typography>
         ) : null}
       </View>
 
@@ -98,7 +98,7 @@ export function FeedbackAndSuggestionFormFields({ form }: FeedbackAndSuggestionF
           )}
         />
         {errors.message ? (
-          <Text className="text-destructive text-xs">{errors.message.message}</Text>
+          <Typography className="text-destructive text-xs">{errors.message.message}</Typography>
         ) : null}
       </View>
     </View>

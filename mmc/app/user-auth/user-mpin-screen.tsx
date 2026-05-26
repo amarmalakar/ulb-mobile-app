@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ActivityIndicator, Image, View } from 'react-native';
 
 import { Button } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useAuthContext } from '@/components/provider/auth-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { UserMpinForm } from '@/features/user-auth/components/user-mpin-form';
@@ -60,7 +60,7 @@ export default function UserMpinScreen() {
         <View className="flex-1 items-center justify-center bg-background">
           <ActivityIndicator size="large" />
           {completing ? (
-            <Text className="mt-4 text-sm text-muted-foreground">{t('auth.loadingProfile')}</Text>
+            <Typography className="mt-4 text-sm text-muted-foreground">{t('auth.loadingProfile')}</Typography>
           ) : null}
         </View>
       </>
@@ -92,18 +92,18 @@ export default function UserMpinScreen() {
               <ArrowLeftIcon size={20} />
             </Button>
 
-            <Text className="text-center text-xl font-extrabold text-foreground">
+            <Typography className="text-center text-xl font-extrabold text-foreground">
               {t('auth.userMpinTitle')}
-            </Text>
+            </Typography>
           </View>
 
           <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
 
           {completeError ? (
             <View className="mb-4 gap-2 rounded-lg border border-destructive/30 bg-destructive/10 p-4">
-              <Text className="text-center text-sm text-destructive">{completeError}</Text>
+              <Typography className="text-center text-sm text-destructive">{completeError}</Typography>
               <Button variant="outline" onPress={() => void finishToHome()}>
-                <Text>{t('common.retry')}</Text>
+                <Typography>{t('common.retry')}</Typography>
               </Button>
             </View>
           ) : null}

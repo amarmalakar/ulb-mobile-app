@@ -6,7 +6,7 @@ import { XIcon } from 'lucide-react-native';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { Textarea } from '@/components/ui/textarea';
 import { cn } from '@/lib/utils';
 import type {
@@ -41,10 +41,10 @@ function FilterChip({
         'shrink-0 rounded-full border px-3 py-2 active:opacity-80',
         selected ? 'border-primary bg-primary/15' : 'border-border bg-muted/40',
       )}>
-      <Text
+      <Typography
         className={cn('text-sm font-medium', selected ? 'text-primary' : 'text-foreground')}>
         {label}
-      </Text>
+      </Typography>
     </Pressable>
   );
 }
@@ -116,9 +116,9 @@ export function StaffBookingPaymentSheet({
         <Pressable className="flex-1" onPress={onClose} />
         <View className="max-h-[85vh] rounded-t-3xl bg-card">
           <View className="flex-row items-center justify-between px-4 py-3">
-            <Text className="text-lg font-bold text-foreground">
+            <Typography className="text-lg font-bold text-foreground">
               {t('bookings.staffAddPaymentTitle')}
-            </Text>
+            </Typography>
             <Pressable
               onPress={onClose}
               className="h-9 w-9 items-center justify-center rounded-full bg-muted">
@@ -209,7 +209,7 @@ export function StaffBookingPaymentSheet({
                 />
               </View>
 
-              {error ? <Text className="text-sm text-destructive">{error}</Text> : null}
+              {error ? <Typography className="text-sm text-destructive">{error}</Typography> : null}
             </View>
           </ScrollView>
 
@@ -221,9 +221,9 @@ export function StaffBookingPaymentSheet({
               {paymentMutation.isPending ? (
                 <ActivityIndicator color="#fff" />
               ) : (
-                <Text className="font-semibold text-primary-foreground">
+                <Typography className="font-semibold text-primary-foreground">
                   {t('bookings.staffSavePayment')}
-                </Text>
+                </Typography>
               )}
             </Button>
           </View>

@@ -5,7 +5,7 @@ import { Pressable, ScrollView, View } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { Button } from '@/components/ui/button';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { MOBILE_NUMBER_LENGTH, OTP_LENGTH } from '../constants';
 import {
   useUserSignupForm,
@@ -128,7 +128,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
             />
 
             {sendError ? (
-              <Text className="px-1 text-sm text-destructive">{sendError}</Text>
+              <Typography className="px-1 text-sm text-destructive">{sendError}</Typography>
             ) : null}
           </ScrollView>
         ) : (
@@ -153,7 +153,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
               )}
             />
             {sendError ? (
-              <Text className="px-1 text-sm text-destructive">{sendError}</Text>
+              <Typography className="px-1 text-sm text-destructive">{sendError}</Typography>
             ) : null}
           </View>
         )}
@@ -164,15 +164,15 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
         className="mt-auto h-14 rounded-lg bg-primary"
         onPress={stepsActions.onPress}
       >
-        <Text className="text-lg font-bold text-white">
+        <Typography className="text-lg font-bold text-white">
           {isLoading ? stepsActions.loadingText : stepsActions.title}
-        </Text>
+        </Typography>
       </Button>
 
       <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Text className="text-sm text-muted-foreground">{t('auth.alreadyRegistered')}</Text>
+        <Typography className="text-sm text-muted-foreground">{t('auth.alreadyRegistered')}</Typography>
         <Pressable onPress={onPressSignIn} disabled={isLoading} hitSlop={8}>
-          <Text className="text-sm font-semibold text-primary">{t('auth.signInLink')}</Text>
+          <Typography className="text-sm font-semibold text-primary">{t('auth.signInLink')}</Typography>
         </Pressable>
       </View>
     </View>

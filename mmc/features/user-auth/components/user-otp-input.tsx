@@ -9,7 +9,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 import { Label } from '@/components/ui/label';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { useOtpCountdown } from '@/features/staff-auth/hooks/use-otp-countdown';
 import { OTP_EXPIRY_SECONDS, OTP_LENGTH } from '../constants';
@@ -85,16 +85,16 @@ export function UserOtpInput({
             disabled && 'opacity-50',
           )}
         >
-          <Text className="text-sm font-semibold text-primary">
+          <Typography className="text-sm font-semibold text-primary">
             {t('auth.changeMobile')}
-          </Text>
+          </Typography>
         </Pressable>
       </View>
 
-      <Text className="px-1 text-sm text-muted-foreground">
+      <Typography className="px-1 text-sm text-muted-foreground">
         {t('auth.otpHint')}{' '}
-        <Text className="font-semibold tracking-wide text-foreground">{phoneDisplay}</Text>
-      </Text>
+        <Typography className="font-semibold tracking-wide text-foreground">{phoneDisplay}</Typography>
+      </Typography>
 
       <CodeField
         ref={ref}
@@ -125,18 +125,18 @@ export function UserOtpInput({
               !hasError && !isFocused && 'border-border',
             )}
           >
-            <Text className="text-2xl font-semibold tabular-nums text-foreground">
+            <Typography className="text-2xl font-semibold tabular-nums text-foreground">
               {symbol || (isFocused ? <Cursor /> : null)}
-            </Text>
+            </Typography>
           </View>
         )}
       />
 
       {hasError ? (
-        <Text className="px-1 text-sm text-destructive">{error}</Text>
+        <Typography className="px-1 text-sm text-destructive">{error}</Typography>
       ) : isExpired ? (
         <View className="flex-row items-center gap-1 px-1">
-          <Text className="text-xs text-muted-foreground">{t('auth.resendPrompt')}</Text>
+          <Typography className="text-xs text-muted-foreground">{t('auth.resendPrompt')}</Typography>
           <Pressable
             onPress={handleResend}
             disabled={disabled}
@@ -148,20 +148,20 @@ export function UserOtpInput({
               disabled && 'opacity-50',
             )}
           >
-            <Text className="text-xs font-semibold text-primary">
+            <Typography className="text-xs font-semibold text-primary">
               {t('auth.resendOtp')}
-            </Text>
+            </Typography>
           </Pressable>
         </View>
       ) : (
-        <Text
+        <Typography
           className={cn(
             'px-1 text-xs leading-relaxed tabular-nums',
             isUrgent ? 'font-medium text-destructive' : 'text-muted-foreground',
           )}
         >
           {t('auth.otpExpiresIn', { time: countdownLabel })}
-        </Text>
+        </Typography>
       )}
     </View>
   );

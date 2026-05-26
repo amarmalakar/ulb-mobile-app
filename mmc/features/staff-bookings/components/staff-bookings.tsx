@@ -3,7 +3,7 @@ import { View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { useLocalSearchParams } from 'expo-router';
 
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { StaffBookingFilter } from '@/features/staff-bookings/components/staff-booking-filter';
 import { StaffBookingList } from '@/features/staff-bookings/components/staff-booking-list';
 import {
@@ -47,7 +47,7 @@ export default function StaffBookings() {
   return (
     <View className="flex-1 gap-2 pt-2">
       {totalLabel ? (
-        <Text className="px-4 text-sm font-medium text-muted-foreground">{totalLabel}</Text>
+        <Typography className="px-4 text-sm font-medium text-muted-foreground">{totalLabel}</Typography>
       ) : null}
       <StaffBookingFilter filter={filter} replaceFilter={replaceFilter} resetFilter={resetFilter} />
       <StaffBookingList bookingsQuery={bookingsQuery} />

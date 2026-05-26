@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { useTranslation } from 'react-i18next';
 import NetInfo from '@react-native-community/netinfo';
 import { WifiOffIcon } from 'lucide-react-native';
@@ -24,15 +24,15 @@ export function NoConnectionScreen({ onRetry }: NoConnectionScreenProps) {
         <Icon as={WifiOffIcon} className="text-muted-foreground size-10" />
       </View>
       <View className="items-center gap-2">
-        <Text variant="h3" className="text-center">
+        <Typography variant="h3" className="text-center">
           {t('network.title')}
-        </Text>
-        <Text variant="muted" className="text-center">
+        </Typography>
+        <Typography variant="body2" color="muted" className="text-center">
           {t('network.hint')}
-        </Text>
+        </Typography>
       </View>
       <Button onPress={handleRetry}>
-        <Text>{t('common.tryAgain')}</Text>
+        <Typography>{t('common.tryAgain')}</Typography>
       </Button>
     </View>
   );

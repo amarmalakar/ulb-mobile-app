@@ -16,7 +16,7 @@ import { Pressable, View } from "react-native";
 import { useTranslation } from "react-i18next";
 
 import { Skeleton } from "@/components/ui/skeleton";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { useStaffAuth } from "@/components/provider/staff-auth-provider";
 import { useStaffHomeAnalyticsQuery } from "@/features/tickets/hooks/use-staff-home-analytics-query";
@@ -130,7 +130,7 @@ function StatCard({ label, value, icon: Icon, variant }: StatCardProps) {
         theme.card,
       )}>
       <View className="flex-row items-start justify-between">
-        <Text className={cn("text-xs font-semibold", theme.label)}>{label}</Text>
+        <Typography className={cn("text-xs font-semibold", theme.label)}>{label}</Typography>
         <View
           className={cn(
             "h-8 w-8 items-center justify-center rounded-lg",
@@ -139,9 +139,9 @@ function StatCard({ label, value, icon: Icon, variant }: StatCardProps) {
           <Icon size={16} color={theme.iconColor} />
         </View>
       </View>
-      <Text className={cn("text-2xl font-bold tabular-nums", theme.value)}>
+      <Typography className={cn("text-2xl font-bold tabular-nums", theme.value)}>
         {value}
-      </Text>
+      </Typography>
     </View>
   );
 }
@@ -197,9 +197,9 @@ export function StaffHomeDashboard() {
   if (isError && !analytics) {
     return (
       <View className="mb-56 px-4 pb-6 pt-2">
-        <Text className="text-destructive text-sm">
+        <Typography className="text-destructive text-sm">
           {error?.message ?? t("tickets.dashboardLoadError")}
-        </Text>
+        </Typography>
       </View>
     );
   }
@@ -231,9 +231,9 @@ export function StaffHomeDashboard() {
       <View className="px-4 gap-6">
         {tickets ? (
           <>
-            <Text className="text-foreground text-2xl font-bold">
+            <Typography className="text-foreground text-2xl font-bold">
               {t("tickets.totalTicketsTitle", { total: tickets.total })}
-            </Text>
+            </Typography>
             <View className="flex-row gap-3">
               <StatCard label={t("tickets.open")} value={tickets.open} icon={FolderOpen} variant="open" />
               <StatCard
@@ -246,12 +246,12 @@ export function StaffHomeDashboard() {
             </View>
           </>
         ) : (
-          <Text className="text-muted-foreground text-sm">{t("tickets.noData")}</Text>
+          <Typography className="text-muted-foreground text-sm">{t("tickets.noData")}</Typography>
         )}
         <View className="gap-3">
-          <Text className="text-foreground text-xl font-bold">{t("complaints.title")}</Text>
+          <Typography className="text-foreground text-xl font-bold">{t("complaints.title")}</Typography>
           {complaints.length === 0 ? (
-            <Text className="text-muted-foreground text-sm">{t("tickets.noComplaintTypes")}</Text>
+            <Typography className="text-muted-foreground text-sm">{t("tickets.noComplaintTypes")}</Typography>
           ) : (
             <View className="-mx-1 flex-row flex-wrap">
               {complaints.map((item) => {
@@ -271,20 +271,20 @@ export function StaffHomeDashboard() {
                         )}>
                         <Icon size={22} color={theme.iconColor} />
                       </View>
-                      <Text
+                      <Typography
                         className="mb-1 text-center text-xs font-semibold text-foreground"
                         numberOfLines={2}>
                         {item.title}
-                      </Text>
+                      </Typography>
                       <View
                         className="self-center rounded-lg px-2 py-1"
                         style={{ backgroundColor: `${theme.iconColor}24` }}>
-                        <Text
+                        <Typography
                           className="text-center text-[11px] font-bold tabular-nums"
                           style={{ color: theme.iconColor }}
                           numberOfLines={1}>
                           {t("tickets.openTicketsCount", { count: item.open })}
-                        </Text>
+                        </Typography>
                       </View>
                     </View>
                   </Pressable>
@@ -300,9 +300,9 @@ export function StaffHomeDashboard() {
       <View className="px-4 gap-6">
         {bookingSummary ? (
           <>
-            <Text className="text-foreground text-2xl font-bold">
+            <Typography className="text-foreground text-2xl font-bold">
               {t("bookings.staffTotalBookingsTitle", { total: bookingSummary.total })}
-            </Text>
+            </Typography>
             <View className="flex-row flex-wrap gap-3">
               <View className="w-[47%]">
                 <StatCard
@@ -338,11 +338,11 @@ export function StaffHomeDashboard() {
               </View>
             </View>
             <View className="gap-3">
-              <Text className="text-foreground text-xl font-bold">
+              <Typography className="text-foreground text-xl font-bold">
                 {t("bookings.staffResourcesTitle")}
-              </Text>
+              </Typography>
               {bookingResources.length === 0 ? (
-                <Text className="text-muted-foreground text-sm">{t("bookings.emptyTitle")}</Text>
+                <Typography className="text-muted-foreground text-sm">{t("bookings.emptyTitle")}</Typography>
               ) : (
                 <View className="-mx-1 flex-row flex-wrap">
                   {bookingResources.map((item) => (
@@ -363,20 +363,20 @@ export function StaffHomeDashboard() {
                           )}>
                           <Building2 size={22} color={bookingResourceTheme.iconColor} />
                         </View>
-                        <Text
+                        <Typography
                           className="mb-1 text-center text-xs font-semibold text-foreground"
                           numberOfLines={2}>
                           {item.title}
-                        </Text>
+                        </Typography>
                         <View
                           className="self-center rounded-lg px-2 py-1"
                           style={{ backgroundColor: `${bookingResourceTheme.iconColor}24` }}>
-                          <Text
+                          <Typography
                             className="text-center text-[11px] font-bold tabular-nums"
                             style={{ color: bookingResourceTheme.iconColor }}
                             numberOfLines={1}>
                             {t("bookings.staffOpenBookingsCount", { count: item.open })}
-                          </Text>
+                          </Typography>
                         </View>
                       </View>
                     </Pressable>

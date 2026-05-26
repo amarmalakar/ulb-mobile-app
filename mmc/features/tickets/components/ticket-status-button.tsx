@@ -8,7 +8,7 @@ import {
 } from "@/features/tickets/types";
 
 import { Icon } from "@/components/ui/icon";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { cn } from "@/lib/utils";
 import { getTicketStatusConfig } from "@/features/tickets/utils";
 import { useAuthContext } from "@/components/provider/auth-provider";
@@ -43,7 +43,7 @@ export default function TicketStatusButton({
   if (!status) {
     return (
       <View className="h-10 w-[140px] items-center justify-center rounded-md border border-border bg-muted/40">
-        <Text className="text-muted-foreground text-sm">{t("common.ellipsis")}</Text>
+        <Typography className="text-muted-foreground text-sm">{t("common.ellipsis")}</Typography>
       </View>
     );
   }
@@ -76,12 +76,12 @@ export default function TicketStatusButton({
         )}
       >
         <Icon as={statusConfig.icon} className={cn("size-4 shrink-0", statusConfig.iconClassName)} />
-        <Text
+        <Typography
           className={cn("text-sm font-semibold", statusConfig.badge.textClassName)}
           numberOfLines={1}
         >
           {statusConfig.label}
-        </Text>
+        </Typography>
       </Pressable>
 
       {open && canOpen ? (
@@ -114,7 +114,7 @@ export default function TicketStatusButton({
                   )}
                 >
                   <Icon as={cfg.icon} className={cn("size-4 shrink-0", cfg.iconClassName)} />
-                  <Text
+                  <Typography
                     className={cn(
                       "flex-1 text-sm",
                       selected ? cn("font-semibold", cfg.titleClassName) : "text-foreground",
@@ -122,7 +122,7 @@ export default function TicketStatusButton({
                     numberOfLines={1}
                   >
                     {cfg.label}
-                  </Text>
+                  </Typography>
                   {selected ? (
                     <Icon as={CheckIcon} className={cn("size-4 shrink-0", cfg.iconClassName)} />
                   ) : null}

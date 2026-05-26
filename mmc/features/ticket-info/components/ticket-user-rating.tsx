@@ -2,7 +2,7 @@ import { Alert, Pressable, View } from "react-native";
 import { useTranslation } from "react-i18next";
 import { StarIcon } from "lucide-react-native";
 
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { useUserAuth } from "@/components/provider/user-auth-provider";
 import { usePutUserTicketRatingMutation } from "@/features/tickets/hooks/use-ticket-queries";
 
@@ -27,14 +27,14 @@ export function TicketUserRating({
   return (
     <View className="rounded-xl bg-card p-3">
       <View className="flex-row items-center justify-between">
-        <Text className="text-sm font-semibold text-muted-foreground">{t("tickets.rateTicket")}</Text>
-        <Text className="text-sm font-medium text-foreground">
+        <Typography className="text-sm font-semibold text-muted-foreground">{t("tickets.rateTicket")}</Typography>
+        <Typography className="text-sm font-medium text-foreground">
           {isRatingUpdating
             ? t("tickets.updating")
             : displayRating > 0
               ? t("tickets.ratingScore", { rating: displayRating })
               : t("tickets.notRated")}
-        </Text>
+        </Typography>
       </View>
       <View className="mt-2 flex-row items-center gap-2">
         {[1, 2, 3, 4, 5].map((star) => {

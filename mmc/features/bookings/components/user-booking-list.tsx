@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import type { UserBookingListItem, UserBookingsPage } from '@/features/bookings/types';
 import { UserBookingListCard } from '@/features/bookings/components/user-booking-list-card';
 
@@ -31,16 +31,16 @@ function UserBookingListError({
         <Icon as={AlertCircleIcon} className="text-destructive" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-destructive text-center text-lg font-bold">
+        <Typography className="text-destructive text-center text-lg font-bold">
           {t('common.errorTitle')}
-        </Text>
-        <Text className="text-muted-foreground text-center text-sm">
+        </Typography>
+        <Typography className="text-muted-foreground text-center text-sm">
           {message ?? t('bookings.yourBookingsLoadError')}
-        </Text>
+        </Typography>
       </View>
       <Button size="sm" variant="outline" onPress={onRetry}>
         <Icon as={RefreshCcwIcon} className="size-4" />
-        <Text>{t('common.retry')}</Text>
+        <Typography>{t('common.retry')}</Typography>
       </Button>
     </View>
   );
@@ -54,12 +54,12 @@ function UserBookingListEmpty() {
         <Icon as={CalendarCheckIcon} className="text-muted-foreground" size={40} />
       </View>
       <View className="gap-1.5">
-        <Text className="text-foreground text-center text-xl font-bold">
+        <Typography className="text-foreground text-center text-xl font-bold">
           {t('bookings.yourBookingsEmptyTitle')}
-        </Text>
-        <Text className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
+        </Typography>
+        <Typography className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
           {t('bookings.yourBookingsEmptyHint')}
-        </Text>
+        </Typography>
       </View>
     </View>
   );

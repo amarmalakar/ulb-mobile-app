@@ -14,7 +14,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react-native';
 import { useTranslation } from 'react-i18next';
 
 import { Icon } from '@/components/ui/icon';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import {
   isDayBeforeMinAdvance,
@@ -75,7 +75,7 @@ export function BookingCalendar({
   return (
     <View className="rounded-2xl border border-border bg-card p-4">
       <View className="mb-3 flex-row items-center justify-between">
-        <Text className="text-base font-semibold text-foreground">{t('bookings.selectDate')}</Text>
+        <Typography className="text-base font-semibold text-foreground">{t('bookings.selectDate')}</Typography>
         {isLoading ? <ActivityIndicator size="small" /> : null}
       </View>
 
@@ -87,7 +87,7 @@ export function BookingCalendar({
         >
           <Icon as={ChevronLeftIcon} className="size-5" />
         </Pressable>
-        <Text className="text-base font-bold text-foreground">{format(visibleMonth, 'MMMM yyyy')}</Text>
+        <Typography className="text-base font-bold text-foreground">{format(visibleMonth, 'MMMM yyyy')}</Typography>
         <Pressable
           onPress={() => onVisibleMonthChange(addMonths(visibleMonth, 1))}
           className="h-9 w-9 items-center justify-center rounded-full bg-muted"
@@ -99,13 +99,13 @@ export function BookingCalendar({
       <View className="mb-1 flex-row">
         {WEEKDAY_KEYS.map((key) => (
           <View key={key} className="flex-1 items-center py-1">
-            <Text className="text-muted-foreground text-xs font-medium">{t(key)}</Text>
+            <Typography className="text-muted-foreground text-xs font-medium">{t(key)}</Typography>
           </View>
         ))}
       </View>
 
       {isError ? (
-        <Text className="text-destructive py-4 text-center text-sm">{errorMessage}</Text>
+        <Typography className="text-destructive py-4 text-center text-sm">{errorMessage}</Typography>
       ) : (
         <View className="flex-row flex-wrap">
           {Array.from({ length: monthDays.padStart }).map((_, i) => (
@@ -133,7 +133,7 @@ export function BookingCalendar({
                     !selected && !unavailable && 'bg-muted/50',
                   )}
                 >
-                  <Text
+                  <Typography
                     className={cn(
                       'text-sm font-medium',
                       selected && 'text-primary-foreground',
@@ -142,7 +142,7 @@ export function BookingCalendar({
                     )}
                   >
                     {format(day, 'd')}
-                  </Text>
+                  </Typography>
                 </View>
               </Pressable>
             );
@@ -153,15 +153,15 @@ export function BookingCalendar({
       <View className="mt-4 flex-row flex-wrap gap-3">
         <View className="flex-row items-center gap-1.5">
           <View className="bg-muted/50 h-3 w-3 rounded-full" />
-          <Text className="text-muted-foreground text-xs">{t('bookings.legendAvailable')}</Text>
+          <Typography className="text-muted-foreground text-xs">{t('bookings.legendAvailable')}</Typography>
         </View>
         <View className="flex-row items-center gap-1.5">
           <View className="bg-destructive/15 h-3 w-3 rounded-full" />
-          <Text className="text-muted-foreground text-xs">{t('bookings.legendBooked')}</Text>
+          <Typography className="text-muted-foreground text-xs">{t('bookings.legendBooked')}</Typography>
         </View>
         <View className="flex-row items-center gap-1.5">
           <View className="bg-primary h-3 w-3 rounded-full" />
-          <Text className="text-muted-foreground text-xs">{t('bookings.legendSelected')}</Text>
+          <Typography className="text-muted-foreground text-xs">{t('bookings.legendSelected')}</Typography>
         </View>
       </View>
     </View>

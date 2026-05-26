@@ -24,7 +24,7 @@ import { Alert as UiAlert, AlertDescription, AlertTitle } from '@/components/ui/
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/ui/typography';
 import { FeedbackAndSuggestionFormFields } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-form-fields';
 import { useCreateFeedbackAndSuggestionMutation } from '@/features/feedback-and-suggestion-form/hooks/use-create-feedback-and-suggestion-mutation';
 import { useFeedbackAndSuggestionForm } from '@/features/feedback-and-suggestion-form/hooks/use-feedback-and-suggestion-form';
@@ -108,9 +108,9 @@ export default function FeedbackAndSuggestionForm({
         <Skeleton className="h-12 w-full rounded-xl" />
         <Skeleton className="h-12 w-full rounded-xl" />
         <Skeleton className="h-36 w-full rounded-xl" />
-        <Text className="text-center text-sm text-muted-foreground">
+        <Typography className="text-center text-sm text-muted-foreground">
           {t('feedback.loadingProfile')}
-        </Text>
+        </Typography>
       </View>
     );
   }
@@ -125,20 +125,20 @@ export default function FeedbackAndSuggestionForm({
           <View className="rounded-full bg-primary/15 p-4">
             <Icon as={CheckCircle2Icon} className="size-10 text-primary" />
           </View>
-          <Text className="text-center text-xl font-semibold text-foreground">
+          <Typography className="text-center text-xl font-semibold text-foreground">
             {t('feedback.submitSuccessTitle')}
-          </Text>
-          <Text className="text-center text-sm leading-6 text-muted-foreground">
+          </Typography>
+          <Typography className="text-center text-sm leading-6 text-muted-foreground">
             {t('feedback.submitSuccessBody')}
-          </Text>
+          </Typography>
         </View>
 
         <View className="gap-2">
           <Button size="lg" onPress={() => setSubmittedId(null)}>
-            <Text>{t('feedback.submitAnother')}</Text>
+            <Typography>{t('feedback.submitAnother')}</Typography>
           </Button>
           <Button size="lg" variant="outline" onPress={() => router.back()}>
-            <Text>{t('feedback.close')}</Text>
+            <Typography>{t('feedback.close')}</Typography>
           </Button>
         </View>
       </View>
@@ -159,7 +159,7 @@ export default function FeedbackAndSuggestionForm({
           showsVerticalScrollIndicator={false}
         >
           {!isModal ? (
-            <Text className="text-sm leading-6 text-muted-foreground">{t('feedback.subtitle')}</Text>
+            <Typography className="text-sm leading-6 text-muted-foreground">{t('feedback.subtitle')}</Typography>
           ) : null}
 
           {submitError ? (
@@ -188,7 +188,7 @@ export default function FeedbackAndSuggestionForm({
                 onPress={handleCancel}
               >
                 <Icon as={XIcon} className="size-4 text-foreground" />
-                <Text className="font-semibold">{t('common.cancel')}</Text>
+                <Typography className="font-semibold">{t('common.cancel')}</Typography>
               </Button>
               <Button
                 className="flex-1 flex-row gap-2"
@@ -200,9 +200,9 @@ export default function FeedbackAndSuggestionForm({
                 ) : (
                   <Icon as={CheckIcon} className="size-4 text-primary-foreground" />
                 )}
-                <Text className="font-semibold text-primary-foreground">
+                <Typography className="font-semibold text-primary-foreground">
                   {createMutation.isPending ? t('feedback.submitting') : t('feedback.submit')}
-                </Text>
+                </Typography>
               </Button>
             </>
           ) : (
@@ -214,10 +214,10 @@ export default function FeedbackAndSuggestionForm({
               {createMutation.isPending ? (
                 <View className="flex-row items-center gap-2">
                   <ActivityIndicator color="#fff" />
-                  <Text>{t('feedback.submitting')}</Text>
+                  <Typography>{t('feedback.submitting')}</Typography>
                 </View>
               ) : (
-                <Text>{t('feedback.submit')}</Text>
+                <Typography>{t('feedback.submit')}</Typography>
               )}
             </Button>
           )}

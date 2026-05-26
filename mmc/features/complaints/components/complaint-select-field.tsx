@@ -7,7 +7,7 @@ import { Control, Controller, FieldValues, Path } from "react-hook-form";
 import { Icon } from "@/components/ui/icon";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
-import { Text } from "@/components/ui/text";
+import { Typography } from "@/components/ui/typography";
 import { Separator } from "@/components/ui/separator";
 
 type SelectOption = { value: string; label: string };
@@ -48,7 +48,7 @@ export function ComplaintSelectField<
             invalid={Boolean(error)}
           />
           {error ? (
-            <Text className="text-destructive text-sm">{error.message}</Text>
+            <Typography className="text-destructive text-sm">{error.message}</Typography>
           ) : null}
         </View>
       )}
@@ -108,7 +108,7 @@ function ComplaintSelectFieldControl({
           <Pressable className="flex-1" onPress={handleClose} />
           <View className="bg-card absolute bottom-0 h-[60vh] w-full rounded-t-3xl">
             <View className="flex-row items-center justify-between px-4 py-3">
-              <Text className="text-primary text-lg font-bold">{title}</Text>
+              <Typography className="text-primary text-lg font-bold">{title}</Typography>
               <Pressable onPress={handleClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
                 <X size={18} color="#737373" />
               </Pressable>
@@ -139,12 +139,12 @@ function ComplaintSelectFieldControl({
                   <View className="bg-muted size-14 items-center justify-center rounded-full">
                     <Icon as={SearchX} size={24} className="text-muted-foreground" />
                   </View>
-                  <Text className="text-foreground text-center text-base font-semibold">
+                  <Typography className="text-foreground text-center text-base font-semibold">
                     {t("common.noResults")}
-                  </Text>
-                  <Text className="text-muted-foreground text-center text-sm">
+                  </Typography>
+                  <Typography className="text-muted-foreground text-center text-sm">
                     {t("complaints.tryDifferentSearch")}
-                  </Text>
+                  </Typography>
                 </View>
               ) : (
                 <FlatList
@@ -164,14 +164,14 @@ function ComplaintSelectFieldControl({
                           isSelected ? "bg-primary/10 border border-primary/30" : "bg-muted/60 active:bg-muted"
                         )}
                       >
-                        <Text
+                        <Typography
                           className={cn(
                             "flex-1 pr-3 text-base",
                             isSelected ? "text-primary font-semibold" : "text-foreground font-medium"
                           )}
                         >
                           {item.label}
-                        </Text>
+                        </Typography>
                         {isSelected ? (
                           <View className="bg-primary size-6 items-center justify-center rounded-full">
                             <Check size={14} color="#FFFFFF" strokeWidth={3} />
@@ -195,7 +195,7 @@ function ComplaintSelectFieldControl({
         )}
         onPress={() => setVisible(true)}
       >
-        <Text
+        <Typography
           className={cn(
             "flex-1 text-base",
             selectedOption ? "text-foreground" : "text-muted-foreground/50"
@@ -203,7 +203,7 @@ function ComplaintSelectFieldControl({
           numberOfLines={1}
         >
           {selectedOption?.label ?? placeholder}
-        </Text>
+        </Typography>
         <Icon as={ChevronsDownUpIcon} size={16} className="text-muted-foreground/50" />
       </Pressable>
     </>
