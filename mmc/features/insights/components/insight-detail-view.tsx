@@ -1,9 +1,11 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { AlertCircleIcon, CalendarDaysIcon, FileTextIcon, RefreshCcwIcon } from 'lucide-react-native';
-import { Linking, ScrollView, View } from 'react-native';
+import { Linking, Modal, Pressable, ScrollView, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { Image } from 'react-native';
+import { useState } from 'react';
 
+import { MdxViewer } from '@/components/common/mdx-viewer';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -75,6 +77,7 @@ export function InsightDetailView({
 }) {
   const { t, i18n } = useTranslation();
   const { data, isLoading, isError, error, refetch, isRefetching } = query;
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null);
 
   if (isLoading || isRefetching) {
     return <DetailSkeleton />;
@@ -93,15 +96,35 @@ export function InsightDetailView({
   const subtitle = getInsightSubtitle(item, i18n.resolvedLanguage);
   const dateRange = formatInsightDateRange(item.startDate, item.endDate);
   const description = getLocalizedInsightText(item.description, i18n.resolvedLanguage);
+  const images = item.images ?? [];
+  const activeImage = viewerIndex !== null ? images[viewerIndex] : null;
 
   return (
-    <ScrollView
-      className="flex-1"
-      contentContainerClassName="gap-4 px-4 py-3 pb-8"
-      showsVerticalScrollIndicator={false}
-    >
-      {item.images[0] ? (
-        <Image source={{ uri: item.images[0] }} resizeMode="cover" className="h-56 w-full rounded-2xl" />
+    <>
+      <ScrollView
+        className="flex-1"
+        contentContainerClassName="gap-4 px-4 py-3 pb-24"
+        showsVerticalScrollIndicator={false}
+      >
+      {images.length > 0 ? (
+        <View className="gap-2">
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerClassName="gap-3">
+            {images.map((imageUrl, index) => (
+              <Pressable
+                key={`${imageUrl}-${index}`}
+                onPress={() => setViewerIndex(index)}
+                className="overflow-hidden rounded-2xl"
+              >
+                <Image source={{ uri: imageUrl }} resizeMode="cover" className="h-56 w-80 rounded-2xl" />
+              </Pressable>
+            ))}
+          </ScrollView>
+          {images.length > 1 ? (
+            <Typography variant="caption" color="muted">
+              {images.length} images
+            </Typography>
+          ) : null}
+        </View>
       ) : null}
 
       <View className={cn('self-start rounded-full px-3 py-1', insightTypeTone(item.type))}>
@@ -121,7 +144,7 @@ export function InsightDetailView({
       ) : null}
 
       {description ? (
-        <Typography className="text-base leading-7 text-foreground">{description}</Typography>
+        <MdxViewer content={description} />
       ) : null}
 
       {item.fileUrl.length > 0 ? (
@@ -142,6 +165,47 @@ export function InsightDetailView({
           ))}
         </View>
       ) : null}
-    </ScrollView>
+      </ScrollView>
+      <Modal
+        animationType="fade"
+        transparent
+        visible={viewerIndex !== null}
+        onRequestClose={() => setViewerIndex(null)}
+      >
+        <View className="flex-1 items-center justify-center bg-black/95 px-4">
+          <Pressable className="absolute right-4 top-14 z-10 rounded-full bg-black/60 px-4 py-2" onPress={() => setViewerIndex(null)}>
+            <Typography className="text-white">Close</Typography>
+          </Pressable>
+
+          {activeImage ? (
+            <Image source={{ uri: activeImage }} resizeMode="contain" className="h-[78%] w-full" />
+          ) : null}
+
+          {images.length > 1 && viewerIndex !== null ? (
+            <View className="mt-4 flex-row items-center justify-center gap-3">
+              <Button
+                variant="outline"
+                onPress={() =>
+                  setViewerIndex((prev) => (prev === null ? 0 : (prev - 1 + images.length) % images.length))
+                }
+              >
+                <Typography>Prev</Typography>
+              </Button>
+              <Typography className="text-white">
+                {viewerIndex + 1} / {images.length}
+              </Typography>
+              <Button
+                variant="outline"
+                onPress={() =>
+                  setViewerIndex((prev) => (prev === null ? 0 : (prev + 1) % images.length))
+                }
+              >
+                <Typography>Next</Typography>
+              </Button>
+            </View>
+          ) : null}
+        </View>
+      </Modal>
+    </>
   );
 }
