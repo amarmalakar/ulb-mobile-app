@@ -35,8 +35,18 @@ export const en = {
   nav: {
     home: 'Home',
     bookings: 'Bookings',
+    insights: 'Insights',
     tickets: 'Tickets',
     account: 'Account',
+  },
+  insights: {
+    detailTitle: 'Insight',
+    loadError: 'Could not load insights. Please try again.',
+    emptyTitle: 'No insights yet',
+    emptyHint: 'Published news, events, tenders, and jobs will appear here.',
+    notFound: 'This insight is no longer available.',
+    attachments: 'Attachments',
+    openAttachment: 'Open attachment',
   },
   network: {
     title: 'No internet connection',

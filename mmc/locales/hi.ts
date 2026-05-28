@@ -37,8 +37,18 @@ export const hi: TranslationSchema = {
   nav: {
     home: 'होम',
     bookings: 'बुकिंग',
+    insights: 'इनसाइट्स',
     tickets: 'टिकट',
     account: 'खाता',
+  },
+  insights: {
+    detailTitle: 'इनसाइट',
+    loadError: 'इनसाइट्स लोड नहीं हो सके। कृपया फिर से प्रयास करें।',
+    emptyTitle: 'अभी कोई इनसाइट्स नहीं',
+    emptyHint: 'प्रकाशित समाचार, कार्यक्रम, टेंडर और नौकरियां यहां दिखेंगी।',
+    notFound: 'यह इनसाइट अब उपलब्ध नहीं है।',
+    attachments: 'संलग्नक',
+    openAttachment: 'संलग्नक खोलें',
   },
   network: {
     title: 'इंटरनेट कनेक्शन नहीं',

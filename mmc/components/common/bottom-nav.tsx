@@ -12,7 +12,8 @@ import {
   CalendarClockIcon,
   CircleUserRoundIcon,
   ChartScatterIcon,
-  HouseIcon
+  HouseIcon,
+  NewspaperIcon
 } from 'lucide-react-native';
 import { useAuthContext } from "@/components/provider/auth-provider";
 import { useTranslation } from "react-i18next";
@@ -23,6 +24,7 @@ const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon;
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/user/home-screen' },
   // { id: 'near-me', label: 'Near me', icon: MapPinnedIcon, route: '/(user)/near-me-screen' },
   { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: BOOKING_RESOURCE_LIST_ROUTE },
+  { id: 'insights', labelKey: 'nav.insights', icon: NewspaperIcon, route: '/common/insights-screen' },
   // { id: 'analytics', label: 'Analytics', icon: ChartPieIcon, route: '/(user)/analytics-screen' },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/user/user-tickets-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/user/user-account-screen' },
@@ -31,6 +33,7 @@ const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon;
 const staffItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/staff/home-screen' },
   { id: 'booking-list', labelKey: 'nav.bookings', icon: SchoolIcon, route: BOOKING_RESOURCE_LIST_ROUTE },
+  { id: 'insights', labelKey: 'nav.insights', icon: NewspaperIcon, route: '/common/insights-screen' },
   { id: 'tickets', labelKey: 'nav.tickets', icon: TicketSlashIcon, route: '/staff/staff-tickets-screen' },
   // { id: 'attendance', label: 'Attendance', icon: CalendarClockIcon, route: '/(staff)/attendance-screen' },
   { id: 'account', labelKey: 'nav.account', icon: CircleUserRoundIcon, route: '/staff/staff-account-screen' },

@@ -1,0 +1,1 @@
+export { InsightInfoScreen as default } from '@/features/insights/screens/insight-info-screen';
