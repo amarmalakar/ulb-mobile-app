@@ -19,6 +19,7 @@ import { useAuthContext } from "@/components/provider/auth-provider";
 import { useTranslation } from "react-i18next";
 import type { TranslationKey } from "@/locales/keys";
 import { BOOKING_RESOURCE_LIST_ROUTE } from '@/features/bookings/lib/booking-routes';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const userItems: { id: string; labelKey: TranslationKey; icon: typeof HouseIcon; route: string }[] = [
   { id: 'home', labelKey: 'nav.home', icon: HouseIcon, route: '/user/home-screen' },
@@ -45,11 +46,16 @@ export function BottomNav({ activeItemId }: {
   const { t } = useTranslation();
   const { authType } = useAuthContext();
   const items = authType === "User" ? userItems : staffItems;
+  const insets = useSafeAreaInsets();
+  const bottomSpacing = Math.max(insets.bottom, 12);
 
   return (
     <View
-      className="absolute bottom-0 left-0 right-0 px-4 pb-4"
-      style={{ elevation: 14 }}
+      className="absolute bottom-0 left-0 right-0 px-4"
+      style={{
+        elevation: 14,
+        paddingBottom: bottomSpacing,
+      }}
     >
       <View
         className="bg-card border-border flex-row items-center justify-between rounded-full border px-2 py-2 shadow-lg shadow-black/20 dark:shadow-white/20"
