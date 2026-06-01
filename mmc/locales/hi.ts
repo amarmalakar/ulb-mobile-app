@@ -96,6 +96,18 @@ export const hi: TranslationSchema = {
   home: {
     welcome: 'स्वागत है',
   },
+  leadership: {
+    title: 'नेतृत्व',
+    loadError: 'नेतृत्व विवरण लोड नहीं हो सके। कृपया पुनः प्रयास करें।',
+    emptyTitle: 'अभी कोई नेतृत्व प्रोफ़ाइल नहीं',
+    emptyHint:
+      'मेयर, उप मेयर और वार्ड समन्वयक का विवरण उपलब्ध होने पर यहाँ दिखेगा।',
+    positions: {
+      mayor: 'मेयर',
+      deputyMayor: 'उप मेयर',
+      wardCoordinator: 'वार्ड समन्वयक',
+    },
+  },
   complaints: {
     title: 'शिकायतें',
     empty: 'कोई शिकायत प्रकार उपलब्ध नहीं है।',

@@ -94,6 +94,18 @@ export const en = {
   home: {
     welcome: 'Welcome',
   },
+  leadership: {
+    title: 'Leadership',
+    loadError: 'Could not load leadership. Please try again.',
+    emptyTitle: 'No leadership profiles yet',
+    emptyHint:
+      'Mayor, deputy mayor, and ward coordinator details will appear here when available.',
+    positions: {
+      mayor: 'Mayor',
+      deputyMayor: 'Deputy Mayor',
+      wardCoordinator: 'Ward Coordinator',
+    },
+  },
   complaints: {
     title: 'Complaints',
     empty: 'No complaint types available.',

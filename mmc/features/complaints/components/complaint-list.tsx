@@ -116,7 +116,7 @@ export function ComplaintList() {
   if (isError) {
     return (
       <View className="gap-4 p-4">
-        <Typography className="text-xl font-bold text-primary">{t('complaints.title')}</Typography>
+        <Typography variant="h4" className="text-primary">{t('complaints.title')}</Typography>
         <ComplaintListError
           onRetry={() => void refetch()}
           message={error?.message}
@@ -132,7 +132,7 @@ export function ComplaintList() {
 
   return (
     <View className="gap-4 p-4">
-      <Typography className="text-xl font-bold text-primary">{t('complaints.title')}</Typography>
+      <Typography variant="h4" className="text-primary">{t('complaints.title')}</Typography>
 
       {items.length === 0 ? (
         <Typography className="text-muted-foreground text-sm">{t('complaints.empty')}</Typography>
