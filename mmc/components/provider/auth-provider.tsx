@@ -1,9 +1,10 @@
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { type Href, useRouter } from 'expo-router';
 
 import { useStaffAuth } from '@/components/provider/staff-auth-provider';
 import { useUserAuth } from '@/components/provider/user-auth-provider';
 import { useAuthType } from '@/hooks/use-auth-type';
+import { setUnauthorizedSessionHandler } from '@/lib/unauthorized-session';
 import { useTranslation } from 'react-i18next';
 import type { AuthType } from '@/types/auth';
 
@@ -147,6 +148,46 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     staffSignOut,
     userSignOut,
   ]);
+
+  const handleSessionExpired = useCallback(async () => {
+    if (isLoggingOut) return;
+
+    const role = authType;
+    setIsLoggingOut(true);
+    try {
+      if (role === 'Staff') {
+        await staffSignOut();
+        await handleAuthType('Staff');
+        router.replace(STAFF_LOGIN_HREF);
+        return;
+      }
+
+      if (role === 'User') {
+        await userSignOut();
+        await handleAuthType('User');
+        router.replace(USER_LOGIN_HREF);
+        return;
+      }
+
+      await handleAuthType(null);
+      setStep(1);
+      router.replace('/');
+    } finally {
+      setIsLoggingOut(false);
+    }
+  }, [
+    authType,
+    handleAuthType,
+    isLoggingOut,
+    router,
+    staffSignOut,
+    userSignOut,
+  ]);
+
+  useEffect(() => {
+    setUnauthorizedSessionHandler(() => handleSessionExpired());
+    return () => setUnauthorizedSessionHandler(null);
+  }, [handleSessionExpired]);
 
   const value = useMemo(
     () => ({

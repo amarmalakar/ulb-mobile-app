@@ -1,6 +1,7 @@
 import { getAuthTypeHeaderValue } from '@/lib/auth-type-storage';
 import { getStaffTokenHeaderValue } from '@/lib/staff-auth-storage';
 import { getUserTokenHeaderValue } from '@/lib/user-auth-storage';
+import { notifyUnauthorizedSession } from '@/lib/unauthorized-session';
 import axios, {
   AxiosError,
   type AxiosInstance,
@@ -132,10 +133,13 @@ export function createApiClient({ baseURL, ulbId }: CreateApiClientOptions): Axi
     },
     (error) => {
       const apiError = toApiError(error);
+      const requestUrl = axios.isAxiosError(error) ? error.config?.url : undefined;
 
       if (__DEV__) {
         console.error('[API]', apiError.status, apiError.message, apiError.data);
       }
+
+      void notifyUnauthorizedSession(apiError, requestUrl);
 
       return Promise.reject(apiError);
     },
