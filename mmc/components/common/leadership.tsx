@@ -195,7 +195,7 @@ function LeadershipList({ leadership }: { leadership: LeadershipMember[] }) {
   );
 }
 
-export function UserLeadership({
+export function Leadership({
   isLoading,
   isError,
   error,

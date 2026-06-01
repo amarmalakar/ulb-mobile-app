@@ -1,23 +1,23 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { useNetworkContext } from '@/components/provider/network-provider';
-import { useUserAuth } from '@/components/provider/user-auth-provider';
-import { userBearerHeaders } from '@/features/user-auth/utils/api-response';
-import { fetchUserLeadership } from '@/features/leadership/lib/fetch-leadership';
+import { useStaffAuth } from '@/components/provider/staff-auth-provider';
+import { staffBearerHeaders } from '@/features/staff-auth/utils/api-response';
+import { fetchStaffLeadership } from '@/features/leadership/lib/fetch-leadership';
 import type { LeadershipMember } from '@/types/leadership';
 
-export type UseUserLeadershipQueryOptions = {
+export type UseStaffLeadershipQueryOptions = {
   enabled?: boolean;
 };
 
-/** Loads ULB leadership from `GET /user/leadership`. */
-export function useUserLeadershipQuery(options?: UseUserLeadershipQueryOptions) {
+/** Loads ULB leadership from `GET /staff/leadership`. */
+export function useStaffLeadershipQuery(options?: UseStaffLeadershipQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
   const accessToken = session?.accessToken;
 
   return useQuery<LeadershipMember[], Error>({
-    queryKey: ['user', 'leadership', accessToken],
+    queryKey: ['staff', 'leadership', accessToken],
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
@@ -28,7 +28,7 @@ export function useUserLeadershipQuery(options?: UseUserLeadershipQueryOptions) 
       if (!token) {
         throw new Error('Missing access token');
       }
-      return fetchUserLeadership(client, token, userBearerHeaders(token));
+      return fetchStaffLeadership(client, token, staffBearerHeaders(token));
     },
   });
 }

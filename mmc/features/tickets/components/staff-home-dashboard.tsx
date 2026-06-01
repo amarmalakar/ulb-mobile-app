@@ -196,7 +196,7 @@ export function StaffHomeDashboard() {
 
   if (isError && !analytics) {
     return (
-      <View className="mb-56 px-4 pb-6 pt-2">
+      <View className="px-4 pb-6 pt-2">
         <Typography className="text-destructive text-sm">
           {error?.message ?? t("tickets.dashboardLoadError")}
         </Typography>
@@ -227,7 +227,7 @@ export function StaffHomeDashboard() {
   };
 
   return (
-    <View className="mb-56 gap-6 pb-6 pt-2">
+    <View className="gap-6 pb-6 pt-2">
       <View className="px-4 gap-6">
         {tickets ? (
           <>
