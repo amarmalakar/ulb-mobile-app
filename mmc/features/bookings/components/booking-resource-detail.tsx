@@ -28,6 +28,7 @@ import { Typography } from '@/components/ui/typography';
 import { Badge } from '@/components/ui/badge';
 import type { UserBookingResourceDetail } from '@/features/bookings/types';
 import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HERO_HEIGHT = 360;
 const SLIDE_INTERVAL_MS = 3000;
@@ -192,6 +193,8 @@ function ResourceDetailContent({
   isBooking?: boolean;
 }) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
+  const bottomSpacing = Math.max(insets.bottom, 12);
   const TypeIcon = resource.type === 'VEHICLE' ? CarIcon : Building2Icon;
   const typeLabel =
     resource.type === 'VEHICLE' ? t('bookings.typeVehicle') : t('bookings.typeBuilding');
@@ -361,7 +364,13 @@ function ResourceDetailContent({
         </View>
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 border-t border-border bg-card px-4 pb-6 pt-3">
+      <View
+        className="absolute bottom-0 left-0 right-0 border-t border-border bg-card px-4 pb-6 pt-3"
+        style={{
+          elevation: 14,
+          paddingBottom: bottomSpacing,
+        }}
+      >
         <Button className="h-14 rounded-2xl" disabled={isBooking} onPress={onBookNow}>
           {isBooking ? (
             <ActivityIndicator color="#fff" />
