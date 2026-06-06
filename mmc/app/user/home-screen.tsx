@@ -7,6 +7,7 @@ import { ComplaintList } from '@/features/complaints/components/complaint-list';
 import { useTranslation } from 'react-i18next';
 import { Leadership } from '@/components/common/leadership';
 import { useUserLeadershipQuery } from '@/features/leadership/hooks/use-user-leadership-query';
+// import { TestMap } from '@/components/common/test-map';
 
 export default function UserHomeScreen() {
   const { t } = useTranslation();
@@ -26,6 +27,8 @@ export default function UserHomeScreen() {
       <View className="bg-background flex-1 pb-28">
         <ScrollView showsVerticalScrollIndicator={false}>
           <HomeBanner userName={userInfo?.name ?? t('common.user')} />
+
+          {/* <TestMap /> */}
 
           <Leadership
             isLoading={isLeadershipLoading}
