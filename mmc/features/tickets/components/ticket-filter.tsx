@@ -40,6 +40,7 @@ import {
 } from "lucide-react-native";
 import { useStaffAuth } from "@/components/provider/staff-auth-provider";
 import { useStaffTicketFilterQuery } from "../hooks/use-staff-ticket-queries";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 type TicketFilterProps = TicketFilterSelection;
 
@@ -439,6 +440,7 @@ function TicketFilterSummaryBar({
 
 export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [draft, setDraft] = useState<TicketFilterState>(filter);
 
@@ -542,11 +544,13 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
                 onSelectComplaint={(id) => patchDraft({ selectedComplaintId: id })}
                 complaintQuery={draft.query}
               />
+
+              <View className="h-12" />
             </ScrollView>
 
             <Separator />
 
-            <View className="flex-row gap-3 bg-card px-4 py-3">
+            <View className="flex-row gap-3 bg-card px-4 pt-3" style={{ paddingBottom: insets.bottom + 12 }}>
               <Button variant="outline" className="flex-1" onPress={handleResetAll}>
                 <Typography className="font-semibold">{t("common.resetAll")}</Typography>
               </Button>

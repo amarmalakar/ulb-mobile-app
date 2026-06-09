@@ -112,16 +112,16 @@ export function BookingCalendar({
             <View key={`pad-${i}`} className="aspect-square w-[14.28%]" />
           ))}
           {monthDays.days.map((day) => {
-            const unavailable =
-              isDayUnavailable(day, bookings, blocks) ||
-              isDayBeforeMinAdvance(day, minAdvanceHours);
+            const isOccupied = isDayUnavailable(day, bookings, blocks);
+            const isBeforeMinAdvance = isDayBeforeMinAdvance(day, minAdvanceHours);
+            const isBookable = !isOccupied && !isBeforeMinAdvance;
             const selected = selectedDate ? isSameDay(day, selectedDate) : false;
             const inMonth = isSameMonth(day, visibleMonth);
 
             return (
               <Pressable
                 key={day.toISOString()}
-                disabled={unavailable || !inMonth}
+                disabled={!isBookable || !inMonth}
                 onPress={() => onSelectDate(day)}
                 className="aspect-square w-[14.28%] items-center justify-center p-0.5"
               >
@@ -129,16 +129,17 @@ export function BookingCalendar({
                   className={cn(
                     'h-9 w-9 items-center justify-center rounded-full',
                     selected && 'bg-primary',
-                    !selected && unavailable && 'bg-destructive/15',
-                    !selected && !unavailable && 'bg-muted/50',
+                    !selected && isOccupied && 'bg-destructive/15',
+                    !selected && isBookable && 'bg-emerald-50',
                   )}
                 >
                   <Typography
                     className={cn(
                       'text-sm font-medium',
                       selected && 'text-primary-foreground',
-                      !selected && unavailable && 'text-destructive',
-                      !selected && !unavailable && 'text-foreground',
+                      !selected && isOccupied && 'text-destructive',
+                      !selected && isBookable && 'text-foreground',
+                      !selected && !isOccupied && !isBookable && 'text-muted-foreground',
                     )}
                   >
                     {format(day, 'd')}
@@ -152,7 +153,7 @@ export function BookingCalendar({
 
       <View className="mt-4 flex-row flex-wrap gap-3">
         <View className="flex-row items-center gap-1.5">
-          <View className="bg-muted/50 h-3 w-3 rounded-full" />
+          <View className="bg-emerald-50 h-3 w-3 rounded-full border border-emerald-200" />
           <Typography className="text-muted-foreground text-xs">{t('bookings.legendAvailable')}</Typography>
         </View>
         <View className="flex-row items-center gap-1.5">

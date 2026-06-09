@@ -27,6 +27,7 @@ import {
   type FeedbackSubmittedByFilter,
   type FeedbackTypeFilter,
 } from '@/features/feedback-and-suggestion-form/hooks/use-feedback-and-suggestion-filters';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type FeedbackAndSuggestionFiltersProps = {
   filter: FeedbackAndSuggestionFilterState;
@@ -168,7 +169,7 @@ export function FeedbackAndSuggestionFilters({
   const { t } = useTranslation();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [draft, setDraft] = useState(filter);
-
+  const insets = useSafeAreaInsets();
   const activeCount = useMemo(
     () => countActiveFeedbackAndSuggestionFilters(filter),
     [filter],
@@ -267,9 +268,12 @@ export function FeedbackAndSuggestionFilters({
               />
             </ScrollView>
 
-            <Separator />
+            <Separator style={{ paddingBottom: insets.bottom + 12 }} />
 
-            <View className="flex-row gap-3 bg-card px-4 py-3">
+            <View
+              className="flex-row gap-3 bg-card px-4 py-3"
+              style={{ paddingBottom: insets.bottom + 12 }}
+            >
               <Button variant="outline" className="flex-1 flex-row gap-2" onPress={handleReset}>
                 <Icon as={RotateCcwIcon} className="size-4 text-foreground" />
                 <Typography className="font-semibold">{t('feedback.filters.reset')}</Typography>

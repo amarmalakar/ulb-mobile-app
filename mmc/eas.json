@@ -9,7 +9,10 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "distribution": "internal",
+      "env": {
+        "EXPO_PUBLIC_ULB_API_BASE_URL": "https://ulb-production.up.railway.app/api/v2"
+      }
     },
     "production": {
       "autoIncrement": true

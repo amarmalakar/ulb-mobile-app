@@ -11,6 +11,7 @@ import { addHours, format, startOfDay, startOfMonth } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
 import { bookingRoutes } from '@/features/bookings/lib/booking-routes';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/ui/typography';
@@ -35,7 +36,7 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
   const { userInfo } = useUserAuth();
   const { staffInfo } = useStaffAuth();
   const isStaff = authType === 'Staff';
-
+  const insets = useSafeAreaInsets();
   const [visibleMonth, setVisibleMonth] = useState(() => startOfMonth(new Date()));
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [submitError, setSubmitError] = useState<string | null>(null);
@@ -208,7 +209,10 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
         ) : null}
       </ScrollView>
 
-      <View className="absolute bottom-0 left-0 right-0 border-t border-border bg-card px-4 pb-6 pt-3">
+      <View
+        className="absolute bottom-0 left-0 right-0 border-t border-border bg-card px-4 pb-6 pt-3"
+        style={{ paddingBottom: insets.bottom, elevation: 14 }}
+      >
         <Button
           className="h-14 rounded-2xl"
           disabled={createBooking.isPending}

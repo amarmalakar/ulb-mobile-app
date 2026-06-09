@@ -17,6 +17,7 @@ import {
   getFeedbackSubmitterRoleLabel,
 } from '@/features/feedback-and-suggestion-form/lib/feedback-list-utils';
 import type { FeedbackAndSuggestionListItem } from '@/features/feedback-and-suggestion-form/types';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export type FeedbackAndSuggestionDetailModalProps = {
   item: FeedbackAndSuggestionListItem | null;
@@ -44,6 +45,7 @@ export function FeedbackAndSuggestionDetailModal({
   const { authType } = useAuthContext();
   const { userInfo } = useUserAuth();
   const { staffInfo } = useStaffAuth();
+  const insets = useSafeAreaInsets();
 
   if (!item) return null;
 
@@ -131,7 +133,7 @@ export function FeedbackAndSuggestionDetailModal({
 
           <Separator />
 
-          <View className="px-4 py-3">
+          <View className="px-4 py-3" style={{ paddingBottom: insets.bottom }}>
             <Button variant="outline" className="w-full" onPress={onClose}>
               <Typography className="font-semibold">{t('feedback.close')}</Typography>
             </Button>

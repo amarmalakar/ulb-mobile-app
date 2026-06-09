@@ -14,7 +14,7 @@ interface NetworkContextType {
 export const NetworkContext = createContext<NetworkContextType | undefined>(undefined);
 
 export function NetworkProvider({ children }: { children: ReactNode }) {
-  const ulbId = process.env.EXPO_PUBLIC_ULB_ID!;
+  const ulbId = process.env.EXPO_PUBLIC_ULB_ID! || "https://ulb-production.up.railway.app/api/v2";
   const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL!;
   // const apiBaseUrl = Platform.OS === 'android' ? 'http://10.0.2.2:4000/api/v2' : 'http://localhost:4000/api/v2';
 

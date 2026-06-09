@@ -12,6 +12,7 @@ import { TicketComments } from "./components/ticket-comments";
 import { resolveTicketImageUrl } from "./lib/resolve-ticket-image-url";
 import type { TicketInfoAuthType, TicketInfoTicket } from "./types";
 import TicketStatusButton from "./components/ticket-status-button";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function TicketInfo({
   ticket,
@@ -21,6 +22,7 @@ export default function TicketInfo({
   authType: TicketInfoAuthType;
 }) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const canRate = authType === "User" && ticket.status === "COMPLETED";
   const patchStaffStatus = usePatchStaffTicketStatusMutation();
   const patchUserStatus = usePatchUserTicketStatusMutation();
@@ -97,6 +99,8 @@ export default function TicketInfo({
           />
         </View>
       </View>
+
+      <View style={{ paddingBottom: insets.bottom }} />
     </ScrollView>
   );
 }

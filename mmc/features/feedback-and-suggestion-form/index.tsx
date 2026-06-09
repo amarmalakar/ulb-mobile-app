@@ -119,7 +119,6 @@ export default function FeedbackAndSuggestionForm({
     return (
       <View
         className="flex-1 justify-center gap-6 p-4"
-        style={{ paddingBottom: insets.bottom + 16 }}
       >
         <View className="items-center gap-3">
           <View className="rounded-full bg-primary/15 p-4">
@@ -150,7 +149,6 @@ export default function FeedbackAndSuggestionForm({
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         className={isModal ? undefined : 'flex-1'}
-        style={isModal ? undefined : { paddingBottom: insets.bottom }}
       >
         <ScrollView
           className={isModal ? 'max-h-96' : 'flex-1'}
@@ -178,6 +176,7 @@ export default function FeedbackAndSuggestionForm({
               ? 'flex-row gap-3 border-t border-border bg-card px-4 py-3'
               : 'gap-2 border-t border-border bg-background px-4 py-3'
           }
+          style={{ paddingBottom: insets.bottom }}
         >
           {isModal ? (
             <>

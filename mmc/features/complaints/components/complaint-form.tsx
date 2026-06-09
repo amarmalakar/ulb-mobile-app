@@ -127,7 +127,6 @@ export function ComplaintForm({
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           className="flex-1 bg-background"
-          style={{ paddingBottom: insets.bottom }}
         >
           <ScrollView showsVerticalScrollIndicator={false}>
             <View className="gap-4 pb-28">
@@ -217,7 +216,7 @@ export function ComplaintForm({
           <Typography className="text-destructive mb-2 text-center text-sm">{submitError}</Typography>
         ) : null}
 
-        <View className="flex-row gap-2 ">
+        <View className="flex-row gap-2" style={{ paddingBottom: insets.bottom }}>
           <Button
             variant="destructive"
             size="lg"
