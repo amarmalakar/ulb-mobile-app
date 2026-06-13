@@ -55,7 +55,8 @@
             "./assets/fonts/Geist/static/Geist-BlackItalic.ttf"
           ]
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true
