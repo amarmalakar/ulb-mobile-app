@@ -5,8 +5,6 @@ import {
   ActivityIndicator,
   Image,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -92,15 +90,11 @@ export default function UserMpinScreen() {
           className="absolute -left-24 -top-20 size-80 opacity-70"
         />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          className="flex-1"
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View
-              className="flex-1 px-6 pt-20"
-              style={{ paddingBottom: insets.bottom + 32 }}
-            >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View
+            className="flex-1 px-6 pt-20"
+            style={{ paddingBottom: insets.bottom + 32 }}
+          >
               <View>
                 <Button
                   onPress={() => void clearAuthType()}
@@ -134,9 +128,8 @@ export default function UserMpinScreen() {
                   await updateSessionTokens(tokens);
                 }}
               />
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </>
   );

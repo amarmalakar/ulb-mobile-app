@@ -2,6 +2,8 @@ import { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useRouter } from 'expo-router';
 
 import { Button } from '@/components/ui/button';
@@ -34,7 +36,7 @@ export function UserSigninForm({
   }, [router]);
 
   return (
-    <View className="flex-1">
+    <KeyboardFormScroll scrollViewProps={{ contentContainerClassName: 'flex-grow' }}>
       <View className="mt-12 gap-4">
         <Controller
           control={form.control}
@@ -73,6 +75,6 @@ export function UserSigninForm({
           <Typography variant="h6" color="primary">{t('auth.createAccount')}</Typography>
         </Pressable>
       </View>
-    </View>
+    </KeyboardFormScroll>
   );
 }

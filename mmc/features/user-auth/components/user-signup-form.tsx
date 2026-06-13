@@ -1,7 +1,9 @@
 import { useCallback } from 'react';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Pressable, ScrollView, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useRouter } from 'expo-router';
 
 import { Button } from '@/components/ui/button';
@@ -41,15 +43,10 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
   }, [router]);
 
   return (
-    <View className="flex-1">
+    <KeyboardFormScroll scrollViewProps={{ contentContainerClassName: 'flex-grow' }}>
       <View className="mt-8 flex-1">
         {step === 'details' ? (
-          <ScrollView
-            className="flex-1"
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
-            contentContainerClassName="gap-4 pb-4"
-          >
+          <View className="gap-4 pb-4">
             <Controller
               control={detailsForm.control}
               name="phone"
@@ -130,7 +127,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
             {sendError ? (
               <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
-          </ScrollView>
+          </View>
         ) : (
           <View className="gap-4">
             <Controller
@@ -175,6 +172,6 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
           <Typography variant="body2" weight="semibold" color="primary">{t('auth.signInLink')}</Typography>
         </Pressable>
       </View>
-    </View>
+    </KeyboardFormScroll>
   );
 }

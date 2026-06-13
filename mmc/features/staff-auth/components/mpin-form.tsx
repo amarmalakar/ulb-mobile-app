@@ -14,6 +14,8 @@ import {
   useClearByFocusCell,
 } from "react-native-confirmation-code-field";
 
+import { KeyboardFormScroll } from "@/components/common/keyboard-form-scroll";
+import { useSessionExpiredLogout } from "@/hooks/use-logout";
 import { Button } from "../../../components/ui/button";
 import { Label } from "../../../components/ui/label";
 import { Text } from "../../../components/ui/text";
@@ -117,6 +119,9 @@ export function MpinForm({ accessToken, onComplete }: MpinFormProps) {
   }
 
   const flow = useStaffMpinFlow(accessToken, onComplete);
+  const sessionExpired = useSessionExpiredLogout(
+    flow.statusQuery.isError ? flow.statusQuery.error : null,
+  );
 
   const primary = useMemo(() => {
     switch (flow.step) {
@@ -146,7 +151,7 @@ export function MpinForm({ accessToken, onComplete }: MpinFormProps) {
   if (flow.step === "loading") {
     return (
       <View className="mt-12 items-center gap-4">
-        {flow.statusError ? (
+        {flow.statusError && !sessionExpired ? (
           <>
             <Text className="text-destructive text-center text-sm">
               {flow.statusError}
@@ -185,7 +190,8 @@ export function MpinForm({ accessToken, onComplete }: MpinFormProps) {
   }
 
   return (
-    <View className="mt-8 flex-1 gap-6">
+    <KeyboardFormScroll>
+      <View className="mt-8 flex-1 gap-6">
       {flow.step === "create_mpin" ? (
         <>
           <Text className="text-foreground text-lg font-bold">
@@ -302,6 +308,7 @@ export function MpinForm({ accessToken, onComplete }: MpinFormProps) {
           </Text>
         </Button>
       ) : null}
-    </View>
+      </View>
+    </KeyboardFormScroll>
   );
 }

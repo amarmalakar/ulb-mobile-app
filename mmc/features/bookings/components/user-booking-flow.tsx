@@ -2,11 +2,10 @@ import { useMemo, useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   View,
 } from 'react-native';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { addHours, format, startOfDay, startOfMonth } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { useRouter } from 'expo-router';
@@ -155,13 +154,30 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
   }
 
   return (
-    <KeyboardAvoidingView
-      className="flex-1"
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
-      <ScrollView
-        className="flex-1"
-        contentContainerClassName="gap-5 px-4 pb-32 pt-2"
-        keyboardShouldPersistTaps="handled">
+    <KeyboardFormScroll
+      scrollViewProps={{
+        className: 'flex-1',
+        contentContainerClassName: 'gap-5 px-4 pb-4 pt-2',
+      }}
+      footer={
+        <View
+          className="border-t border-border bg-card px-4 pb-6 pt-3"
+          style={{ paddingBottom: insets.bottom, elevation: 14 }}
+        >
+          <Button
+            className="h-14 rounded-2xl"
+            disabled={createBooking.isPending}
+            onPress={() => void handleSubmit()}>
+            {createBooking.isPending ? (
+              <ActivityIndicator color="#fff" />
+            ) : (
+              <Typography className="text-base font-semibold text-primary-foreground">
+                {t('bookings.submitBooking')}
+              </Typography>
+            )}
+          </Button>
+        </View>
+      }>
         {resource ? (
           <Typography className="text-lg font-bold text-foreground">{resource.name}</Typography>
         ) : null}
@@ -207,26 +223,7 @@ export function BookingFlow({ resourceId }: BookingFlowProps) {
         {submitError ? (
           <Typography className="text-center text-sm text-destructive">{submitError}</Typography>
         ) : null}
-      </ScrollView>
-
-      <View
-        className="absolute bottom-0 left-0 right-0 border-t border-border bg-card px-4 pb-6 pt-3"
-        style={{ paddingBottom: insets.bottom, elevation: 14 }}
-      >
-        <Button
-          className="h-14 rounded-2xl"
-          disabled={createBooking.isPending}
-          onPress={() => void handleSubmit()}>
-          {createBooking.isPending ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Typography className="text-base font-semibold text-primary-foreground">
-              {t('bookings.submitBooking')}
-            </Typography>
-          )}
-        </Button>
-      </View>
-    </KeyboardAvoidingView>
+    </KeyboardFormScroll>
   );
 }
 

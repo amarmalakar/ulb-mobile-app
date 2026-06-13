@@ -1,7 +1,7 @@
 import { Stack, router } from "expo-router";
 import type { UserAuthSession } from "@/features/user-auth/types/index";
 import { useUserAuth } from '@/components/provider/user-auth-provider';
-import { Image, KeyboardAvoidingView, Platform, View } from "react-native";
+import { Image, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/button";
@@ -35,14 +35,10 @@ export default function UserSignupScreen() {
           className="absolute -left-24 -top-20 size-80 opacity-70"
         />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          className="flex-1"
+        <View
+          className="flex-1 px-6 pt-20"
+          style={{ paddingBottom: insets.bottom + 32 }}
         >
-          <View
-            className="flex-1 px-6 pt-20"
-            style={{ paddingBottom: insets.bottom + 32 }}
-          >
             <View className="">
               <Button
                 onPress={() => void clearAuthType()}
@@ -59,8 +55,7 @@ export default function UserSignupScreen() {
 
             <UserSignupForm onSession={handleSession} />
 
-          </View>
-        </KeyboardAvoidingView>
+        </View>
       </View>
     </>
   );

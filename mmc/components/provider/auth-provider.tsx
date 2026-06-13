@@ -150,39 +150,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   ]);
 
   const handleSessionExpired = useCallback(async () => {
-    if (isLoggingOut) return;
-
-    const role = authType;
-    setIsLoggingOut(true);
-    try {
-      if (role === 'Staff') {
-        await staffSignOut();
-        await handleAuthType('Staff');
-        router.replace(STAFF_LOGIN_HREF);
-        return;
-      }
-
-      if (role === 'User') {
-        await userSignOut();
-        await handleAuthType('User');
-        router.replace(USER_LOGIN_HREF);
-        return;
-      }
-
-      await handleAuthType(null);
-      setStep(1);
-      router.replace('/');
-    } finally {
-      setIsLoggingOut(false);
-    }
-  }, [
-    authType,
-    handleAuthType,
-    isLoggingOut,
-    router,
-    staffSignOut,
-    userSignOut,
-  ]);
+    await logout();
+  }, [logout]);
 
   useEffect(() => {
     setUnauthorizedSessionHandler(() => handleSessionExpired());

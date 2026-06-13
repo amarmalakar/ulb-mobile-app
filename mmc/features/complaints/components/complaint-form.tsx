@@ -2,7 +2,9 @@ import { useNetworkContext } from "@/components/provider/network-provider";
 import { useRouter } from "expo-router";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
+import { Alert, View } from "react-native";
+
+import { KeyboardFormScroll } from "@/components/common/keyboard-form-scroll";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { Button } from "@/components/ui/button";
@@ -124,12 +126,43 @@ export function ComplaintForm({
   return (
     <>
       <View className="flex-1 p-4">
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : undefined}
-          className="flex-1 bg-background"
+        <KeyboardFormScroll
+          className="bg-background"
+          footer={
+            <>
+              {submitError ? (
+                <Typography className="text-destructive mb-2 text-center text-sm">{submitError}</Typography>
+              ) : null}
+
+              <View className="flex-row gap-2" style={{ paddingBottom: insets.bottom }}>
+                <Button
+                  variant="destructive"
+                  size="lg"
+                  className="w-1/2"
+                  disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
+                  onPress={onCancel}
+                >
+                  <Typography>{t("common.cancel")}</Typography>
+                </Button>
+                <Button
+                  size="lg"
+                  className="w-1/2"
+                  disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
+                  onPress={() => void handleSubmit()}
+                >
+                  <Typography>
+                    {submitPhase === "photos"
+                      ? t("complaints.uploadingPhotos")
+                      : submitPhase === "submit" || createComplaintMutation.isPending
+                        ? t("complaints.submitting")
+                        : t("complaints.submitComplaint")}
+                  </Typography>
+                </Button>
+              </View>
+            </>
+          }
         >
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View className="gap-4 pb-28">
+            <View className="gap-4 pb-4">
               <ComplaintSelectField
                 control={control}
                 name="title"
@@ -209,38 +242,7 @@ export function ComplaintForm({
                 formState={form}
               />
             </View>
-          </ScrollView>
-        </KeyboardAvoidingView>
-
-        {submitError ? (
-          <Typography className="text-destructive mb-2 text-center text-sm">{submitError}</Typography>
-        ) : null}
-
-        <View className="flex-row gap-2" style={{ paddingBottom: insets.bottom }}>
-          <Button
-            variant="destructive"
-            size="lg"
-            className="w-1/2"
-            disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
-            onPress={onCancel}
-          >
-            <Typography>{t("common.cancel")}</Typography>
-          </Button>
-          <Button
-            size="lg"
-            className="w-1/2"
-            disabled={createComplaintMutation.isPending || submitPhase !== "idle"}
-            onPress={() => void handleSubmit()}
-          >
-            <Typography>
-              {submitPhase === "photos"
-                ? t("complaints.uploadingPhotos")
-                : submitPhase === "submit" || createComplaintMutation.isPending
-                  ? t("complaints.submitting")
-                  : t("complaints.submitComplaint")}
-            </Typography>
-          </Button>
-        </View>
+        </KeyboardFormScroll>
       </View>
     </>
   );

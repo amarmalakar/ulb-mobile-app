@@ -2,8 +2,6 @@ import { Stack, router } from 'expo-router';
 import {
   Image,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -46,15 +44,11 @@ export default function StaffLoginScreen() {
           />
         </View>
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          className="flex-1"
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View
-              className="flex-1 px-6 pt-20"
-              style={{ paddingBottom: insets.bottom + 32 }}
-            >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View
+            className="flex-1 px-6 pt-20"
+            style={{ paddingBottom: insets.bottom + 32 }}
+          >
               <View className="">
                 <Button
                   onPress={clearAuthType}
@@ -72,9 +66,8 @@ export default function StaffLoginScreen() {
               <Image source={loginHero} resizeMode="contain" className="mt-10 h-48 w-full" />
 
               <StaffAuth onVerified={handleVerified} />
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </>
   );

@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, Modal, Pressable, ScrollView, View } from 'react-native';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useTranslation } from 'react-i18next';
 import { XIcon } from 'lucide-react-native';
 
@@ -126,10 +128,24 @@ export function StaffBookingPaymentSheet({
             </Pressable>
           </View>
 
-          <ScrollView
-            className="px-4 pb-4"
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
+          <KeyboardFormScroll
+            scrollViewProps={{ className: 'px-4 pb-4' }}
+            footer={
+              <View className="border-t border-border px-4 py-3">
+                <Button
+                  onPress={() => void handleSubmit()}
+                  disabled={paymentMutation.isPending}
+                  className="w-full">
+                  {paymentMutation.isPending ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Typography className="font-semibold text-primary-foreground">
+                      {t('bookings.staffSavePayment')}
+                    </Typography>
+                  )}
+                </Button>
+              </View>
+            }>
             <View className="gap-4">
               <View className="gap-2">
                 <Label>{t('bookings.staffPaymentType')}</Label>
@@ -211,22 +227,7 @@ export function StaffBookingPaymentSheet({
 
               {error ? <Typography className="text-sm text-destructive">{error}</Typography> : null}
             </View>
-          </ScrollView>
-
-          <View className="border-t border-border px-4 py-3">
-            <Button
-              onPress={() => void handleSubmit()}
-              disabled={paymentMutation.isPending}
-              className="w-full">
-              {paymentMutation.isPending ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Typography className="font-semibold text-primary-foreground">
-                  {t('bookings.staffSavePayment')}
-                </Typography>
-              )}
-            </Button>
-          </View>
+          </KeyboardFormScroll>
         </View>
       </View>
     </Modal>

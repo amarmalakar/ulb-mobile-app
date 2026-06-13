@@ -7,6 +7,9 @@ import {
   type TextInputProps,
   View,
 } from "react-native";
+
+import { KeyboardFormScroll } from "@/components/common/keyboard-form-scroll";
+import { useSessionExpiredLogout } from "@/hooks/use-logout";
 import {
   CodeField,
   Cursor,
@@ -124,6 +127,9 @@ export function UserMpinForm({
   }
 
   const flow = useUserMpinFlow(accessToken, refreshToken, onComplete, onSessionTokens);
+  const sessionExpired = useSessionExpiredLogout(
+    flow.statusQuery.isError ? flow.statusQuery.error : null,
+  );
 
   const primary = useMemo(() => {
     switch (flow.step) {
@@ -153,7 +159,7 @@ export function UserMpinForm({
   if (flow.step === "loading") {
     return (
       <View className="mt-12 items-center gap-4">
-        {flow.statusError ? (
+        {flow.statusError && !sessionExpired ? (
           <>
             <Text className="text-center text-sm text-destructive">{flow.statusError}</Text>
             <Button onPress={() => void flow.refetchStatus()} variant="outline">
@@ -188,107 +194,109 @@ export function UserMpinForm({
   }
 
   return (
-    <View className="mt-8 flex-1 gap-6">
-      {flow.step === "create_mpin" ? (
-        <>
-          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleCreate")}</Text>
-          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperCreate")}</Text>
-          <MpinCodeRow
-            label={t("auth.mpin")}
-            length={MPIN_LENGTH}
-            value={flow.createMpin}
-            onChangeText={flow.setCreateMpin}
-            error={null}
-            disabled={flow.isBusy}
-          />
-          <MpinCodeRow
-            label={t("auth.confirmMpin")}
-            length={MPIN_LENGTH}
-            value={flow.createConfirm}
-            onChangeText={flow.setCreateConfirm}
-            error={null}
-            disabled={flow.isBusy}
-          />
-        </>
-      ) : null}
+    <KeyboardFormScroll>
+      <View className="mt-8 flex-1 gap-6">
+        {flow.step === "create_mpin" ? (
+            <>
+              <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleCreate")}</Text>
+              <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperCreate")}</Text>
+              <MpinCodeRow
+                label={t("auth.mpin")}
+                length={MPIN_LENGTH}
+                value={flow.createMpin}
+                onChangeText={flow.setCreateMpin}
+                error={null}
+                disabled={flow.isBusy}
+              />
+              <MpinCodeRow
+                label={t("auth.confirmMpin")}
+                length={MPIN_LENGTH}
+                value={flow.createConfirm}
+                onChangeText={flow.setCreateConfirm}
+                error={null}
+                disabled={flow.isBusy}
+              />
+            </>
+          ) : null}
 
-      {flow.step === "enter_mpin" ? (
-        <>
-          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleEnter")}</Text>
-          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperEnter")}</Text>
-          <MpinCodeRow
-            label={t("auth.mpin")}
-            length={MPIN_LENGTH}
-            value={flow.enterMpin}
-            onChangeText={flow.setEnterMpin}
-            error={null}
-            disabled={flow.isBusy}
-          />
-          <Pressable
-            onPress={() => void flow.startReset()}
-            disabled={flow.isBusy}
-            className="self-center py-2 active:opacity-70"
-          >
-            <Text className="text-sm font-semibold text-primary">
-              {flow.resetRequestPending ? t("auth.mpinSendingReset") : t("auth.mpinReset")}
-            </Text>
-          </Pressable>
-        </>
-      ) : null}
+          {flow.step === "enter_mpin" ? (
+            <>
+              <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleEnter")}</Text>
+              <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperEnter")}</Text>
+              <MpinCodeRow
+                label={t("auth.mpin")}
+                length={MPIN_LENGTH}
+                value={flow.enterMpin}
+                onChangeText={flow.setEnterMpin}
+                error={null}
+                disabled={flow.isBusy}
+              />
+              <Pressable
+                onPress={() => void flow.startReset()}
+                disabled={flow.isBusy}
+                className="self-center py-2 active:opacity-70"
+              >
+                <Text className="text-sm font-semibold text-primary">
+                  {flow.resetRequestPending ? t("auth.mpinSendingReset") : t("auth.mpinReset")}
+                </Text>
+              </Pressable>
+            </>
+          ) : null}
 
-      {flow.step === "reset_mpin" ? (
-        <>
-          <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleReset")}</Text>
-          <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperReset")}</Text>
-          <MpinCodeRow
-            label={t("auth.smsCode")}
-            length={OTP_LENGTH}
-            value={flow.resetOtp}
-            onChangeText={flow.setResetOtp}
-            error={null}
-            disabled={flow.isBusy}
-          />
-          <MpinCodeRow
-            label={t("auth.newMpin")}
-            length={MPIN_LENGTH}
-            value={flow.resetNew}
-            onChangeText={flow.setResetNew}
-            error={null}
-            disabled={flow.isBusy}
-          />
-          <MpinCodeRow
-            label={t("auth.confirmMpin")}
-            length={MPIN_LENGTH}
-            value={flow.resetNewConfirm}
-            onChangeText={flow.setResetNewConfirm}
-            error={null}
-            disabled={flow.isBusy}
-          />
-          <Pressable
-            onPress={flow.cancelReset}
-            disabled={flow.isBusy}
-            className="self-center py-2 active:opacity-70"
-          >
-            <Text className="text-sm font-medium text-muted-foreground">{t("auth.mpinBack")}</Text>
-          </Pressable>
-        </>
-      ) : null}
+          {flow.step === "reset_mpin" ? (
+            <>
+              <Text className="text-lg font-bold text-foreground">{t("auth.mpinTitleReset")}</Text>
+              <Text className="text-sm text-muted-foreground">{t("auth.mpinHelperReset")}</Text>
+              <MpinCodeRow
+                label={t("auth.smsCode")}
+                length={OTP_LENGTH}
+                value={flow.resetOtp}
+                onChangeText={flow.setResetOtp}
+                error={null}
+                disabled={flow.isBusy}
+              />
+              <MpinCodeRow
+                label={t("auth.newMpin")}
+                length={MPIN_LENGTH}
+                value={flow.resetNew}
+                onChangeText={flow.setResetNew}
+                error={null}
+                disabled={flow.isBusy}
+              />
+              <MpinCodeRow
+                label={t("auth.confirmMpin")}
+                length={MPIN_LENGTH}
+                value={flow.resetNewConfirm}
+                onChangeText={flow.setResetNewConfirm}
+                error={null}
+                disabled={flow.isBusy}
+              />
+              <Pressable
+                onPress={flow.cancelReset}
+                disabled={flow.isBusy}
+                className="self-center py-2 active:opacity-70"
+              >
+                <Text className="text-sm font-medium text-muted-foreground">{t("auth.mpinBack")}</Text>
+              </Pressable>
+            </>
+          ) : null}
 
-      {flow.formError ? (
-        <Text className="text-sm text-destructive">{flow.formError}</Text>
-      ) : null}
+          {flow.formError ? (
+            <Text className="text-sm text-destructive">{flow.formError}</Text>
+          ) : null}
 
-      {primary ? (
-        <Button
-          disabled={flow.isBusy}
-          className="mt-auto h-14 rounded-lg bg-primary"
-          onPress={primary.onPress}
-        >
-          <Text className="text-lg font-bold text-white">
-            {flow.isBusy ? primary.loading : primary.label}
-          </Text>
-        </Button>
-      ) : null}
-    </View>
+          {primary ? (
+            <Button
+              disabled={flow.isBusy}
+              className="mt-auto h-14 rounded-lg bg-primary"
+              onPress={primary.onPress}
+            >
+              <Text className="text-lg font-bold text-white">
+                {flow.isBusy ? primary.loading : primary.label}
+              </Text>
+            </Button>
+          ) : null}
+      </View>
+    </KeyboardFormScroll>
   );
 }

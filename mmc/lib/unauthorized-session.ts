@@ -24,14 +24,35 @@ function isExcludedAuthRoute(url: string): boolean {
   return AUTH_ROUTES_WITHOUT_SESSION_LOGOUT.some((segment) => url.includes(segment));
 }
 
+/** True when the API message indicates the stored session is no longer valid. */
+export function isUnauthorizedSessionMessage(message: string): boolean {
+  const lower = message.toLowerCase();
+  return (
+    lower.includes('access token') ||
+    (lower.includes('expired') && lower.includes('token')) ||
+    lower.includes('session revoked') ||
+    (lower.includes('session') && lower.includes('expired'))
+  );
+}
+
+/** True when the authenticated account no longer exists on the server. */
+export function isAccountNotFoundMessage(message: string): boolean {
+  const lower = message.toLowerCase();
+  return lower.includes('staff not found') || lower.includes('user not found');
+}
+
 /** True when the server rejected the bearer access token (not wrong MPIN/credentials). */
 export function isUnauthorizedSessionError(error: ApiError): boolean {
-  if (error.status !== 401) {
-    return false;
+  return error.status === 401 && isUnauthorizedSessionMessage(error.message);
+}
+
+/** True when the stored session should be cleared and the user sent to Get Started. */
+export function isInvalidAuthSessionError(error: ApiError): boolean {
+  if (isAccountNotFoundMessage(error.message)) {
+    return true;
   }
 
-  const message = error.message.toLowerCase();
-  return message.includes('access token') || (message.includes('expired') && message.includes('token'));
+  return isUnauthorizedSessionError(error);
 }
 
 function hasActiveSessionToken(): boolean {
@@ -57,7 +78,7 @@ export async function notifyUnauthorizedSession(
     return;
   }
 
-  if (!isUnauthorizedSessionError(error)) {
+  if (!isInvalidAuthSessionError(error)) {
     return;
   }
 

@@ -4,8 +4,6 @@ import { useUserAuth } from '@/components/provider/user-auth-provider';
 import {
   Image,
   Keyboard,
-  KeyboardAvoidingView,
-  Platform,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
@@ -43,15 +41,11 @@ export default function UserLoginScreen() {
           className="absolute -left-24 -top-20 size-80 opacity-70"
         />
 
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-          className="flex-1"
-        >
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View
-              className="flex-1 px-6 pt-20"
-              style={{ paddingBottom: insets.bottom + 32 }}
-            >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View
+            className="flex-1 px-6 pt-20"
+            style={{ paddingBottom: insets.bottom + 32 }}
+          >
               <View className="">
                 <Button
                   onPress={() => void clearAuthType()}
@@ -70,9 +64,8 @@ export default function UserLoginScreen() {
 
               <UserSigninForm onSession={handleSession} />
 
-            </View>
-          </TouchableWithoutFeedback>
-        </KeyboardAvoidingView>
+          </View>
+        </TouchableWithoutFeedback>
       </View>
     </>
   );

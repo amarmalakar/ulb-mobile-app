@@ -2,11 +2,10 @@ import { useState } from 'react';
 import {
   ActivityIndicator,
   Alert,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
   View,
 } from 'react-native';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useRouter } from 'expo-router';
 import {
   AlertCircleIcon,
@@ -146,82 +145,79 @@ export default function FeedbackAndSuggestionForm({
 
   return (
     <View className={isModal ? 'max-h-[70vh]' : 'flex-1'}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      <KeyboardFormScroll
         className={isModal ? undefined : 'flex-1'}
-      >
-        <ScrollView
-          className={isModal ? 'max-h-96' : 'flex-1'}
-          contentContainerClassName="gap-4 px-4 pb-4 pt-2"
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-        >
-          {!isModal ? (
-            <Typography className="text-sm leading-6 text-muted-foreground">{t('feedback.subtitle')}</Typography>
-          ) : null}
-
-          {submitError ? (
-            <UiAlert icon={AlertCircleIcon} variant="destructive">
-              <AlertTitle>{t('feedback.submitFailed')}</AlertTitle>
-              <AlertDescription>{submitError}</AlertDescription>
-            </UiAlert>
-          ) : null}
-
-          <FeedbackAndSuggestionFormFields form={form} />
-        </ScrollView>
-
-        <View
-          className={
-            isModal
-              ? 'flex-row gap-3 border-t border-border bg-card px-4 py-3'
-              : 'gap-2 border-t border-border bg-background px-4 py-3'
-          }
-          style={{ paddingBottom: insets.bottom }}
-        >
-          {isModal ? (
-            <>
+        scrollViewProps={{
+          className: isModal ? 'max-h-96' : 'flex-1',
+          contentContainerClassName: 'gap-4 px-4 pb-4 pt-2',
+        }}
+        footer={
+          <View
+            className={
+              isModal
+                ? 'flex-row gap-3 border-t border-border bg-card px-4 py-3'
+                : 'gap-2 border-t border-border bg-background px-4 py-3'
+            }
+            style={{ paddingBottom: insets.bottom }}
+          >
+            {isModal ? (
+              <>
+                <Button
+                  variant="outline"
+                  className="flex-1 flex-row gap-2"
+                  disabled={createMutation.isPending}
+                  onPress={handleCancel}
+                >
+                  <Icon as={XIcon} className="size-4 text-foreground" />
+                  <Typography className="font-semibold">{t('common.cancel')}</Typography>
+                </Button>
+                <Button
+                  className="flex-1 flex-row gap-2"
+                  disabled={createMutation.isPending || isProfileLoading}
+                  onPress={() => void handleSubmit()}
+                >
+                  {createMutation.isPending ? (
+                    <ActivityIndicator color="#fff" />
+                  ) : (
+                    <Icon as={CheckIcon} className="size-4 text-primary-foreground" />
+                  )}
+                  <Typography className="font-semibold text-primary-foreground">
+                    {createMutation.isPending ? t('feedback.submitting') : t('feedback.submit')}
+                  </Typography>
+                </Button>
+              </>
+            ) : (
               <Button
-                variant="outline"
-                className="flex-1 flex-row gap-2"
-                disabled={createMutation.isPending}
-                onPress={handleCancel}
-              >
-                <Icon as={XIcon} className="size-4 text-foreground" />
-                <Typography className="font-semibold">{t('common.cancel')}</Typography>
-              </Button>
-              <Button
-                className="flex-1 flex-row gap-2"
+                size="lg"
                 disabled={createMutation.isPending || isProfileLoading}
                 onPress={() => void handleSubmit()}
               >
                 {createMutation.isPending ? (
-                  <ActivityIndicator color="#fff" />
+                  <View className="flex-row items-center gap-2">
+                    <ActivityIndicator color="#fff" />
+                    <Typography>{t('feedback.submitting')}</Typography>
+                  </View>
                 ) : (
-                  <Icon as={CheckIcon} className="size-4 text-primary-foreground" />
+                  <Typography>{t('feedback.submit')}</Typography>
                 )}
-                <Typography className="font-semibold text-primary-foreground">
-                  {createMutation.isPending ? t('feedback.submitting') : t('feedback.submit')}
-                </Typography>
               </Button>
-            </>
-          ) : (
-            <Button
-              size="lg"
-              disabled={createMutation.isPending || isProfileLoading}
-              onPress={() => void handleSubmit()}
-            >
-              {createMutation.isPending ? (
-                <View className="flex-row items-center gap-2">
-                  <ActivityIndicator color="#fff" />
-                  <Typography>{t('feedback.submitting')}</Typography>
-                </View>
-              ) : (
-                <Typography>{t('feedback.submit')}</Typography>
-              )}
-            </Button>
-          )}
-        </View>
-      </KeyboardAvoidingView>
+            )}
+          </View>
+        }
+      >
+        {!isModal ? (
+          <Typography className="text-sm leading-6 text-muted-foreground">{t('feedback.subtitle')}</Typography>
+        ) : null}
+
+        {submitError ? (
+          <UiAlert icon={AlertCircleIcon} variant="destructive">
+            <AlertTitle>{t('feedback.submitFailed')}</AlertTitle>
+            <AlertDescription>{submitError}</AlertDescription>
+          </UiAlert>
+        ) : null}
+
+        <FeedbackAndSuggestionFormFields form={form} />
+      </KeyboardFormScroll>
     </View>
   );
 }

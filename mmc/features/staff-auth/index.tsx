@@ -1,4 +1,6 @@
 import { View } from "react-native";
+
+import { KeyboardFormScroll } from "@/components/common/keyboard-form-scroll";
 import { Controller } from "react-hook-form";
 import { Typography } from "@/components/ui/typography";
 import { Button } from "@/components/ui/button";
@@ -32,7 +34,7 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
   const otp = otpForm.watch("otp");
 
   return (
-    <View className="flex-1">
+    <KeyboardFormScroll scrollViewProps={{ contentContainerClassName: 'flex-grow' }}>
       <View className="mt-12 gap-4">
         {step === "contact" ? (
           <>
@@ -115,6 +117,6 @@ export default function StaffAuth({ onVerified }: StaffAuthProps) {
           {isLoading ? stepsActions.loadingText : stepsActions.title}
         </Typography>
       </Button>
-    </View>
+    </KeyboardFormScroll>
   );
 }
