@@ -79,6 +79,7 @@ export function useUserSignupForm({
   });
 
   const phone = detailsForm.watch('phone');
+  const otp = otpForm.watch('otp');
   const phoneDisplay = useMemo(() => formatPhoneDisplay(phone), [phone]);
 
   const clearSendError = useCallback(() => {
@@ -174,6 +175,7 @@ export function useUserSignupForm({
     clearSendError,
     detailsForm,
     otpForm,
+    otp,
     phoneDisplay,
     maxWard,
     goBackToDetails,

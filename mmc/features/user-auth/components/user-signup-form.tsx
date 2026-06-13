@@ -31,6 +31,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
     clearSendError,
     detailsForm,
     otpForm,
+    otp,
     phoneDisplay,
     maxWard,
     goBackToDetails,
@@ -44,7 +45,7 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
 
   return (
     <KeyboardFormScroll scrollViewProps={{ contentContainerClassName: 'flex-grow' }}>
-      <View className="mt-8 flex-1">
+      <View className="mt-8 gap-4">
         {step === 'details' ? (
           <View className="gap-4 pb-4">
             <Controller
@@ -129,30 +130,24 @@ export function UserSignupForm({ onSession, onVerified }: UseUserSignupFormOptio
             ) : null}
           </View>
         ) : (
-          <View className="gap-4">
-            <Controller
-              control={otpForm.control}
-              name="otp"
-              render={({ field, fieldState }) => (
-                <UserOtpInput
-                  value={field.value}
-                  onChangeText={(text) => {
-                    field.onChange(text);
-                    clearSendError();
-                  }}
-                  error={fieldState.error?.message}
-                  cellCount={OTP_LENGTH}
-                  phoneDisplay={phoneDisplay}
-                  onChangePhone={goBackToDetails}
-                  disabled={isVerifyingOtp || isResending}
-                  onResend={resendOtp}
-                />
-              )}
+          <>
+            <UserOtpInput
+              value={otp ?? ''}
+              onChangeText={(text) => {
+                otpForm.setValue('otp', text, { shouldDirty: true });
+                clearSendError();
+              }}
+              error={otpForm.formState.errors.otp?.message}
+              cellCount={OTP_LENGTH}
+              phoneDisplay={phoneDisplay}
+              onChangePhone={goBackToDetails}
+              disabled={isVerifyingOtp || isResending}
+              onResend={resendOtp}
             />
             {sendError ? (
               <Typography variant="body2" color="destructive" className="px-1">{sendError}</Typography>
             ) : null}
-          </View>
+          </>
         )}
       </View>
 

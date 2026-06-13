@@ -53,7 +53,9 @@ export default function UserSignupScreen() {
               </Typography>
             </View>
 
-            <UserSignupForm onSession={handleSession} />
+            <View className="flex-1">
+              <UserSignupForm onSession={handleSession} />
+            </View>
 
         </View>
       </View>

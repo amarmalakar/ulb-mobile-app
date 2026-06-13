@@ -9,6 +9,7 @@ import {
 } from 'react-native-confirmation-code-field';
 
 import { Label } from '@/components/ui/label';
+import { Text } from '@/components/ui/text';
 import { Typography } from '@/components/ui/typography';
 import { cn } from '@/lib/utils';
 import { useOtpCountdown } from '@/features/staff-auth/hooks/use-otp-countdown';
@@ -125,9 +126,9 @@ export function UserOtpInput({
               !hasError && !isFocused && 'border-border',
             )}
           >
-            <Typography variant="h3" className="tabular-nums">
+            <Text className="text-foreground text-2xl font-semibold tabular-nums">
               {symbol || (isFocused ? <Cursor /> : null)}
-            </Typography>
+            </Text>
           </View>
         )}
       />
