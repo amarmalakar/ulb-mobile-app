@@ -7,6 +7,28 @@ module.exports = {
   presets: [require('nativewind/preset')],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['Geist-Regular'],
+        geist: ['Geist-Regular'],
+        'geist-thin': ['Geist-Thin'],
+        'geist-thin-italic': ['Geist-ThinItalic'],
+        'geist-extralight': ['Geist-ExtraLight'],
+        'geist-extralight-italic': ['Geist-ExtraLightItalic'],
+        'geist-light': ['Geist-Light'],
+        'geist-light-italic': ['Geist-LightItalic'],
+        'geist-regular': ['Geist-Regular'],
+        'geist-italic': ['Geist-Italic'],
+        'geist-medium': ['Geist-Medium'],
+        'geist-medium-italic': ['Geist-MediumItalic'],
+        'geist-semibold': ['Geist-SemiBold'],
+        'geist-semibold-italic': ['Geist-SemiBoldItalic'],
+        'geist-bold': ['Geist-Bold'],
+        'geist-bold-italic': ['Geist-BoldItalic'],
+        'geist-extrabold': ['Geist-ExtraBold'],
+        'geist-extrabold-italic': ['Geist-ExtraBoldItalic'],
+        'geist-black': ['Geist-Black'],
+        'geist-black-italic': ['Geist-BlackItalic'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
