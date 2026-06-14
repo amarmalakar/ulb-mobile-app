@@ -513,6 +513,7 @@ export const en = {
     bookingDetailTitle: 'Booking',
     bookingDetailLoadError: 'Could not load booking details. Try again.',
     bookingNotFound: 'Booking not found.',
+    bookingNotFoundHint: 'The booking you are looking for may be unavailable or removed.',
     bookingInfo: 'Booking information',
     amountSummary: 'Payment summary',
     totalAmountLabel: 'Total',

@@ -17,6 +17,13 @@ export const API_PATHS = {
     bookingResources: '/user/booking-resources',
     bookingResourceById: (resourceId: string) =>
       `/user/booking-resources/${encodeURIComponent(resourceId)}`,
+    bookingResourceSchedule: (resourceId: string) =>
+      `/user/booking-resources/${encodeURIComponent(resourceId)}/schedule`,
+    bookingResourceSendEnquiry: (resourceId: string) =>
+      `/user/booking-resources/${encodeURIComponent(resourceId)}/send-enquiry`,
+    bookings: '/user/bookings',
+    bookingById: (bookingId: string) =>
+      `/user/bookings/${encodeURIComponent(bookingId)}`,
   },
   staff: {
     login: '/auth/staff/login',

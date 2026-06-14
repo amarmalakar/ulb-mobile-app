@@ -1,23 +1,34 @@
-import { ActivityIndicator, NativeScrollEvent, NativeSyntheticEvent, ScrollView, useWindowDimensions, View } from "react-native";
-import { Stack, useLocalSearchParams, useRouter } from "expo-router";
-import { useTranslation } from "react-i18next";
-
-import { TopNavigation } from "@/components/common/top-navigation";
-import { useUserAuth } from "@/components/providers/user-auth-provider";
-import { useUserBookingResourceQuery } from "@/features/bookings/hooks/use-user-booking-resource-query";
-import { resourceIdFromParams } from "@/features/bookings/lib/route-params";
-import { Typography } from "@/components/common/typography";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Icon } from "@/components/ui/icon";
-import { AlertCircleIcon, Building2Icon, CalendarCheckIcon, CarIcon, MapPinIcon, RefreshCcwIcon, UsersIcon } from "lucide-react-native";
-import { Button } from "@/components/ui/button";
-import { UserBookingResourceDetail } from "@/features/bookings/types";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Badge } from "@/components/ui/badge";
-import { useRef, useState, useMemo, useEffect } from "react";
-import { Image } from "expo-image";
-import { resolveTicketImageUrl } from "@/lib/resolve-ticket-image-url";
+import { useEffect, useMemo, useRef, useState } from 'react';
+import {
+  ActivityIndicator,
+  ScrollView,
+  View,
+  useWindowDimensions,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+} from 'react-native';
+import {
+  AlertCircleIcon,
+  Building2Icon,
+  CalendarCheckIcon,
+  CarIcon,
+  MapPinIcon,
+  RefreshCcwIcon,
+  UsersIcon,
+} from 'lucide-react-native';
+import { Image } from 'expo-image';
 import MapView, { Marker } from 'react-native-maps';
+import { useTranslation } from 'react-i18next';
+import type { UseQueryResult } from '@tanstack/react-query';
+
+import { Button } from '@/components/ui/button';
+import { Icon } from '@/components/ui/icon';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Typography } from '@/components/ui/typography';
+import { Badge } from '@/components/ui/badge';
+import type { UserBookingResourceDetail } from '@/features/bookings/types';
+import { resolveTicketImageUrl } from '@/features/ticket-info/lib/resolve-ticket-image-url';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const HERO_HEIGHT = 360;
 const SLIDE_INTERVAL_MS = 3000;
@@ -377,55 +388,41 @@ function ResourceDetailContent({
   );
 }
 
-export default function BookingResourceInfoScreen() {
-  const router = useRouter();
+export type BookingResourceDetailProps = {
+  query: UseQueryResult<UserBookingResourceDetail, Error>;
+  onBookNow: (resource: UserBookingResourceDetail) => void;
+  isBooking?: boolean;
+};
+
+export function BookingResourceDetail({ query, onBookNow, isBooking }: BookingResourceDetailProps) {
   const { t } = useTranslation();
-  const params = useLocalSearchParams<{
-    resourceId?: string | string[];
-    bookingId?: string | string[];
-  }>();
-  const resourceId = resourceIdFromParams(params);
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
-  const sessionReady = sessionHydrated && mpinUnlocked;
+  const { data, isLoading, isError, error, refetch } = query;
 
-  const { data: resource, isLoading, isError, error, refetch } = useUserBookingResourceQuery({
-    resourceId,
-    enabled: sessionReady,
-  });
+  if (isLoading) {
+    return <BookingResourceDetailSkeleton />;
+  }
 
-  const navLabel = resource?.name ?? t('bookings.infoTitle');
+  if (isError) {
+    return (
+      <BookingResourceDetailError message={error?.message} onRetry={() => void refetch()} />
+    );
+  }
+
+  if (!data) {
+    return (
+      <View className="flex-1 items-center justify-center px-6 py-12">
+        <Typography className="text-center text-lg font-semibold text-foreground">
+          {t('bookings.notFound')}
+        </Typography>
+      </View>
+    );
+  }
 
   return (
-    <>
-      <Stack.Screen options={{ headerShown: false }} />
-
-      <View className="flex-1 bg-background">
-        <TopNavigation label={navLabel} isBackButton />
-
-        {isLoading ? (
-          <BookingResourceDetailSkeleton />
-        ) : isError ? (
-          <BookingResourceDetailError message={error?.message} onRetry={() => void refetch()} />
-        ) : !resource ? (
-          <View className="flex-1 items-center justify-center px-6 py-12">
-            <Typography className="text-center text-lg font-semibold text-foreground">
-              {t('bookings.notFound')}
-            </Typography>
-          </View>
-        ) : (
-          <ResourceDetailContent
-          resource={resource}
-          onBookNow={() => {
-            if (!resourceId) return;
-            router.push({
-              pathname: '/user/booking-create-screen',
-              params: { resourceId },
-            });
-          }}
-          isBooking={false}
-          />
-        )}
-      </View>
-    </>
+    <ResourceDetailContent
+      resource={data}
+      onBookNow={() => onBookNow(data)}
+      isBooking={isBooking}
+    />
   );
 }

@@ -518,6 +518,7 @@ export const hi: TranslationSchema = {
     bookingDetailTitle: 'बुकिंग',
     bookingDetailLoadError: 'बुकिंग विवरण लोड नहीं हो सके। पुनः प्रयास करें।',
     bookingNotFound: 'बुकिंग नहीं मिली।',
+    bookingNotFoundHint: 'यह बुकिंग उपलब्ध नहीं है या हटा दी गई हो सकती है।',
     bookingInfo: 'बुकिंग जानकारी',
     amountSummary: 'भुगतान सारांश',
     totalAmountLabel: 'कुल',

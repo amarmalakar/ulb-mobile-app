@@ -127,6 +127,9 @@ export type CreateUserBookingRequest = {
   contactPhone?: string;
 };
 
+/** Body for `POST /user/booking-resources/:resourceId/send-enquiry`. */
+export type SendBookingEnquiryRequest = CreateUserBookingRequest;
+
 export type UserBookingResourceSummary = {
   id: string;
   name: string;
