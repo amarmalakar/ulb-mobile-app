@@ -25,5 +25,7 @@ export const API_PATHS = {
   },
   common: {
     feedbackAndSuggestion: '/common/feedback-and-suggestion',
+    insights: '/common/insights',
+    insightById: (insightId: string) => `/common/insights/${insightId}`,
   },
 } as const;
