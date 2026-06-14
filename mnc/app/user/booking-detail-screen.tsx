@@ -22,47 +22,20 @@ import { BookingTimeline } from "@/features/bookings/components/booking-timeline
 
 const THUMB_SIZE = 88;
 
-function UserBookingDetailCardSkeleton() {
-  return (
-    <View className="flex-row gap-3 rounded-2xl border border-border bg-card p-4">
-      <Skeleton
-        style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
-        className="rounded-xl"
-      />
-      <View className="min-w-0 flex-1 gap-2">
-        <Skeleton className="h-6 w-3/4 rounded-md" />
-        <Skeleton className="h-5 w-20 rounded-md" />
-        <Skeleton className="h-3 w-28 rounded-md" />
-      </View>
-    </View>
-  );
-}
-
-function UserBookingDetailSectionSkeleton({
-  rows = 3,
-}: {
-  rows?: number;
-}) {
-  return (
-    <View className="rounded-2xl border border-border bg-card p-4">
-      <Skeleton className="mb-3 h-4 w-32 rounded-md" />
-      {Array.from({ length: rows }).map((_, index) => (
-        <View key={index} className="flex-row items-start gap-2 py-1.5">
-          <Skeleton className="mt-0.5 size-4 shrink-0 rounded-sm" />
-          <View className="min-w-0 flex-1 gap-1">
-            <Skeleton className="h-3 w-20 rounded-md" />
-            <Skeleton className="h-4 w-full rounded-md" />
-          </View>
-        </View>
-      ))}
-    </View>
-  );
-}
-
-function UserBookingDetailLoader() {
+export function UserBookingDetailLoader() {
   return (
     <View className="flex-1 gap-5 px-4 pb-10 pt-2">
-      <UserBookingDetailCardSkeleton />
+      <View className="flex-row gap-3 rounded-2xl border border-border bg-card p-4">
+        <Skeleton
+          style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
+          className="rounded-xl"
+        />
+        <View className="min-w-0 flex-1 gap-2">
+          <Skeleton className="h-6 w-3/4 rounded-md" />
+          <Skeleton className="h-5 w-20 rounded-md" />
+          <Skeleton className="h-3 w-28 rounded-md" />
+        </View>
+      </View>
 
       <View className="rounded-2xl border border-border bg-card p-4">
         <Skeleton className="mb-3 h-4 w-32 rounded-md" />
@@ -76,13 +49,39 @@ function UserBookingDetailLoader() {
         </View>
       </View>
 
-      <UserBookingDetailSectionSkeleton rows={4} />
-      <UserBookingDetailSectionSkeleton rows={3} />
+      <View className="rounded-2xl border border-border bg-card p-4">
+        <Skeleton className="mb-2 h-4 w-36 rounded-md" />
+        {Array.from({ length: 4 }).map((_, index) => (
+          <View key={index} className="flex-row items-start gap-2 py-1.5">
+            <Skeleton className="mt-0.5 size-4 shrink-0 rounded-sm" />
+            <View className="min-w-0 flex-1 gap-1">
+              <Skeleton className="h-3 w-20 rounded-md" />
+              <Skeleton className="h-4 w-full rounded-md" />
+            </View>
+          </View>
+        ))}
+      </View>
+
+      <Skeleton className="h-px w-full" />
+
+      <View className="rounded-2xl border border-border bg-card p-4">
+        <Skeleton className="mb-4 h-4 w-24 rounded-md" />
+        {Array.from({ length: 3 }).map((_, index) => (
+          <View key={index} className="mb-3 flex-row gap-3">
+            <Skeleton className="size-8 rounded-full" />
+            <View className="min-w-0 flex-1 gap-1.5">
+              <Skeleton className="h-3 w-28 rounded-md" />
+              <Skeleton className="h-4 w-full rounded-md" />
+              <Skeleton className="h-3 w-2/3 rounded-md" />
+            </View>
+          </View>
+        ))}
+      </View>
     </View>
   );
 }
 
-function UserBookingDetailError({
+export function UserBookingDetailError({
   message,
   onRetry,
 }: {
@@ -111,7 +110,7 @@ function UserBookingDetailError({
   );
 }
 
-function UserBookingDetailEmpty() {
+export function UserBookingDetailEmpty() {
   const { t } = useTranslation();
   return (
     <View className="flex-1 items-center justify-center gap-5 px-6 py-12">

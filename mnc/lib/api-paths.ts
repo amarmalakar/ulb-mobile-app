@@ -35,6 +35,13 @@ export const API_PATHS = {
     mpinResetConfirm: '/auth/staff/mpin/reset/confirm',
     info: '/staff/info',
     leadership: '/staff/leadership',
+    bookings: '/staff/bookings',
+    bookingById: (bookingId: string) =>
+      `/staff/bookings/${encodeURIComponent(bookingId)}`,
+    bookingPaymentDetails: (bookingId: string) =>
+      `/staff/bookings/${encodeURIComponent(bookingId)}/payment-details`,
+    bookingUpdateStatus: (bookingId: string) =>
+      `/staff/bookings/${encodeURIComponent(bookingId)}/update-status`,
   },
   common: {
     feedbackAndSuggestion: '/common/feedback-and-suggestion',
