@@ -1,5 +1,4 @@
 import { type iUlb, useGetUlbById } from '@/hooks/apis/use-ulb-queries';
-import { useNetworkContext } from '@/components/providers/network-provider';
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
 
 type AppInitContextValue = {
@@ -8,6 +7,7 @@ type AppInitContextValue = {
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
+  refetch: () => void;
 };
 
 const AppInitContext = createContext<AppInitContextValue | undefined>(undefined);
@@ -17,7 +17,7 @@ type AppInitProviderProps = {
 };
 
 export function AppInitProvider({ children }: AppInitProviderProps) {
-  const { ulb, wards, isLoading, isError, error } = useGetUlbById();
+  const { ulb, wards, isLoading, isError, error, refetch } = useGetUlbById();
 
   const value = useMemo(
     () => ({
@@ -26,8 +26,9 @@ export function AppInitProvider({ children }: AppInitProviderProps) {
       isLoading,
       isError,
       error: error ?? null,
+      refetch,
     }),
-    [ulb, wards, isLoading, isError, error],
+    [ulb, wards, isLoading, isError, error, refetch],
   );
 
   return <AppInitContext.Provider value={value}>{children}</AppInitContext.Provider>;

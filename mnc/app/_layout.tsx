@@ -12,9 +12,11 @@ import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
 
 import { LocaleProvider } from '@/components/providers/locale-provider';
-import { AppInitProvider } from '@/components/providers/app-init-provider';
+import { AppInitProvider, useAppInitContext } from '@/components/providers/app-init-provider';
 import { NetworkProvider, useNetworkContext } from '@/components/providers/network-provider';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
+import { AppErrorScreen } from '@/components/common/app-error-screen';
+import { AppLoadingScreen } from '@/components/common/app-loading-screen';
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   // Hiding can fail when called multiple times during fast refresh.
@@ -28,6 +30,34 @@ export {
 function QueryDevTools() {
   const { queryClient } = useNetworkContext();
   return <DevToolsBubble queryClient={queryClient} />;
+}
+
+function LayoutContext() {
+  const { colorScheme } = useColorScheme();
+  const { isLoading, isError, error, refetch } = useAppInitContext();
+
+  if (isLoading) {
+    return <AppLoadingScreen />;
+  }
+
+  if (isError) {
+    return (
+      <AppErrorScreen
+        message={error?.message}
+        onRetry={() => {
+          void refetch();
+        }}
+      />
+    );
+  }
+  return (
+    <>
+      <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+      <Stack />
+      <PortalHost />
+      <QueryDevTools />
+    </>
+  )
 }
 
 export default function RootLayout() {
@@ -49,10 +79,7 @@ export default function RootLayout() {
       <LocaleProvider>
         <NetworkProvider>
           <AppInitProvider>
-            <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-            <Stack />
-            <PortalHost />
-            <QueryDevTools />
+            <LayoutContext />
           </AppInitProvider>
         </NetworkProvider>
       </LocaleProvider>

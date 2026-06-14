@@ -20,9 +20,9 @@ export interface iUlbByIdRes {
 export function useGetUlbById() {
   const { client, ulbId } = useNetworkContext();
 
-  const { data: ulb, isLoading, error, isError } = useQuery<iUlbByIdRes, Error>({
+  const { data: ulb, isLoading, error, isError, refetch, isFetching } = useQuery<iUlbByIdRes, Error>({
     queryKey: ['ulb', ulbId],
-    queryFn: () => client.get(`/${ulbId}`)
+    queryFn: () => client.get(`/${ulbId}`),
   });
 
   const totalWards = ulb?.data?.totalWards ?? 0;
@@ -31,8 +31,9 @@ export function useGetUlbById() {
   return {
     ulb: ulb?.data,
     wards,
-    isLoading,
+    isLoading: isLoading || (isFetching && !ulb?.data),
     isError,
     error,
+    refetch,
   };
 }

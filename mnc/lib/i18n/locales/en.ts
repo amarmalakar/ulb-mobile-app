@@ -52,6 +52,10 @@ export const en = {
     title: 'No internet connection',
     hint: 'Check your connection and try again.',
   },
+  appInit: {
+    loading: 'Loading municipality details…',
+    errorHint: 'Could not load municipality details. Please try again.',
+  },
   notFound: {
     oops: 'Oops!',
     title: "This screen doesn't exist.",
