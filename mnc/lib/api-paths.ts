@@ -12,6 +12,7 @@ export const API_PATHS = {
     mpinResetOtpSend: '/auth/user/mpin/reset/otp/send',
     mpinResetConfirm: '/auth/user/mpin/reset/confirm',
     info: '/user/info',
+    leadership: '/user/leadership',
   },
   staff: {
     login: '/auth/staff/login',
@@ -22,6 +23,7 @@ export const API_PATHS = {
     mpinResetRequest: '/auth/staff/mpin/reset/request',
     mpinResetConfirm: '/auth/staff/mpin/reset/confirm',
     info: '/staff/info',
+    leadership: '/staff/leadership',
   },
   common: {
     feedbackAndSuggestion: '/common/feedback-and-suggestion',
