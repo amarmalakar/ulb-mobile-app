@@ -14,6 +14,9 @@ export const API_PATHS = {
     info: '/user/info',
     leadership: '/user/leadership',
     services: '/user/services',
+    bookingResources: '/user/booking-resources',
+    bookingResourceById: (resourceId: string) =>
+      `/user/booking-resources/${encodeURIComponent(resourceId)}`,
   },
   staff: {
     login: '/auth/staff/login',
