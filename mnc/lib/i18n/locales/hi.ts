@@ -70,6 +70,8 @@ export const hi: TranslationSchema = {
     getStarted: 'शुरू करें',
     startAsStaff: 'कर्मचारी के रूप में',
     startAsUser: 'नागरिक के रूप में',
+    welcomeUser: 'स्वागत है, {{name}}',
+    welcomeStaff: 'स्वागत है, {{name}}',
   },
   menu: {
     title: 'मेनू',
@@ -304,7 +306,7 @@ export const hi: TranslationSchema = {
     enterSmsCode: 'SMS कोड दर्ज करें',
     profileLoadError: 'प्रोफ़ाइल लोड नहीं हो सकी। पुनः प्रयास करें।',
     userMpinTitle: 'उपयोगकर्ता MPIN',
-    staffMpinTitle: 'MPIN',
+    staffMpinTitle: 'कर्मचारी MPIN',
     signInFailed: 'साइन इन विफल',
     couldNotSendOtp: 'OTP नहीं भेजा जा सका',
     sessionExpiredOtp: 'सत्र समाप्त। वापस जाएँ और नया कोड माँगें।',

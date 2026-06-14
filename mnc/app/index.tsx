@@ -1,175 +1,78 @@
-import { Typography } from '@/components/common/typography';
 import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
+import { Typography } from '@/components/common/typography';
 import { Stack } from 'expo-router';
 import { MoonStarIcon, SunIcon } from 'lucide-react-native';
 import { useColorScheme } from 'nativewind';
 import * as React from 'react';
-import { ScrollView, View } from 'react-native';
+import { Image, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import bubbleShape1 from '@/assets/images/bubble-shape-1.png';
+import loginHero from '@/assets/images/login-hero.png';
+import { useAppInitContext } from '@/components/providers/app-init-provider';
+import { useAuthContext } from '@/components/providers/auth-provider';
+import { useStaffBootstrap } from '@/hooks/use-staff-bootstrap';
+import { useUserBootstrap } from '@/hooks/use-user-bootstrap';
+import { cn } from '@/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 const SCREEN_OPTIONS = {
-  title: 'Typography',
-  headerTransparent: true,
-  headerRight: () => <ThemeToggle />,
+  headerShown: false,
 };
 
-const VARIANTS = [
-  'display',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'subtitle1',
-  'subtitle2',
-  'body1',
-  'body2',
-  'caption',
-  'overline',
-  'label',
-  'button',
-] as const;
-
-const COLORS = [
-  'default',
-  'primary',
-  'secondary',
-  'muted',
-  'destructive',
-  'accent',
-] as const;
-
-const WEIGHTS = [
-  'thin',
-  'extralight',
-  'light',
-  'regular',
-  'medium',
-  'semibold',
-  'bold',
-  'extrabold',
-  'black',
-] as const;
-
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
-  return (
-    <View className="gap-3">
-      <Typography variant="overline" color="primary">
-        {title}
-      </Typography>
-      {children}
-    </View>
-  );
-}
-
-function Row({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <View className="gap-1 border-b border-border/60 pb-3">
-      <Typography variant="caption" color="muted">
-        {label}
-      </Typography>
-      {children}
-    </View>
-  );
-}
-
 export default function Screen() {
+  const { t } = useTranslation();
+  const { ulb } = useAppInitContext();
+  const { currentStep } = useAuthContext();
+  const insets = useSafeAreaInsets();
+  useStaffBootstrap();
+  useUserBootstrap();
+
   return (
     <>
       <Stack.Screen options={SCREEN_OPTIONS} />
-      <ScrollView
-        className="flex-1 bg-background"
-        contentContainerClassName="gap-8 px-4 pb-12 pt-28">
-        <Section title="Variants">
-          {VARIANTS.map((variant) => (
-            <Row key={variant} label={variant}>
-              <Typography variant={variant}>The quick brown fox jumps over the lazy dog</Typography>
-            </Row>
-          ))}
-        </Section>
+      <View className="flex-1 bg-background">
+        <Image
+          source={bubbleShape1}
+          resizeMode="contain"
+          className="absolute -left-24 -top-20 size-80 opacity-70"
+        />
 
-        <Section title="Colors">
-          {COLORS.map((color) => (
-            <Row key={color} label={color}>
-              <Typography variant="body1" color={color}>
-                Sample text in {color} color
-              </Typography>
-            </Row>
-          ))}
-          <Row label="primary-foreground on primary">
-            <View className="self-start rounded-md bg-primary px-3 py-2">
-              <Typography variant="body1" color="primary-foreground">
-                Text on primary background
-              </Typography>
-            </View>
-          </Row>
-        </Section>
+        <View
+          className="flex-1 px-6 pt-16"
+          style={{ paddingBottom: insets.bottom + 32 }}
+        >
+          <View className="flex-1 items-center justify-center">
+            <Image source={loginHero} resizeMode="contain" className="h-72 w-full max-w-[280px]" />
 
-        <Section title="Weights">
-          {WEIGHTS.map((weight) => (
-            <Row key={weight} label={weight}>
-              <Typography variant="body1" weight={weight}>
-                Weight {weight}
-              </Typography>
-            </Row>
-          ))}
-        </Section>
+            <Typography variant="h4" align="center" className="mt-10">
+              {t('welcome.tagline', { ulb: ulb?.key ?? '' })}
+            </Typography>
 
-        <Section title="Alignment">
-          <Row label="left">
-            <Typography variant="body1" align="left">
-              Left aligned text
+            <Typography variant="body1" color="muted" align="center" className="mt-5 max-w-[320px]">
+              {t('welcome.description')}
             </Typography>
-          </Row>
-          <Row label="center">
-            <Typography variant="body1" align="center">
-              Center aligned text
-            </Typography>
-          </Row>
-          <Row label="right">
-            <Typography variant="body1" align="right">
-              Right aligned text
-            </Typography>
-          </Row>
-        </Section>
+          </View>
 
-        <Section title="Transform">
-          <Row label="uppercase">
-            <Typography variant="body1" transform="uppercase">
-              uppercase transform
-            </Typography>
-          </Row>
-          <Row label="lowercase">
-            <Typography variant="body1" transform="lowercase">
-              LOWERCASE TRANSFORM
-            </Typography>
-          </Row>
-          <Row label="capitalize">
-            <Typography variant="body1" transform="capitalize">
-              capitalize each word
-            </Typography>
-          </Row>
-        </Section>
-
-        <Section title="Style modifiers">
-          <Row label="underline">
-            <Typography variant="body1" underline>
-              Underlined text
-            </Typography>
-          </Row>
-          <Row label="italic">
-            <Typography variant="body1" italic>
-              Italic text
-            </Typography>
-          </Row>
-          <Row label="underline + italic + primary">
-            <Typography variant="body1" color="primary" underline italic weight="semibold">
-              Emphasized link style
-            </Typography>
-          </Row>
-        </Section>
-      </ScrollView>
+          <View className="gap-3">
+            {currentStep?.map((step, index) => {
+              const isEven = index % 2 === 0;
+              return (
+                <Button
+                  key={step.title}
+                  onPress={step.onPress}
+                  variant={isEven ? 'outline' : 'default'}
+                  className={cn('h-14 rounded-2xl', isEven ? 'border-primary' : '')}
+                >
+                  <Typography variant="h5" className={cn(isEven ? 'text-primary' : 'text-white')}>
+                    {step.title}
+                  </Typography>
+                </Button>
+              );
+            })}
+          </View>
+        </View>
+      </View>
     </>
   );
 }

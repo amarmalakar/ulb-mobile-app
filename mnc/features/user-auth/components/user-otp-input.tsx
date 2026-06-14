@@ -1,0 +1,169 @@
+import { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Platform, Pressable, type TextInputProps, View } from 'react-native';
+import {
+  CodeField,
+  Cursor,
+  useBlurOnFulfill,
+  useClearByFocusCell,
+} from 'react-native-confirmation-code-field';
+
+import { Label } from '@/components/ui/label';
+import { Text } from '@/components/ui/text';
+import { Typography } from '@/components/common/typography';
+import { cn } from '@/lib/utils';
+import { useOtpCountdown } from '@/features/staff-auth/hooks/use-otp-countdown';
+import { OTP_EXPIRY_SECONDS, OTP_LENGTH } from '../constants';
+const autoComplete = Platform.select<TextInputProps['autoComplete']>({
+  android: 'sms-otp',
+  default: 'one-time-code',
+});
+
+export type UserOtpInputProps = {
+  value: string;
+  onChangeText: (value: string) => void;
+  phoneDisplay: string;
+  onChangePhone: () => void;
+  error?: string | null;
+  disabled?: boolean;
+  cellCount?: number;
+  expiresInSeconds?: number;
+  onResend?: () => void;
+};
+
+export function UserOtpInput({
+  value,
+  onChangeText,
+  phoneDisplay,
+  onChangePhone,
+  error,
+  disabled = false,
+  cellCount = OTP_LENGTH,
+  expiresInSeconds = OTP_EXPIRY_SECONDS,
+  onResend,
+}: UserOtpInputProps) {
+  const { t } = useTranslation();
+  const setValue = useCallback(
+    (next: string) => {
+      const digitsOnly = next.replace(/\D/g, '').slice(0, cellCount);
+      onChangeText(digitsOnly);
+    },
+    [cellCount, onChangeText],
+  );
+
+  const ref = useBlurOnFulfill({ value, cellCount });
+  const [props, getCellOnLayoutHandler] = useClearByFocusCell({
+    value,
+    setValue,
+  });
+
+  const {
+    isExpired,
+    isUrgent,
+    formatted: countdownLabel,
+    handleResend,
+  } = useOtpCountdown({
+    expiresInSeconds,
+    onResend,
+    disabled,
+    resetKey: phoneDisplay,
+  });
+
+  const hasError = Boolean(error);
+
+  return (
+    <View className="gap-2">
+      <View className="flex-row items-center justify-between gap-3 px-1">
+        <Label>{t('common.verificationCode')}</Label>
+        <Pressable
+          onPress={onChangePhone}
+          disabled={disabled}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel={t('auth.changeMobile')}
+          className={cn(
+            'rounded-full px-2 py-1 active:bg-primary/10',
+            disabled && 'opacity-50',
+          )}
+        >
+          <Typography variant="body2" weight="semibold" color="primary">
+            {t('auth.changeMobile')}
+          </Typography>
+        </Pressable>
+      </View>
+
+      <Typography variant="body2" color="muted" className="px-1">
+        {t('auth.otpHint')}{' '}
+        <Typography weight="semibold" className="tracking-wide">{phoneDisplay}</Typography>
+      </Typography>
+
+      <CodeField
+        ref={ref}
+        {...props}
+        value={value}
+        onChangeText={setValue}
+        cellCount={cellCount}
+        keyboardType="number-pad"
+        textContentType="oneTimeCode"
+        autoComplete={autoComplete}
+        editable={!disabled}
+        rootStyle={{
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          gap: 8,
+          minHeight: 56,
+          opacity: disabled ? 0.5 : 1,
+        }}
+        renderCell={({ index, symbol, isFocused }) => (
+          <View
+            key={index}
+            pointerEvents="none"
+            onLayout={getCellOnLayoutHandler(index)}
+            className={cn(
+              'h-14 flex-1 items-center justify-center overflow-hidden rounded-2xl border bg-muted/30 shadow-sm shadow-black/5',
+              hasError && 'border-destructive',
+              !hasError && isFocused && 'border-primary/60 bg-primary/5',
+              !hasError && !isFocused && 'border-border',
+            )}
+          >
+            <Text className="text-foreground text-2xl font-semibold tabular-nums">
+              {symbol || (isFocused ? <Cursor /> : null)}
+            </Text>
+          </View>
+        )}
+      />
+
+      {hasError ? (
+        <Typography variant="body2" color="destructive" className="px-1">{error}</Typography>
+      ) : isExpired ? (
+        <View className="flex-row items-center gap-1 px-1">
+          <Typography variant="caption" color="muted">{t('auth.resendPrompt')}</Typography>
+          <Pressable
+            onPress={handleResend}
+            disabled={disabled}
+            hitSlop={6}
+            accessibilityRole="button"
+            accessibilityLabel={t('auth.resendOtp')}
+            className={cn(
+              'rounded-full px-1.5 py-0.5 active:bg-primary/10',
+              disabled && 'opacity-50',
+            )}
+          >
+            <Typography variant="caption" weight="semibold" color="primary">
+              {t('auth.resendOtp')}
+            </Typography>
+          </Pressable>
+        </View>
+      ) : (
+        <Typography
+          variant="caption"
+          weight={isUrgent ? 'medium' : 'regular'}
+          color={isUrgent ? 'destructive' : 'muted'}
+          className="px-1 leading-relaxed tabular-nums"
+        >
+          {t('auth.otpExpiresIn', { time: countdownLabel })}
+        </Typography>
+      )}
+    </View>
+  );
+}

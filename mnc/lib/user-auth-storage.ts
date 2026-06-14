@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { USER_SESSION_STORAGE_KEY } from '@/constants';
-import type { UserAuthSession } from '@/features/user-auth/types';
+import type { UserAuthSession } from '@/features/user-auth/types/index';
 
 let userTokenHeaderValue: string | null = null;
 

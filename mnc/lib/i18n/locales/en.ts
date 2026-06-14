@@ -68,6 +68,8 @@ export const en = {
     getStarted: 'Get Started',
     startAsStaff: 'Start as Staff',
     startAsUser: 'Start as User',
+    welcomeUser: 'Welcome, {{name}}',
+    welcomeStaff: 'Welcome, {{name}}',
   },
   menu: {
     title: 'Menu',
@@ -301,7 +303,7 @@ export const en = {
     enterSmsCode: 'Enter the SMS code',
     profileLoadError: 'Could not load your profile. Try again.',
     userMpinTitle: 'User MPIN',
-    staffMpinTitle: 'MPIN',
+    staffMpinTitle: 'Staff MPIN',
     signInFailed: 'Sign in failed',
     couldNotSendOtp: 'Could not send OTP',
     sessionExpiredOtp: 'Session expired. Go back and request a new code.',

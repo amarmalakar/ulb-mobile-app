@@ -10,20 +10,22 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useColorScheme } from 'nativewind';
-
-import { LocaleProvider } from '@/components/providers/locale-provider';
-import { AppInitProvider, useAppInitContext } from '@/components/providers/app-init-provider';
-import { NetworkProvider, useNetworkContext } from '@/components/providers/network-provider';
 import { DevToolsBubble } from 'react-native-react-query-devtools';
+
 import { AppErrorScreen } from '@/components/common/app-error-screen';
 import { AppLoadingScreen } from '@/components/common/app-loading-screen';
+import { AppInitProvider, useAppInitContext } from '@/components/providers/app-init-provider';
+import { AuthProvider } from '@/components/providers/auth-provider';
+import { LocaleProvider } from '@/components/providers/locale-provider';
+import { NetworkProvider, useNetworkContext } from '@/components/providers/network-provider';
+import { StaffAuthProvider } from '@/components/providers/staff-auth-provider';
+import { UserAuthProvider } from '@/components/providers/user-auth-provider';
 
 SplashScreen.preventAutoHideAsync().catch(() => {
   // Hiding can fail when called multiple times during fast refresh.
 });
 
 export {
-  // Catch any errors thrown by the Layout component.
   ErrorBoundary,
 } from 'expo-router';
 
@@ -50,14 +52,15 @@ function LayoutContext() {
       />
     );
   }
+
   return (
     <>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }} />
       <PortalHost />
       <QueryDevTools />
     </>
-  )
+  );
 }
 
 export default function RootLayout() {
@@ -66,7 +69,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync().catch(() => { });
+      SplashScreen.hideAsync().catch(() => {});
     }
   }, [fontsLoaded, fontError]);
 
@@ -79,7 +82,13 @@ export default function RootLayout() {
       <LocaleProvider>
         <NetworkProvider>
           <AppInitProvider>
-            <LayoutContext />
+            <StaffAuthProvider>
+              <UserAuthProvider>
+                <AuthProvider>
+                  <LayoutContext />
+                </AuthProvider>
+              </UserAuthProvider>
+            </StaffAuthProvider>
           </AppInitProvider>
         </NetworkProvider>
       </LocaleProvider>

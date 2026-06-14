@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { STAFF_SESSION_STORAGE_KEY } from '@/constants';
-import type { StaffAuthSession } from '@/features/staff-auth/types';
+import type { StaffAuthSession } from '@/features/staff-auth/types/index';
 
 let staffTokenHeaderValue: string | null = null;
 
