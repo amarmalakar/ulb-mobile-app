@@ -30,10 +30,12 @@ export function KeyboardFormScroll({
   const offset =
     keyboardVerticalOffset ?? (Platform.OS === 'ios' ? DEFAULT_IOS_KEYBOARD_OFFSET : 0);
 
+  const shouldFill = className?.includes('flex-1') ?? false;
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={[{ flex: 1 }, style]}
+      style={[shouldFill ? { flex: 1 } : null, style]}
       className={className}
       keyboardVerticalOffset={offset}
     >

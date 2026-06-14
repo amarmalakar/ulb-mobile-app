@@ -23,4 +23,7 @@ export const API_PATHS = {
     mpinResetConfirm: '/auth/staff/mpin/reset/confirm',
     info: '/staff/info',
   },
+  common: {
+    feedbackAndSuggestion: '/common/feedback-and-suggestion',
+  },
 } as const;

@@ -42,6 +42,7 @@
     "axios": "^1.17.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "date-fns": "^4.4.0",
     "expo": "~55.0.19",
     "expo-constants": "~55.0.15",
     "expo-font": "~55.0.8",
