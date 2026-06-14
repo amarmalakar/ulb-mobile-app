@@ -13,6 +13,7 @@ export const API_PATHS = {
     mpinResetConfirm: '/auth/user/mpin/reset/confirm',
     info: '/user/info',
     leadership: '/user/leadership',
+    services: '/user/services',
   },
   staff: {
     login: '/auth/staff/login',

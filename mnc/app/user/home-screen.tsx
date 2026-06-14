@@ -3,6 +3,7 @@ import { Leadership } from '@/components/common/leadership';
 import { useUserAuth } from '@/components/providers/user-auth-provider';
 import { HomeBanner } from '@/features/home-banner';
 import { useUserLeadershipQuery } from '@/features/leadership/hooks/use-user-leadership-query';
+import ServiceList from '@/features/service/components/service-list';
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
@@ -33,6 +34,8 @@ export default function UserHomeScreen() {
             leadership={leadership ?? []}
             onRetry={() => void refetchLeadership()}
           />
+
+          <ServiceList />
         </ScrollView>
 
         <BottomNav activeItemId="home" />
