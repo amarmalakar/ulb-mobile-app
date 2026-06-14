@@ -112,6 +112,9 @@ export const en = {
       wardCoordinator: 'Ward Coordinator',
     },
   },
+  services: {
+    title: 'Services',
+  },
   complaints: {
     title: 'Complaints',
     empty: 'No complaint types available.',

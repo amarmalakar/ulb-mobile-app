@@ -114,6 +114,9 @@ export const hi: TranslationSchema = {
       wardCoordinator: 'वार्ड समन्वयक',
     },
   },
+  services: {
+    title: 'सेवाएँ',
+  },
   complaints: {
     title: 'शिकायतें',
     empty: 'कोई शिकायत प्रकार उपलब्ध नहीं है।',

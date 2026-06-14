@@ -10,6 +10,7 @@ import { UserService } from '../types';
 import { useRouter } from 'expo-router';
 import { getServiceColorClass } from '@/lib/get-service-color-class';
 import { resolveServiceIcon } from '@/features/service/lib/resolve-service-icon';
+import { getLocaleString } from '@/lib/i18n/get-locale-string';
 import { cn } from '@/lib/utils';
 
 function ServiceError({
@@ -57,7 +58,7 @@ function ServiceItem({ service }: { service: UserService }) {
           params: {
             params: JSON.stringify({
               serviceId: service.id,
-              serviceTitle: service.title.en,
+              serviceTitle: service.title,
               subServices: service.subServices
             })
           },
@@ -76,9 +77,10 @@ function ServiceItem({ service }: { service: UserService }) {
             size={24}
           />
         </View>
-        <Typography className="text-center text-foreground text-sm font-medium">{service.title.en}</Typography>
+        <Typography className="text-center text-foreground text-sm font-medium">
+          {getLocaleString(service.title)}
+        </Typography>
       </Pressable>
-      {/* <Typography className={getServiceColorClass('text', service.color, 600)}>{service.title.en}</Typography> */}
     </View>
   );
 }
@@ -124,7 +126,7 @@ export default function ServiceList() {
   return (
     <View className="gap-4 p-4">
       <Typography variant="h4" className="text-primary">
-        Services
+        {t('services.title')}
       </Typography>
       {items.length === 0 ? (
         <Typography className="text-muted-foreground text-sm">{t('complaints.empty')}</Typography>
