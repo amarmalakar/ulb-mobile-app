@@ -14,6 +14,17 @@ export type iTicketStatus =
 export type iTicketCommentAuthorType = 'USER' | 'STAFF' | 'SYSTEM';
 export type TicketStatusActor = "USER" | "STAFF" | "ADMIN";
 
+export type StaffTicketsListFilterParams = {
+  query: string;
+  selectedServiceId: string | null;
+  /** Empty = all statuses. */
+  selectedStatuses: iTicketStatus[];
+  month: string;
+  year: string;
+  selectedWards: number[];
+  limit: number;
+};
+
 /** API locale map (`{ en, hi }`) for service and sub-service titles. */
 export type LocalizedTitle = LocalizedStringRecord;
 
@@ -55,6 +66,15 @@ export type UserTicketsPage = {
   items: TicketListItem[];
   nextCursor: string | null;
   hasMore: boolean;
+};
+
+/** One page from `GET /staff/tickets` (page pagination). */
+export type StaffTicketsPage = {
+  items: StaffTicketListItem[];
+  page: number;
+  limit: number;
+  hasMore: boolean;
+  total: number;
 };
 
 export type UserTicketTimelineEntry = {
@@ -170,4 +190,13 @@ export type StaffTicketDetail = StaffTicketListItem & {
   timelines: StaffTicketTimelineEntry[];
   comments: StaffTicketComment[];
   user: StaffTicketDetailUser;
+};
+
+export type StaffServiceFilterOption = {
+  id: string;
+  title: LocalizedTitle;
+};
+
+export type StaffTicketFiltersData = {
+  services: StaffServiceFilterOption[];
 };

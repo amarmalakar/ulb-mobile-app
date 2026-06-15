@@ -54,6 +54,8 @@ export const API_PATHS = {
       `/staff/tickets/${encodeURIComponent(ticketId)}`,
     ticketComments: (ticketId: string) =>
       `/staff/tickets/${encodeURIComponent(ticketId)}/comments`,
+    ticketFilters: '/staff/ticket-filters',
+    tickets: '/staff/tickets',
     homeAnalytics: '/staff/home-analytics',
   },
   common: {

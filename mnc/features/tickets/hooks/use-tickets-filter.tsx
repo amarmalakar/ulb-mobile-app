@@ -6,7 +6,10 @@ import {
   getYear,
   parse,
   startOfYear,
+  type Locale,
 } from "date-fns";
+import { getAppLocale } from "@/lib/i18n";
+import { getDateFnsLocale } from "@/lib/date-fns-locale";
 import type { iTicketStatus } from "@/features/tickets/types";
 import { useCallback, useState } from "react";
 
@@ -106,7 +109,10 @@ export function getTicketFilterYearOptions(): TicketFilterDateOption[] {
 }
 
 /** All calendar months Jan–Dec for a valid filter year. */
-export function getTicketFilterMonthOptions(year: string): TicketFilterDateOption[] {
+export function getTicketFilterMonthOptions(
+  year: string,
+  locale: Locale = getDateFnsLocale(getAppLocale()),
+): TicketFilterDateOption[] {
   const yearNum = Number(year);
   const now = new Date();
   if (
@@ -122,7 +128,7 @@ export function getTicketFilterMonthOptions(year: string): TicketFilterDateOptio
 
   return eachMonthOfInterval({ start: intervalStart, end: intervalEnd }).map((date) => ({
     value: format(date, "MM"),
-    label: format(date, "MMM"),
+    label: format(date, "MMM", { locale }),
   }));
 }
 
@@ -131,11 +137,12 @@ export type TicketFilterSummaryChip = { key: string; label: string };
 /** Human-readable chips for the applied filter bar (always includes period + ward chips). */
 export function buildTicketFilterSummary(
   filter: TicketFilterState,
-  options?: { serviceLabel?: string },
+  options?: { serviceLabel?: string; dateLocale?: Locale },
 ): TicketFilterSummaryChip[] {
   const monthLabel =
-    getTicketFilterMonthOptions(filter.year).find((m) => m.value === filter.month)?.label ??
-    filter.month;
+    getTicketFilterMonthOptions(filter.year, options?.dateLocale).find(
+      (m) => m.value === filter.month,
+    )?.label ?? filter.month;
 
   const chips: TicketFilterSummaryChip[] = [
     { key: "period", label: `${monthLabel} ${filter.year}` },
