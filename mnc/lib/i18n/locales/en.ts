@@ -114,6 +114,7 @@ export const en = {
   },
   services: {
     title: 'Services',
+    empty: 'No services available.',
   },
   complaints: {
     title: 'Complaints',

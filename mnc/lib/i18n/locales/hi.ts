@@ -116,6 +116,7 @@ export const hi: TranslationSchema = {
   },
   services: {
     title: 'सेवाएँ',
+    empty: 'कोई सेवा उपलब्ध नहीं।',
   },
   complaints: {
     title: 'शिकायतें',
