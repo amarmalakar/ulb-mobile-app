@@ -86,8 +86,16 @@ export function UserBookingListError({
   );
 }
 
-export function UserBookingListEmpty() {
+export function UserBookingListEmpty({
+  title,
+  hint,
+}: {
+  title?: string;
+  hint?: string;
+}) {
   const { t } = useTranslation();
+  const defaultTitle = t('bookings.yourBookingsEmptyTitle');
+  const defaultHint = t('bookings.yourBookingsEmptyHint');
   return (
     <View className="flex-1 items-center justify-center gap-5 px-6 py-12">
       <View className="bg-muted size-20 items-center justify-center rounded-full">
@@ -95,10 +103,10 @@ export function UserBookingListEmpty() {
       </View>
       <View className="gap-1.5">
         <Typography className="text-foreground text-center text-xl font-bold">
-          {t('bookings.yourBookingsEmptyTitle')}
+          {title ?? defaultTitle}
         </Typography>
         <Typography className="text-muted-foreground max-w-[300px] text-center text-sm leading-relaxed">
-          {t('bookings.yourBookingsEmptyHint')}
+          {hint ?? defaultHint}
         </Typography>
       </View>
     </View>
@@ -229,7 +237,7 @@ export default function UserYourBookingScreen() {
             message={error?.message}
           />
         ) : bookings.length === 0 ? (
-          <UserBookingListEmpty />
+          <UserBookingListEmpty title={t('bookings.yourBookingsEmptyTitle')} hint={t('bookings.yourBookingsEmptyHint')} />
         ) : (
           <FlatList
             data={bookings}
