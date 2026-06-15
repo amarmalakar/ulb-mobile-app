@@ -125,7 +125,7 @@ export const hi: TranslationSchema = {
     photoLibraryRequired: 'फ़ोटो संलग्न करने के लिए गैलरी की अनुमति आवश्यक है।',
     submitComplaint: 'जमा करें',
     submitting: 'जमा हो रहा है…',
-    uploadingPhotos: 'फ़ोटो अपलोड हो रही हैं…',
+    uploadingPhotos: 'अपलोड…',
     submitSuccessTitle: 'शिकायत दर्ज हो गई',
     submitSuccessBody:
       'शिकायत सफलतापूर्वक दर्ज हो गई।\nटिकट ID: {{ticketId}}{{photoNote}}',

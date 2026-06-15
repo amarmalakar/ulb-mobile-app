@@ -123,7 +123,7 @@ export const en = {
     photoLibraryRequired: 'Photo library access is required to attach images.',
     submitComplaint: 'Submit',
     submitting: 'Submitting…',
-    uploadingPhotos: 'Uploading photos…',
+    uploadingPhotos: 'Uploading ',
     submitSuccessTitle: 'Complaint submitted',
     submitSuccessBody: 'Complaint submitted successfully.\nTicket ID: {{ticketId}}{{photoNote}}',
     submitSignInRequired: 'You must be signed in to submit a complaint',

@@ -54,12 +54,12 @@ function ServiceItem({ service }: { service: UserService }) {
       <Pressable
         className="self-center items-center gap-2 active:opacity-80"
         onPress={() => router.push({
-          pathname: '/user/complaint-form-screen',
+          pathname: '/user/service-form-screen',
           params: {
             params: JSON.stringify({
               serviceId: service.id,
               serviceTitle: service.title,
-              subServices: service.subServices
+              subServicesArray: service.subServices
             })
           },
         })}

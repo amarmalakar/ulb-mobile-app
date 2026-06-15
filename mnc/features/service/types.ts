@@ -23,3 +23,27 @@ export type UserService = {
   createdAt: string;
   updatedAt: string;
 };
+
+export type CreateUserServiceTicketRequest = {
+  serviceId: string;
+  subServiceId: string;
+  ticketCategory: "SERVICE";
+  wardNumber: number;
+  phoneNumber: string;
+  description: string;
+  locationAddress?: string;
+  latitude?: number;
+  longitude?: number;
+  /** R2 object keys from `POST /user/media/upload`. */
+  imageKeys?: string[];
+};
+
+export type CreateUserServiceTicketResult = {
+  id: string;
+  ticketTokenId: string;
+  status: string;
+  ward: number;
+  assignedStaffId: string | null;
+  createdAt: string;
+  assignedStaffName: string;
+};
