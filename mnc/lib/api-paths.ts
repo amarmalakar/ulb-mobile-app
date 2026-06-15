@@ -15,6 +15,12 @@ export const API_PATHS = {
     leadership: '/user/leadership',
     services: '/user/services',
     tickets: '/user/tickets',
+    ticketById: (ticketId: string) =>
+      `/user/tickets/${encodeURIComponent(ticketId)}`,
+    ticketRating: (ticketId: string) =>
+      `/user/tickets/${encodeURIComponent(ticketId)}/rating`,
+    ticketComments: (ticketId: string) =>
+      `/user/tickets/${encodeURIComponent(ticketId)}/comments`,
     mediaUpload: '/user/media/upload',
     bookingResources: '/user/booking-resources',
     bookingResourceById: (resourceId: string) =>
@@ -44,6 +50,10 @@ export const API_PATHS = {
       `/staff/bookings/${encodeURIComponent(bookingId)}/payment-details`,
     bookingUpdateStatus: (bookingId: string) =>
       `/staff/bookings/${encodeURIComponent(bookingId)}/update-status`,
+    ticketById: (ticketId: string) =>
+      `/staff/tickets/${encodeURIComponent(ticketId)}`,
+    ticketComments: (ticketId: string) =>
+      `/staff/tickets/${encodeURIComponent(ticketId)}/comments`,
   },
   common: {
     feedbackAndSuggestion: '/common/feedback-and-suggestion',
