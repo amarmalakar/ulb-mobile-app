@@ -14,7 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { AccountLanguagePicker } from './components/account-language-picker';
 import { AccountSettingsRow } from './components/account-settings-row';
-import { AccountThemePicker } from './components/account-theme-picker';
+// import { AccountThemePicker } from './components/account-theme-picker';
 import { useAccountProfile } from './hooks/use-account-profile';
 
 export function Account() {
@@ -107,7 +107,7 @@ export function Account() {
 
         <View className="mt-6 gap-6">
           <AccountLanguagePicker />
-          <AccountThemePicker />
+          {/* <AccountThemePicker /> */}
         </View>
 
         <View className="mt-6 gap-2">
