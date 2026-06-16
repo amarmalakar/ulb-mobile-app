@@ -21,7 +21,7 @@ import { useServiceForm } from "@/features/service/hooks/use-service-form";
 import { mapServiceFormToCreateRequest } from "@/features/service/lib/map-create-service-payload";
 import { uploadServicePhotos } from "@/features/service/lib/upload-service-photos";
 
-import { ServiceSelectField } from "./service-select-field";
+import { ServiceDropdownField } from "./service-dropdown-field";
 
 export function ServiceForm({
   serviceId,
@@ -161,7 +161,7 @@ export function ServiceForm({
         }
       >
         <View className="gap-4 pb-4">
-          <ServiceSelectField
+          <ServiceDropdownField
             control={control}
             name="subServiceId"
             options={subServices}
