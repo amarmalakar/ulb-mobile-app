@@ -19,8 +19,8 @@ export const NetworkContext = createContext<NetworkContextType | undefined>(unde
 export function NetworkProvider({ children }: { children: ReactNode }) {
   const { isOnline } = useNetworkStatus();
   const ulbId = process.env.EXPO_PUBLIC_ULB_ID!;
-  // const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL!;
-  const apiBaseUrl = Platform.OS === 'android' ? 'http://10.0.2.2:4001/mobile/v1' : 'http://localhost:4001/mobile/v1';
+  const apiBaseUrl = process.env.EXPO_PUBLIC_API_BASE_URL!;
+  // const apiBaseUrl = Platform.OS === 'android' ? 'http://10.0.2.2:4001/mobile/v1' : 'http://localhost:4001/mobile/v1';
 
   const queryClient = useMemo(
     () =>

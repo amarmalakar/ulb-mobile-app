@@ -53,12 +53,14 @@ function LayoutContext() {
     );
   }
 
+  void QueryDevTools;
+
   return (
     <>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false }} />
       <PortalHost />
-      <QueryDevTools />
+      {/* <QueryDevTools /> */}
     </>
   );
 }
@@ -69,7 +71,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (fontsLoaded || fontError) {
-      SplashScreen.hideAsync().catch(() => {});
+      SplashScreen.hideAsync().catch(() => { });
     }
   }, [fontsLoaded, fontError]);
 

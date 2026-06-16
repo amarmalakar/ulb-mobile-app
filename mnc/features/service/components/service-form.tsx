@@ -102,7 +102,10 @@ export function ServiceForm({
             text: t("common.ok"),
             onPress: () => {
               form.reset();
-              router.back();
+              router.replace({
+                pathname: "/user/user-ticket-info-screen",
+                params: { ticketId: ticket.id },
+              });
             },
           },
         ],

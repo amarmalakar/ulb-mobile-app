@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, ScrollView, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useTranslation } from 'react-i18next';
@@ -61,6 +62,7 @@ export function StaffBookingPaymentSheet({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const paymentMutation = useStaffBookingPaymentMutation(bookingId);
 
   const [type, setType] = useState<BookingPaymentType>('CASH');
@@ -114,9 +116,16 @@ export function StaffBookingPaymentSheet({
 
   return (
     <Modal transparent animationType="slide" visible={visible} onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-black/30">
-        <Pressable className="flex-1" onPress={onClose} />
-        <View className="max-h-[85vh] rounded-t-3xl bg-card">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
+        <View className="flex-1 justify-end bg-black/30">
+          <Pressable className="flex-1" onPress={onClose} />
+          <View
+            className="max-h-[85vh] w-full rounded-t-3xl bg-card"
+            style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+          >
           <View className="flex-row items-center justify-between px-4 py-3">
             <Typography className="text-lg font-bold text-foreground">
               {t('bookings.staffAddPaymentTitle')}
@@ -228,8 +237,9 @@ export function StaffBookingPaymentSheet({
               {error ? <Typography className="text-sm text-destructive">{error}</Typography> : null}
             </View>
           </KeyboardFormScroll>
+          </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }

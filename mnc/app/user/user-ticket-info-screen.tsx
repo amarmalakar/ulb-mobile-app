@@ -1,4 +1,4 @@
-import { ActivityIndicator, ScrollView, View } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { Stack, useLocalSearchParams } from "expo-router";
 import { TopNavigation } from "@/components/common/top-navigation";
 import { useTranslation } from "react-i18next";
@@ -22,7 +22,7 @@ export default function UserTicketInfoScreen() {
       <View className="bg-background flex-1">
         <TopNavigation label={t("tickets.ticketInfo")} isBackButton={true} />
 
-        <ScrollView>
+        <View className="flex-1">
           {isLoading ? (
             <View className="flex-1 items-center justify-center">
               <ActivityIndicator size="large" />
@@ -46,7 +46,7 @@ export default function UserTicketInfoScreen() {
           ) : (
             <TicketInfo ticket={data} authType="User" />
           )}
-        </ScrollView>
+        </View>
       </View>
     </>
   );

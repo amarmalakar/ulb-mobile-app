@@ -1,7 +1,8 @@
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Check, ChevronsDownUpIcon, Search, SearchX, X } from "lucide-react-native";
-import { FlatList, Modal, Pressable, View } from "react-native";
+import { FlatList, KeyboardAvoidingView, Modal, Platform, Pressable, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
 import { Icon } from "@/components/ui/icon";
@@ -74,6 +75,7 @@ function ServiceSelectFieldControl({
   invalid: boolean;
 }) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const [visible, setVisible] = useState(false);
   const [search, setSearch] = useState("");
 
@@ -104,87 +106,96 @@ function ServiceSelectFieldControl({
   return (
     <>
       <Modal transparent animationType="fade" visible={visible} onRequestClose={handleClose}>
-        <View className="flex-1 justify-end bg-black/30">
-          <Pressable className="flex-1" onPress={handleClose} />
-          <View className="bg-card absolute bottom-0 h-[60vh] w-full rounded-t-3xl">
-            <View className="flex-row items-center justify-between px-4 py-3">
-              <Typography className="text-primary text-lg font-bold">{title}</Typography>
-              <Pressable onPress={handleClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
-                <X size={18} color="#737373" />
-              </Pressable>
-            </View>
-
-            <Separator />
-
-            <View className="px-4 pt-3">
-              <View className="relative">
-                <View className="pointer-events-none absolute left-3 top-0 z-10 h-10 justify-center">
-                  <Icon as={Search} size={16} className="text-muted-foreground" />
-                </View>
-                <Input
-                  value={search}
-                  onChangeText={setSearch}
-                  placeholder={t("common.searchProblems")}
-                  className="pl-9"
-                  autoCorrect={false}
-                  autoCapitalize="none"
-                  clearButtonMode="while-editing"
-                />
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          className="flex-1"
+        >
+          <View className="flex-1 justify-end bg-black/30">
+            <Pressable className="flex-1" onPress={handleClose} />
+            <View
+              className="h-[60vh] w-full max-h-[60vh] rounded-t-3xl bg-card"
+              style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+            >
+              <View className="flex-row items-center justify-between px-4 py-3">
+                <Typography className="text-primary text-lg font-bold">{title}</Typography>
+                <Pressable onPress={handleClose} className="bg-muted h-9 w-9 items-center justify-center rounded-full">
+                  <X size={18} color="#737373" />
+                </Pressable>
               </View>
-            </View>
 
-            <View className="flex-1 px-4 pb-4 pt-2">
-              {filteredOptions.length === 0 ? (
-                <View className="flex-1 items-center justify-center gap-2 px-6">
-                  <View className="bg-muted size-14 items-center justify-center rounded-full">
-                    <Icon as={SearchX} size={24} className="text-muted-foreground" />
+              <Separator />
+
+              <View className="px-4 pt-3">
+                <View className="relative">
+                  <View className="pointer-events-none absolute left-3 top-0 z-10 h-10 justify-center">
+                    <Icon as={Search} size={16} className="text-muted-foreground" />
                   </View>
-                  <Typography className="text-foreground text-center text-base font-semibold">
-                    {t("common.noResults")}
-                  </Typography>
-                  <Typography className="text-muted-foreground text-center text-sm">
-                    {t("complaints.tryDifferentSearch")}
-                  </Typography>
+                  <Input
+                    value={search}
+                    onChangeText={setSearch}
+                    placeholder={t("common.searchProblems")}
+                    className="pl-9"
+                    autoCorrect={false}
+                    autoCapitalize="none"
+                    clearButtonMode="while-editing"
+                  />
                 </View>
-              ) : (
-                <FlatList
-                  data={filteredOptions}
-                  keyExtractor={(item) => item.value}
-                  showsVerticalScrollIndicator={false}
-                  keyboardShouldPersistTaps="handled"
-                  ItemSeparatorComponent={() => <View className="h-1.5" />}
-                  contentContainerStyle={{ paddingBottom: 8 }}
-                  renderItem={({ item }) => {
-                    const isSelected = item.value === value;
-                    return (
-                      <Pressable
-                        onPress={() => handleSelect(item)}
-                        className={cn(
-                          "flex-row items-center justify-between rounded-xl px-3 py-3.5",
-                          isSelected ? "bg-primary/10 border border-primary/30" : "bg-muted/60 active:bg-muted"
-                        )}
-                      >
-                        <Typography
+              </View>
+
+              <View className="flex-1 px-4 pb-4 pt-2">
+                {filteredOptions.length === 0 ? (
+                  <View className="flex-1 items-center justify-center gap-2 px-6">
+                    <View className="bg-muted size-14 items-center justify-center rounded-full">
+                      <Icon as={SearchX} size={24} className="text-muted-foreground" />
+                    </View>
+                    <Typography className="text-foreground text-center text-base font-semibold">
+                      {t("common.noResults")}
+                    </Typography>
+                    <Typography className="text-muted-foreground text-center text-sm">
+                      {t("complaints.tryDifferentSearch")}
+                    </Typography>
+                  </View>
+                ) : (
+                  <FlatList
+                    data={filteredOptions}
+                    keyExtractor={(item) => item.value}
+                    showsVerticalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                    keyboardDismissMode="on-drag"
+                    ItemSeparatorComponent={() => <View className="h-1.5" />}
+                    contentContainerStyle={{ paddingBottom: 8 }}
+                    renderItem={({ item }) => {
+                      const isSelected = item.value === value;
+                      return (
+                        <Pressable
+                          onPress={() => handleSelect(item)}
                           className={cn(
-                            "flex-1 pr-3 text-base",
-                            isSelected ? "text-primary font-semibold" : "text-foreground font-medium"
+                            "flex-row items-center justify-between rounded-xl px-3 py-3.5",
+                            isSelected ? "bg-primary/10 border border-primary/30" : "bg-muted/60 active:bg-muted"
                           )}
                         >
-                          {item.label}
-                        </Typography>
-                        {isSelected ? (
-                          <View className="bg-primary size-6 items-center justify-center rounded-full">
-                            <Check size={14} color="#FFFFFF" strokeWidth={3} />
-                          </View>
-                        ) : null}
-                      </Pressable>
-                    );
-                  }}
-                />
-              )}
+                          <Typography
+                            className={cn(
+                              "flex-1 pr-3 text-base",
+                              isSelected ? "text-primary font-semibold" : "text-foreground font-medium"
+                            )}
+                          >
+                            {item.label}
+                          </Typography>
+                          {isSelected ? (
+                            <View className="bg-primary size-6 items-center justify-center rounded-full">
+                              <Check size={14} color="#FFFFFF" strokeWidth={3} />
+                            </View>
+                          ) : null}
+                        </Pressable>
+                      );
+                    }}
+                  />
+                )}
+              </View>
             </View>
           </View>
-        </View>
+        </KeyboardAvoidingView>
       </Modal>
 
       <Pressable

@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Modal, Pressable, ScrollView, View } from 'react-native';
+import { ActivityIndicator, KeyboardAvoidingView, Modal, Platform, Pressable, ScrollView, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+
+import { KeyboardFormScroll } from '@/components/common/keyboard-form-scroll';
 import { useTranslation } from 'react-i18next';
 import { XIcon } from 'lucide-react-native';
 
@@ -50,6 +53,7 @@ export function StaffBookingStatusSheet({
   onClose: () => void;
 }) {
   const { t } = useTranslation();
+  const insets = useSafeAreaInsets();
   const statusMutation = useStaffBookingStatusMutation(bookingId);
   const allowed = getAllowedBookingStatusTransitions(currentStatus);
 
@@ -99,105 +103,112 @@ export function StaffBookingStatusSheet({
 
   return (
     <Modal transparent animationType="slide" visible={visible} onRequestClose={onClose}>
-      <View className="flex-1 justify-end bg-black/30">
-        <Pressable className="flex-1" onPress={onClose} />
-        <View className="max-h-[85vh] rounded-t-3xl bg-card">
-          <View className="flex-row items-center justify-between px-4 py-3">
-            <Typography className="text-lg font-bold text-foreground">
-              {t('bookings.staffUpdateStatusTitle')}
-            </Typography>
-            <Pressable
-              onPress={onClose}
-              className="h-9 w-9 items-center justify-center rounded-full bg-muted">
-              <XIcon size={18} color="#737373" />
-            </Pressable>
-          </View>
-
-          <ScrollView
-            className="px-4 pb-4"
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}>
-            <View className="gap-4">
-              <Typography className="text-sm text-muted-foreground">
-                {t('bookings.staffCurrentStatus', {
-                  status: t(getBookingStatusConfig(currentStatus).labelKey),
-                })}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        className="flex-1"
+      >
+        <View className="flex-1 justify-end bg-black/30">
+          <Pressable className="flex-1" onPress={onClose} />
+          <View
+            className="max-h-[85vh] w-full rounded-t-3xl bg-card"
+            style={{ paddingBottom: Math.max(insets.bottom, 12) }}
+          >
+            <View className="flex-row items-center justify-between px-4 py-3">
+              <Typography className="text-lg font-bold text-foreground">
+                {t('bookings.staffUpdateStatusTitle')}
               </Typography>
-
-              {allowed.length === 0 ? (
-                <Typography className="text-sm text-muted-foreground">
-                  {t('bookings.staffNoStatusTransitions')}
-                </Typography>
-              ) : (
-                <View className="gap-2">
-                  <Label>{t('bookings.staffNewStatus')}</Label>
-                  <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-                    <View className="flex-row gap-2">
-                      {allowed.map((status) => (
-                        <FilterChip
-                          key={status}
-                          label={t(getBookingStatusConfig(status).labelKey)}
-                          selected={nextStatus === status}
-                          onPress={() => setNextStatus(status)}
-                        />
-                      ))}
-                    </View>
-                  </ScrollView>
-                </View>
-              )}
-
-              <View className="gap-2">
-                <Label>{t('bookings.staffStatusNote')}</Label>
-                <Textarea
-                  value={note}
-                  onChangeText={setNote}
-                  placeholder={t('bookings.optional')}
-                  numberOfLines={2}
-                />
-              </View>
-
-              {nextStatus === 'REJECTED' ? (
-                <View className="gap-2">
-                  <Label>{t('bookings.staffRejectionReason')}</Label>
-                  <Input
-                    value={rejectedReason}
-                    onChangeText={setRejectedReason}
-                    placeholder={t('bookings.staffRejectionReasonPlaceholder')}
-                  />
-                </View>
-              ) : null}
-
-              {nextStatus === 'CANCELLED' ? (
-                <View className="gap-2">
-                  <Label>{t('bookings.staffCancellationReason')}</Label>
-                  <Input
-                    value={cancellationReason}
-                    onChangeText={setCancellationReason}
-                    placeholder={t('bookings.staffCancellationReasonPlaceholder')}
-                  />
-                </View>
-              ) : null}
-
-              {error ? <Typography className="text-sm text-destructive">{error}</Typography> : null}
+              <Pressable
+                onPress={onClose}
+                className="h-9 w-9 items-center justify-center rounded-full bg-muted">
+                <XIcon size={18} color="#737373" />
+              </Pressable>
             </View>
-          </ScrollView>
 
-          <View className="border-t border-border px-4 py-3">
-            <Button
-              onPress={() => void handleSubmit()}
-              disabled={statusMutation.isPending || allowed.length === 0}
-              className="w-full">
-              {statusMutation.isPending ? (
-                <ActivityIndicator color="#fff" />
-              ) : (
-                <Typography className="font-semibold text-primary-foreground">
-                  {t('bookings.staffSaveStatus')}
+            <KeyboardFormScroll
+              scrollViewProps={{ className: 'px-4 pb-4' }}
+              footer={
+                <View className="border-t border-border px-4 py-3">
+                  <Button
+                    onPress={() => void handleSubmit()}
+                    disabled={statusMutation.isPending || allowed.length === 0}
+                    className="w-full">
+                    {statusMutation.isPending ? (
+                      <ActivityIndicator color="#fff" />
+                    ) : (
+                      <Typography className="font-semibold text-primary-foreground">
+                        {t('bookings.staffSaveStatus')}
+                      </Typography>
+                    )}
+                  </Button>
+                </View>
+              }>
+              <View className="gap-4">
+                <Typography className="text-sm text-muted-foreground">
+                  {t('bookings.staffCurrentStatus', {
+                    status: t(getBookingStatusConfig(currentStatus).labelKey),
+                  })}
                 </Typography>
-              )}
-            </Button>
+
+                {allowed.length === 0 ? (
+                  <Typography className="text-sm text-muted-foreground">
+                    {t('bookings.staffNoStatusTransitions')}
+                  </Typography>
+                ) : (
+                  <View className="gap-2">
+                    <Label>{t('bookings.staffNewStatus')}</Label>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                      <View className="flex-row gap-2">
+                        {allowed.map((status) => (
+                          <FilterChip
+                            key={status}
+                            label={t(getBookingStatusConfig(status).labelKey)}
+                            selected={nextStatus === status}
+                            onPress={() => setNextStatus(status)}
+                          />
+                        ))}
+                      </View>
+                    </ScrollView>
+                  </View>
+                )}
+
+                <View className="gap-2">
+                  <Label>{t('bookings.staffStatusNote')}</Label>
+                  <Textarea
+                    value={note}
+                    onChangeText={setNote}
+                    placeholder={t('bookings.optional')}
+                    numberOfLines={2}
+                  />
+                </View>
+
+                {nextStatus === 'REJECTED' ? (
+                  <View className="gap-2">
+                    <Label>{t('bookings.staffRejectionReason')}</Label>
+                    <Input
+                      value={rejectedReason}
+                      onChangeText={setRejectedReason}
+                      placeholder={t('bookings.staffRejectionReasonPlaceholder')}
+                    />
+                  </View>
+                ) : null}
+
+                {nextStatus === 'CANCELLED' ? (
+                  <View className="gap-2">
+                    <Label>{t('bookings.staffCancellationReason')}</Label>
+                    <Input
+                      value={cancellationReason}
+                      onChangeText={setCancellationReason}
+                      placeholder={t('bookings.staffCancellationReasonPlaceholder')}
+                    />
+                  </View>
+                ) : null}
+
+                {error ? <Typography className="text-sm text-destructive">{error}</Typography> : null}
+              </View>
+            </KeyboardFormScroll>
           </View>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     </Modal>
   );
 }
