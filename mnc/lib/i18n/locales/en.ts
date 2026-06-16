@@ -486,6 +486,7 @@ export const en = {
     yourBookingsEmptyTitle: 'No bookings yet',
     yourBookingsEmptyHint: 'When you book a hall or vehicle, it will appear here.',
     totalAmount: '₹{{amount}}',
+    bookingPriceBreakdown: '{{unitPrice}} × {{count}} {{unit}}',
     paidAmount: 'Paid ₹{{amount}}',
     statusDraft: 'Draft',
     statusPendingPayment: 'Pending payment',

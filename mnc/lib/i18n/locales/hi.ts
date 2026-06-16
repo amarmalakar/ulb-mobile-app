@@ -491,6 +491,7 @@ export const hi: TranslationSchema = {
     yourBookingsEmptyTitle: 'अभी कोई बुकिंग नहीं',
     yourBookingsEmptyHint: 'जब आप हॉल या वाहन बुक करेंगे, वे यहाँ दिखेंगी।',
     totalAmount: '₹{{amount}}',
+    bookingPriceBreakdown: '{{unitPrice}} × {{count}} {{unit}}',
     paidAmount: 'भुगतान ₹{{amount}}',
     statusDraft: 'ड्राफ्ट',
     statusPendingPayment: 'भुगतान लंबित',

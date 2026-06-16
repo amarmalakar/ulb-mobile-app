@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react';
+import { useWatch } from 'react-hook-form';
 import {
   ActivityIndicator,
   Alert,
@@ -28,6 +29,18 @@ import { useUserAuth } from '@/components/providers/user-auth-provider';
 import { useBookingForm } from '../hooks/use-booking-form';
 import { useSendBookingEnquiryMutation } from '../hooks/use-send-booking-enquiry-mutation';
 import { useRouter } from 'expo-router';
+
+function formatCurrency(amount: number, currency: string): string {
+  try {
+    return new Intl.NumberFormat(undefined, {
+      style: 'currency',
+      currency,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  } catch {
+    return `${currency} ${amount}`;
+  }
+}
 
 function BookingFlowSkeleton() {
   return (
@@ -152,6 +165,25 @@ export function UserBookingFlow({ resourceId }: { resourceId: string }) {
   const sendBookingEnquiry = useSendBookingEnquiryMutation(resourceId);
 
   const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const durationValue = useWatch({ control: form.control, name: 'durationDays' });
+
+  const pricePreview = useMemo(() => {
+    if (!resource) {
+      return null;
+    }
+
+    const duration = parseInt(durationValue ?? '', 10);
+    if (!Number.isFinite(duration) || duration < 1) {
+      return null;
+    }
+
+    return {
+      quantityUnits: duration,
+      total: resource.unitPrice * duration,
+      unitLabel: isHourly ? t('bookings.perHour') : t('bookings.perDay'),
+    };
+  }, [durationValue, resource, isHourly, t]);
 
 
   const handleSubmit = form.handleSubmit(async (values) => {
@@ -294,6 +326,26 @@ export function UserBookingFlow({ resourceId }: { resourceId: string }) {
                 isHourly ? t('bookings.durationHours') : t('bookings.durationDays')
               }
             />
+
+            {pricePreview ? (
+              <View className="mt-4 gap-1 border-t border-border pt-4">
+                <Typography className="text-muted-foreground text-xs">
+                  {t('bookings.bookingPriceBreakdown', {
+                    unitPrice: formatCurrency(resource.unitPrice, resource.currency),
+                    count: pricePreview.quantityUnits,
+                    unit: pricePreview.unitLabel,
+                  })}
+                </Typography>
+                <View className="flex-row items-center justify-between">
+                  <Typography className="text-foreground text-sm font-medium">
+                    {t('bookings.totalAmountLabel')}
+                  </Typography>
+                  <Typography className="text-primary text-xl font-bold">
+                    {formatCurrency(pricePreview.total, resource.currency)}
+                  </Typography>
+                </View>
+              </View>
+            ) : null}
           </View>
         </ScrollView>
 
