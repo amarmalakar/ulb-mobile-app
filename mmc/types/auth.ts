@@ -1,1 +1,0 @@
-export type AuthType = 'Staff' | 'User' | null;
