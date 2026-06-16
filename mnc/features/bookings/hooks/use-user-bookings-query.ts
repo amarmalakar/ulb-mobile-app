@@ -41,7 +41,7 @@ export async function fetchUserBookingsPage(
 /** Loads the signed-in user's bookings from `GET /user/bookings`. */
 export function useUserBookingsInfiniteQuery(options?: UseUserBookingsInfiniteQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
   const limit = Math.min(
     Math.max(1, options?.limit ?? USER_BOOKINGS_DEFAULT_LIMIT),
@@ -53,7 +53,6 @@ export function useUserBookingsInfiniteQuery(options?: UseUserBookingsInfiniteQu
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     initialPageParam: undefined as string | undefined,
     queryFn: async ({ pageParam }) => {

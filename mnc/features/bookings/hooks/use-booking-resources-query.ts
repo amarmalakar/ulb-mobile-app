@@ -14,7 +14,7 @@ type UseUserBookingResourcesQueryOptions = {
 /** `GET /user/booking-resources` */
 export function useUserBookingResourcesQuery(options?: UseUserBookingResourcesQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
 
   return useQuery<UserBookingResourceListItem[], Error>({
@@ -22,7 +22,6 @@ export function useUserBookingResourcesQuery(options?: UseUserBookingResourcesQu
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     queryFn: async () => {
       const token = accessToken;

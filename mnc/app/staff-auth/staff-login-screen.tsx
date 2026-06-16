@@ -15,20 +15,25 @@ import { ArrowLeftIcon } from 'lucide-react-native';
 
 import { useAuthContext } from '@/components/providers/auth-provider';
 import { useStaffAuth } from '@/components/providers/staff-auth-provider';
+import { useUserAuth } from '@/components/providers/user-auth-provider';
 
 import bubbleShape1 from '@/assets/images/bubble-shape-1.png';
 import loginHero from '@/assets/images/login-hero.png';
 import StaffAuth from '@/features/staff-auth';
 
+const STAFF_HOME_HREF = '/staff/home-screen';
+
 export default function StaffLoginScreen() {
   const { clearAuthType, handleAuthType } = useAuthContext();
   const { setSession } = useStaffAuth();
+  const { setSession: setUserSession } = useUserAuth();
   const insets = useSafeAreaInsets();
 
   const handleVerified = async (session: StaffAuthSession) => {
+    await setUserSession(null);
     await setSession(session);
     await handleAuthType('Staff');
-    router.replace('./staff-mpin-screen');
+    router.replace(STAFF_HOME_HREF);
   };
 
   return (

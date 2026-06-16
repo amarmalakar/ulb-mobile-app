@@ -17,12 +17,12 @@ type UseInsightsQueryOptions = {
 export function useInsightsQuery(options?: UseInsightsQueryOptions) {
   const { client } = useNetworkContext();
   const { authType } = useAuthContext();
-  const { session: userSession, sessionHydrated: userHydrated, mpinUnlocked: userUnlocked } = useUserAuth();
-  const { session: staffSession, sessionHydrated: staffHydrated, mpinUnlocked: staffUnlocked } = useStaffAuth();
+  const { session: userSession, sessionHydrated: userHydrated } = useUserAuth();
+  const { session: staffSession, sessionHydrated: staffHydrated } = useStaffAuth();
 
   const isStaff = authType === 'Staff';
   const accessToken = isStaff ? staffSession?.accessToken : userSession?.accessToken;
-  const sessionReady = isStaff ? staffHydrated && staffUnlocked : userHydrated && userUnlocked;
+  const sessionReady = isStaff ? staffHydrated : userHydrated;
 
   return useQuery<V2InsightItem[], Error>({
     queryKey: ['insights', authType ?? 'guest', accessToken],

@@ -34,7 +34,7 @@ export async function fetchUserBooking(
 /** `GET /user/bookings/:bookingId` */
 export function useUserBookingQuery({ bookingId, enabled = true }: UseUserBookingQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
   const id = bookingId?.trim();
 
@@ -44,7 +44,6 @@ export function useUserBookingQuery({ bookingId, enabled = true }: UseUserBookin
       Boolean(accessToken) &&
       Boolean(id) &&
       sessionHydrated &&
-      mpinUnlocked &&
       enabled,
     queryFn: async () => {
       const token = accessToken;

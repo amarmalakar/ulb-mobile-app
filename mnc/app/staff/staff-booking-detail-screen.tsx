@@ -14,11 +14,11 @@ export default function StaffBookingDetailScreen() {
   const { bookingId } = useLocalSearchParams<{ bookingId?: string | string[] }>();
   const id = firstParam(bookingId);
 
-  const { sessionHydrated: staffHydrated, mpinUnlocked: staffMpin } = useStaffAuth();
+  const { sessionHydrated: staffHydrated } = useStaffAuth();
 
   const { data: booking, isLoading, isError, error, refetch } = useStaffBookingQuery({
     bookingId: id,
-    enabled: staffHydrated && staffMpin,
+    enabled: staffHydrated,
   });
 
   const navLabel = booking?.bookingTokenId ?? t('bookings.bookingDetailTitle');

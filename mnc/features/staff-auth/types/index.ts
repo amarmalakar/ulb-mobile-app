@@ -2,17 +2,11 @@ export type StaffLoginRequest = {
   emailOrPhone: string;
 };
 
-export type StaffLoginChannel = "email" | "mobile";
+export type StaffLoginChannel = 'email' | 'mobile';
 
 export type StaffLoginMutationData = {
   channel: StaffLoginChannel;
   loginToken: string;
-};
-
-type StaffLoginApiResponse = {
-  ok: boolean;
-  data?: StaffLoginMutationData;
-  message?: string;
 };
 
 export type StaffVerifyRequest = {
@@ -35,59 +29,21 @@ export type StaffJwtClaimsPublic = {
 };
 
 export type StaffAuthSession = {
+  refreshToken?: string;
   accessToken: string;
   staff: StaffJwtClaimsPublic;
 };
 
-type StaffVerifyApiResponse = {
-  ok: boolean;
-  data?: StaffAuthSession;
-  message?: string;
+export type StaffSessionRefreshRequest = {
+  refreshToken: string;
 };
 
-// --- MPIN (`Authorization: Bearer` required; pass `accessToken` from staff verify) ---
-
-export type StaffMpinStatusData = {
-  mpinSet: boolean;
-  locked: boolean;
-  lockedUntil: string | null;
+export type StaffSessionRefreshData = {
+  accessToken: string;
 };
 
-type StaffMpinStatusApiResponse = {
-  ok: boolean;
-  data?: StaffMpinStatusData;
-  message?: string;
-};
-
-export type StaffMpinOkData = {
-  ok: true;
-};
-
-type StaffMpinSimpleApiResponse = {
-  ok: boolean;
-  data?: StaffMpinOkData;
-  message?: string;
-};
-
-export type StaffMpinResetRequestData = {
-  resetToken: string;
-};
-
-type StaffMpinResetRequestApiResponse = {
-  ok: boolean;
-  data?: StaffMpinResetRequestData;
-  message?: string;
-};
-
-export type StaffMpinVerifyData = {
-  ok: true;
-  verified: true;
-};
-
-type StaffMpinVerifyApiResponse = {
-  ok: boolean;
-  data?: StaffMpinVerifyData;
-  message?: string;
+export type StaffLogoutRequest = {
+  refreshToken: string;
 };
 
 export type StaffInfoZone = {
@@ -121,10 +77,4 @@ export type StaffInfo = {
   access: StaffAccess[];
   createdAt: string;
   updatedAt: string;
-};
-
-type StaffInfoApiResponse = {
-  ok: boolean;
-  data?: StaffInfo;
-  message?: string;
 };

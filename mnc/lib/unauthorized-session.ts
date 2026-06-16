@@ -17,22 +17,17 @@ const AUTH_ROUTES_WITHOUT_SESSION_LOGOUT = [
   '/login',
   '/signup',
   '/verify',
-  '/mpin/verify',
+  '/signin/otp',
 ] as const;
 
 function isExcludedAuthRoute(url: string): boolean {
   return AUTH_ROUTES_WITHOUT_SESSION_LOGOUT.some((segment) => url.includes(segment));
 }
 
-/** True when the API message indicates the stored session is no longer valid. */
+/** True when the API message indicates the stored session was revoked server-side. */
 export function isUnauthorizedSessionMessage(message: string): boolean {
   const lower = message.toLowerCase();
-  return (
-    lower.includes('access token') ||
-    (lower.includes('expired') && lower.includes('token')) ||
-    lower.includes('session revoked') ||
-    (lower.includes('session') && lower.includes('expired'))
-  );
+  return lower.includes('session revoked') || lower.includes('revoked or expired');
 }
 
 /** True when the authenticated account no longer exists on the server. */
@@ -41,7 +36,7 @@ export function isAccountNotFoundMessage(message: string): boolean {
   return lower.includes('staff not found') || lower.includes('user not found');
 }
 
-/** True when the server rejected the bearer access token (not wrong MPIN/credentials). */
+/** True when the server rejected the bearer access token (not wrong OTP/credentials). */
 export function isUnauthorizedSessionError(error: ApiError): boolean {
   return error.status === 401 && isUnauthorizedSessionMessage(error.message);
 }

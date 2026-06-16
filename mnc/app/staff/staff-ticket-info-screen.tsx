@@ -30,9 +30,7 @@ export default function StaffTicketInfoScreen() {
                 {error?.message ?? t("tickets.loadErrorHint")}
               </Typography>
             </View>
-          ) : data ? (
-            <TicketInfo ticket={data} authType="Staff" />
-          ) : (
+          ) : !data ? (
             <View className="mx-4 mt-10 items-center rounded-2xl border border-dashed border-muted-foreground/40 bg-muted/30 p-6">
               <Typography className="text-4xl">🎟️</Typography>
               <Typography className="mt-3 text-lg font-semibold text-foreground">{t("tickets.notFoundTitle")}</Typography>
@@ -40,6 +38,8 @@ export default function StaffTicketInfoScreen() {
                 {t("tickets.notFoundHint")}
               </Typography>
             </View>
+          ) : (
+            <TicketInfo ticket={data} authType="Staff" />
           )}
         </View>
       </View>

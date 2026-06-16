@@ -55,7 +55,7 @@ export function useStaffBookingsInfiniteQuery(
   options?: UseStaffBookingsInfiniteQueryOptions,
 ) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
 
   return useInfiniteQuery<StaffBookingsListData, Error>({
@@ -72,7 +72,6 @@ export function useStaffBookingsInfiniteQuery(
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {

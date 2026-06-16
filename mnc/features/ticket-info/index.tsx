@@ -43,8 +43,10 @@ export default function TicketInfo({
       >
         <View className="gap-4">
           <View className="px-4 pt-4">
-            <View className="flex-row flex-wrap items-center justify-between">
-              <Typography variant="h4" className="text-primary">{getLocaleString(ticket.title)}</Typography>
+            <View className="flex-row flex-wrap items-start justify-between gap-2">
+              <View className="flex-1">
+                <Typography variant="h4" className="text-primary">{getLocaleString(ticket.title)}</Typography>
+              </View>
 
               {ticket ? (
                 <View className="flex-row items-center gap-2">

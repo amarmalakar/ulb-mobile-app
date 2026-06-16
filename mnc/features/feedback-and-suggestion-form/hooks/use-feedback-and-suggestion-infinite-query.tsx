@@ -51,15 +51,12 @@ export function useFeedbackAndSuggestionInfiniteQuery(
 ) {
   const { authType } = useAuthContext();
   const { client } = useNetworkContext();
-  const { session: userSession, sessionHydrated: userHydrated, mpinUnlocked: userMpin } =
-    useUserAuth();
-  const { session: staffSession, sessionHydrated: staffHydrated, mpinUnlocked: staffMpin } =
-    useStaffAuth();
+  const { session: userSession, sessionHydrated: userHydrated } = useUserAuth();
+  const { session: staffSession, sessionHydrated: staffHydrated } = useStaffAuth();
 
   const isStaff = authType === 'Staff';
   const accessToken = isStaff ? staffSession?.accessToken : userSession?.accessToken;
   const sessionHydrated = isStaff ? staffHydrated : userHydrated;
-  const mpinUnlocked = isStaff ? staffMpin : userMpin;
 
   const limit = Math.min(
     Math.max(1, options?.limit ?? FEEDBACK_LIST_DEFAULT_LIMIT),
@@ -80,7 +77,6 @@ export function useFeedbackAndSuggestionInfiniteQuery(
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {

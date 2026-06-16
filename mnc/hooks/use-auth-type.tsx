@@ -1,27 +1,27 @@
-import { AUTH_TYPE_STORAGE_KEY, setAuthTypeHeaderValue } from '@/lib/auth-type-storage';
+import {
+  AUTH_TYPE_STORAGE_KEY,
+  loadAuthTypeFromStorage,
+  parseAuthType,
+  setAuthTypeHeaderValue,
+} from '@/lib/auth-type-storage';
 import { loadUserSession } from '@/lib/user-auth-storage';
 import type { AuthType } from '@/types/auth';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useCallback, useEffect, useState } from 'react';
 
-function parseAuthType(stored: string | null): AuthType {
-  if (stored === 'Staff' || stored === 'User') {
-    return stored;
-  }
-  return null;
-}
+export { parseAuthType };
 
 export function useAuthType() {
   const [authType, setAuthType] = useState<AuthType>(null);
 
-  const handleAuthType = useCallback(async (authType: AuthType) => {
+  const handleAuthType = useCallback(async (next: AuthType) => {
     try {
-      await AsyncStorage.setItem(AUTH_TYPE_STORAGE_KEY, authType ?? "");
-      setAuthTypeHeaderValue(authType);
+      await AsyncStorage.setItem(AUTH_TYPE_STORAGE_KEY, next ?? '');
+      setAuthTypeHeaderValue(next);
     } catch (error) {
       console.error(error);
     }
-    setAuthType(authType);
+    setAuthType(next);
   }, []);
 
   useEffect(() => {
@@ -29,8 +29,7 @@ export function useAuthType() {
 
     async function loadAuthType() {
       try {
-        const stored = await AsyncStorage.getItem(AUTH_TYPE_STORAGE_KEY);
-        const parsed = parseAuthType(stored);
+        const parsed = await loadAuthTypeFromStorage();
         if (mounted) {
           setAuthTypeHeaderValue(parsed);
           setAuthType(parsed);

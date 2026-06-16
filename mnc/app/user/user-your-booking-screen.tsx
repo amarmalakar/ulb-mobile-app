@@ -205,7 +205,7 @@ function UserBookingListCard({ booking }: { booking: UserBookingListItem }) {
 
 export default function UserYourBookingScreen() {
   const { t } = useTranslation();
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { sessionHydrated } = useUserAuth();
   const {
     data,
     isLoading,
@@ -218,7 +218,7 @@ export default function UserYourBookingScreen() {
     isFetchingNextPage,
   } = useUserBookingsInfiniteQuery({
     limit: 10,
-    enabled: sessionHydrated && mpinUnlocked,
+    enabled: sessionHydrated,
   });
 
   const bookings = data?.pages.flatMap((page) => page.items) ?? [];

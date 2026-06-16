@@ -3,17 +3,16 @@ import { type Href, useRouter } from 'expo-router';
 
 import { useStaffAuth } from '@/components/providers/staff-auth-provider';
 import { useUserAuth } from '@/components/providers/user-auth-provider';
+import { useNetworkContext } from '@/components/providers/network-provider';
 import { useAuthType } from '@/hooks/use-auth-type';
 import { setUnauthorizedSessionHandler } from '@/lib/unauthorized-session';
 import { useTranslation } from 'react-i18next';
 import type { AuthType } from '@/types/auth';
 
 const STAFF_HOME_HREF = '/staff/home-screen' as Href;
-const STAFF_MPIN_HREF = '/staff-auth/staff-mpin-screen' as Href;
 const STAFF_LOGIN_HREF = '/staff-auth/staff-login-screen' as Href;
 
 const USER_HOME_HREF = '/user/home-screen' as Href;
-const USER_MPIN_HREF = '/user-auth/user-mpin-screen' as Href;
 const USER_LOGIN_HREF = '/user-auth/user-login-screen' as Href;
 /** @deprecated Use `AuthType` from `@/types/auth` */
 export type iAuthTypes = AuthType;
@@ -31,13 +30,19 @@ const AuthContext = createContext<iAuthContext | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const { queryClient } = useNetworkContext();
   const { authType, handleAuthType } = useAuthType();
-  const { signOut: staffSignOut, session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const {
+    signOut: staffSignOut,
+    setSession: setStaffSession,
+    session,
+    sessionHydrated,
+  } = useStaffAuth();
   const {
     signOut: userSignOut,
+    setSession: setUserSession,
     session: userSession,
     sessionHydrated: userSessionHydrated,
-    mpinUnlocked: userMpinUnlocked,
   } = useUserAuth();
   const { i18n } = useTranslation();
   const [step, setStep] = useState<1 | 2>(1);
@@ -63,37 +68,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await handleAuthType('Staff');
 
     if (sessionHydrated && session?.accessToken) {
-      if (mpinUnlocked) {
-        router.replace(STAFF_HOME_HREF);
-      } else {
-        router.replace(STAFF_MPIN_HREF);
-      }
+      router.replace(STAFF_HOME_HREF);
       return;
     }
 
     router.push(STAFF_LOGIN_HREF);
-  }, [handleAuthType, router, session, sessionHydrated, mpinUnlocked]);
+  }, [handleAuthType, router, session, sessionHydrated]);
 
   const startAsUser = useCallback(async () => {
     await handleAuthType('User');
 
     if (userSessionHydrated && userSession?.refreshToken) {
-      if (userMpinUnlocked) {
-        router.replace(USER_HOME_HREF);
-      } else {
-        router.replace(USER_MPIN_HREF);
-      }
+      router.replace(USER_HOME_HREF);
       return;
     }
 
     router.push(USER_LOGIN_HREF);
-  }, [
-    handleAuthType,
-    router,
-    userSession,
-    userSessionHydrated,
-    userMpinUnlocked,
-  ]);
+  }, [handleAuthType, router, userSession, userSessionHydrated]);
 
   const GET_STARTED_STEPS = useMemo(
     () => ({
@@ -134,6 +125,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         await userSignOut();
       }
 
+      await Promise.all([setStaffSession(null), setUserSession(null)]);
+      queryClient.clear();
       await handleAuthType(null);
       setStep(1);
       router.replace('/');
@@ -144,7 +137,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     authType,
     handleAuthType,
     isLoggingOut,
+    queryClient,
     router,
+    setStaffSession,
+    setUserSession,
     staffSignOut,
     userSignOut,
   ]);

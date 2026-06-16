@@ -6,7 +6,6 @@ export type UserPublic = {
   email: string | null;
   holdingNumber: string | null;
   wardNumber: number | null;
-  hasMpin: boolean;
 };
 
 export type UserAuthSession = {
@@ -32,8 +31,17 @@ export type UserSignupOtpVerifyRequest = {
   holdingNumber?: string;
 };
 
-export type UserSigninRequest = {
+export type UserSigninOtpSendRequest = {
   phone: string;
+};
+
+export type UserSigninOtpSendData = {
+  signinToken: string;
+};
+
+export type UserSigninOtpVerifyRequest = {
+  signinToken: string;
+  otp: string;
 };
 
 export type UserSessionRefreshRequest = {
@@ -48,49 +56,6 @@ export type UserLogoutRequest = {
   refreshToken: string;
 };
 
-export type UserMpinStatusData = {
-  mpinSet: boolean;
-  locked: boolean;
-  lockedUntil: string | null;
-};
-
-export type UserMpinSetVariables = {
-  accessToken: string;
-  mpin: string;
-  confirmMpin: string;
-};
-
-export type UserMpinSetData = {
-  ok: true;
-  accessToken?: string;
-};
-
-export type UserMpinVerifyVariables = {
-  mpin: string;
-  refreshToken: string;
-  accessToken?: string;
-};
-
-export type UserMpinVerifyData = {
-  accessToken: string;
-  refreshToken?: string;
-};
-
-export type UserMpinResetOtpSendData = {
-  resetToken: string;
-};
-
-export type UserMpinResetConfirmVariables = {
-  resetToken: string;
-  otp: string;
-  mpin: string;
-  confirmMpin: string;
-};
-
-export type UserMpinResetConfirmData = {
-  ok: true;
-};
-
 export type UserInfo = {
   id: string;
   ulbId: string;
@@ -99,7 +64,6 @@ export type UserInfo = {
   phone: string;
   holdingNumber: string | null;
   wardNumber: number | null;
-  hasMpin: boolean;
   createdAt: string;
   updatedAt: string;
 };

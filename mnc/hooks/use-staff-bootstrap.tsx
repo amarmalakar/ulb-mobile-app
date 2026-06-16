@@ -4,7 +4,6 @@ import { type Href, usePathname, useRouter } from 'expo-router';
 import { useEffect, useRef } from 'react';
 
 const STAFF_HOME_HREF = '/staff/home-screen' as Href;
-const STAFF_MPIN_HREF = '/staff-auth/staff-mpin-screen' as Href;
 const STAFF_LOGIN_HREF = '/staff-auth/staff-login-screen' as Href;
 
 /**
@@ -14,7 +13,7 @@ export function useStaffBootstrap() {
   const router = useRouter();
   const pathname = usePathname();
   const { authType } = useAuthType();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const didRedirect = useRef(false);
 
   useEffect(() => {
@@ -29,10 +28,6 @@ export function useStaffBootstrap() {
       return;
     }
 
-    if (mpinUnlocked) {
-      router.replace(STAFF_HOME_HREF);
-    } else {
-      router.replace(STAFF_MPIN_HREF);
-    }
-  }, [authType, session, sessionHydrated, mpinUnlocked, router, pathname]);
+    router.replace(STAFF_HOME_HREF);
+  }, [authType, session, sessionHydrated, router, pathname]);
 }

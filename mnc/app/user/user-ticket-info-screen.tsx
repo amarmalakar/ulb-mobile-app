@@ -9,10 +9,10 @@ import TicketInfo from "@/features/ticket-info";
 
 export default function UserTicketInfoScreen() {
   const { t } = useTranslation();
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { sessionHydrated } = useUserAuth();
   const { ticketId } = useLocalSearchParams();
   const { data, isLoading, isError, error } = useUserTicketQuery(ticketId, {
-    enabled: sessionHydrated && mpinUnlocked,
+    enabled: sessionHydrated,
   });
 
   return (

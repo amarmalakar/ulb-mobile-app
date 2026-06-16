@@ -102,15 +102,18 @@ export function createApiClient({ baseURL, ulbId }: CreateApiClientOptions): Axi
       }
 
       // Attach bearer token for the active auth role only (avoid staff token on user routes).
-      if (authType === 'Staff') {
-        const staffToken = getStaffTokenHeaderValue();
-        if (staffToken) {
-          config.headers.set('Authorization', `Bearer ${staffToken}`);
-        }
-      } else if (authType === 'User') {
-        const userToken = getUserTokenHeaderValue();
-        if (userToken) {
-          config.headers.set('Authorization', `Bearer ${userToken}`);
+      const hasRequestAuthorization = Boolean(config.headers.get('Authorization'));
+      if (!hasRequestAuthorization) {
+        if (authType === 'Staff') {
+          const staffToken = getStaffTokenHeaderValue();
+          if (staffToken) {
+            config.headers.set('Authorization', `Bearer ${staffToken}`);
+          }
+        } else if (authType === 'User') {
+          const userToken = getUserTokenHeaderValue();
+          if (userToken) {
+            config.headers.set('Authorization', `Bearer ${userToken}`);
+          }
         }
       }
 

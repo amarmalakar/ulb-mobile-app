@@ -295,11 +295,11 @@ export default function BookingDetailScreen() {
   const { bookingId } = useLocalSearchParams<{ bookingId?: string | string[] }>();
   const id = firstParam(bookingId);
 
-  const { sessionHydrated: userHydrated, mpinUnlocked: userMpin } = useUserAuth();
+  const { sessionHydrated: userHydrated } = useUserAuth();
 
   const { data: booking, isLoading, isError, error, refetch } = useUserBookingQuery({
     bookingId: id,
-    enabled: userHydrated && userMpin,
+    enabled: userHydrated,
   })
 
   const navLabel = booking?.bookingTokenId ?? t('bookings.bookingDetailTitle');

@@ -5,17 +5,11 @@ import type {
   UserAuthSession,
   UserInfo,
   UserLogoutRequest,
-  UserMpinResetConfirmData,
-  UserMpinResetConfirmVariables,
-  UserMpinResetOtpSendData,
-  UserMpinSetData,
-  UserMpinSetVariables,
-  UserMpinStatusData,
-  UserMpinVerifyData,
-  UserMpinVerifyVariables,
   UserSessionRefreshData,
   UserSessionRefreshRequest,
-  UserSigninRequest,
+  UserSigninOtpSendData,
+  UserSigninOtpSendRequest,
+  UserSigninOtpVerifyRequest,
   UserSignupOtpSendData,
   UserSignupOtpSendRequest,
   UserSignupOtpVerifyRequest,
@@ -61,16 +55,30 @@ export function useUserSignupOtpVerifyMutation() {
   });
 }
 
-export function useUserSigninMutation() {
+export function useUserSigninOtpSendMutation() {
   const { client } = useNetworkContext();
 
-  return useMutation<UserAuthSession, Error, UserSigninRequest>({
+  return useMutation<UserSigninOtpSendData, Error, UserSigninOtpSendRequest>({
     mutationFn: async (body) => {
       const res = (await client.post(
-        API_PATHS.user.signin,
+        API_PATHS.user.signinOtpSend,
+        body,
+      )) as OkResponse<UserSigninOtpSendData>;
+      return throwUnlessOk(res, 'Could not send OTP');
+    },
+  });
+}
+
+export function useUserSigninOtpVerifyMutation() {
+  const { client } = useNetworkContext();
+
+  return useMutation<UserAuthSession, Error, UserSigninOtpVerifyRequest>({
+    mutationFn: async (body) => {
+      const res = (await client.post(
+        API_PATHS.user.signinOtpVerify,
         body,
       )) as OkResponse<UserAuthSession>;
-      return throwUnlessOk(res, 'Sign in failed');
+      return throwUnlessOk(res, 'Verification failed');
     },
   });
 }
@@ -99,86 +107,6 @@ export function useUserLogoutMutation() {
         body,
       )) as OkResponse<{ ok: true }>;
       return throwUnlessOk(res, 'Logout failed');
-    },
-  });
-}
-
-export function useUserMpinStatusQuery(accessToken: string | null | undefined) {
-  const { client } = useNetworkContext();
-
-  return useQuery<UserMpinStatusData, Error>({
-    queryKey: userQueryKeys.mpinStatus(accessToken),
-    enabled: Boolean(accessToken),
-    queryFn: async () => {
-      const token = accessToken;
-      if (!token) {
-        throw new Error('Missing access token');
-      }
-      const res = (await client.get(API_PATHS.user.mpinStatus, {
-        headers: userBearerHeaders(token),
-      })) as OkResponse<UserMpinStatusData>;
-      return throwUnlessOk(res, 'Failed to load MPIN status');
-    },
-  });
-}
-
-export function useUserMpinSetMutation() {
-  const { client } = useNetworkContext();
-
-  return useMutation<UserMpinSetData, Error, UserMpinSetVariables>({
-    mutationFn: async ({ accessToken, mpin, confirmMpin }) => {
-      const res = (await client.post(
-        API_PATHS.user.mpinSet,
-        { mpin, confirmMpin },
-        { headers: userBearerHeaders(accessToken) },
-      )) as OkResponse<UserMpinSetData>;
-      return throwUnlessOk(res, 'Failed to set MPIN');
-    },
-  });
-}
-
-export function useUserMpinVerifyMutation() {
-  const { client } = useNetworkContext();
-
-  return useMutation<UserMpinVerifyData, Error, UserMpinVerifyVariables>({
-    mutationFn: async ({ mpin, refreshToken, accessToken }) => {
-      const res = (await client.post(API_PATHS.user.mpinVerify, {
-        mpin,
-        refreshToken,
-        ...(accessToken ? { accessToken } : {}),
-      })) as OkResponse<UserMpinVerifyData>;
-      return throwUnlessOk(res, 'MPIN verification failed');
-    },
-  });
-}
-
-export function useUserMpinResetOtpSendMutation() {
-  const { client } = useNetworkContext();
-
-  return useMutation<UserMpinResetOtpSendData, Error, { accessToken: string }>({
-    mutationFn: async ({ accessToken }) => {
-      const res = (await client.post(
-        API_PATHS.user.mpinResetOtpSend,
-        {},
-        { headers: userBearerHeaders(accessToken) },
-      )) as OkResponse<UserMpinResetOtpSendData>;
-      return throwUnlessOk(res, 'Failed to start MPIN reset');
-    },
-  });
-}
-
-export function useUserMpinResetConfirmMutation() {
-  const { client } = useNetworkContext();
-
-  return useMutation<UserMpinResetConfirmData, Error, UserMpinResetConfirmVariables>({
-    mutationFn: async ({ resetToken, otp, mpin, confirmMpin }) => {
-      const res = (await client.post(API_PATHS.user.mpinResetConfirm, {
-        resetToken,
-        otp,
-        mpin,
-        confirmMpin,
-      })) as OkResponse<UserMpinResetConfirmData>;
-      return throwUnlessOk(res, 'Failed to confirm MPIN reset');
     },
   });
 }

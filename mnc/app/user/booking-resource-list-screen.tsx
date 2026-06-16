@@ -84,8 +84,8 @@ function BookingResourceListEmpty() {
 
 export default function BookingResourceListScreen() {
   const { t } = useTranslation();
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
-  const sessionReady = sessionHydrated && mpinUnlocked;
+  const { sessionHydrated } = useUserAuth();
+  const sessionReady = sessionHydrated;
 
   const { data, isPending, isError, error, refetch, isRefetching, isFetched } = useUserBookingResourcesQuery({
     enabled: sessionReady,

@@ -13,7 +13,7 @@ export type UseStaffLeadershipQueryOptions = {
 /** Loads ULB leadership from `GET /staff/leadership`. */
 export function useStaffLeadershipQuery(options?: UseStaffLeadershipQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
 
   return useQuery<LeadershipMember[], Error>({
@@ -21,7 +21,6 @@ export function useStaffLeadershipQuery(options?: UseStaffLeadershipQueryOptions
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     queryFn: async () => {
       const token = accessToken;

@@ -56,7 +56,7 @@ export function useStaffTicketsInfiniteQuery(
   options?: UseStaffTicketsInfiniteQueryOptions,
 ) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
 
   return useInfiniteQuery<StaffTicketsPage, Error>({
@@ -75,7 +75,6 @@ export function useStaffTicketsInfiniteQuery(
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     initialPageParam: 1,
     queryFn: async ({ pageParam }) => {

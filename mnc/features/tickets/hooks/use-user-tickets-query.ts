@@ -41,7 +41,7 @@ export async function fetchUserTicketsPage(
 /** Loads the signed-in citizen's tickets from `GET /user/tickets`. */
 export function useUserTicketsInfiniteQuery(options?: UseUserTicketsInfiniteQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
   const limit = Math.min(
     Math.max(1, options?.limit ?? USER_TICKETS_DEFAULT_LIMIT),
@@ -53,7 +53,6 @@ export function useUserTicketsInfiniteQuery(options?: UseUserTicketsInfiniteQuer
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     initialPageParam: undefined as string | undefined,
     queryFn: async ({ pageParam }) => {

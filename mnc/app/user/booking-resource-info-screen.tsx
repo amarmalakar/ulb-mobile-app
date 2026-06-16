@@ -385,8 +385,8 @@ export default function BookingResourceInfoScreen() {
     bookingId?: string | string[];
   }>();
   const resourceId = resourceIdFromParams(params);
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
-  const sessionReady = sessionHydrated && mpinUnlocked;
+  const { sessionHydrated } = useUserAuth();
+  const sessionReady = sessionHydrated;
 
   const { data: resource, isLoading, isError, error, refetch } = useUserBookingResourceQuery({
     resourceId,

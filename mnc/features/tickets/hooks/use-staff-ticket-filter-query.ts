@@ -32,7 +32,7 @@ export type UseStaffTicketFilterQueryOptions = {
 /** Loads service filter options from `GET /staff/ticket-filters`. */
 export function useStaffTicketFilterQuery(options?: UseStaffTicketFilterQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
 
   return useQuery<StaffTicketFiltersData, Error>({
@@ -40,7 +40,6 @@ export function useStaffTicketFilterQuery(options?: UseStaffTicketFilterQueryOpt
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     queryFn: async () => {
       const token = accessToken;

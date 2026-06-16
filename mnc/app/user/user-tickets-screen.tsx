@@ -12,7 +12,7 @@ import { TicketListCard } from "@/features/tickets/components/ticket-list-card";
 
 export default function UserTicketsScreen() {
   const { t } = useTranslation();
-  const { sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { sessionHydrated } = useUserAuth();
 
   const {
     data,
@@ -26,7 +26,7 @@ export default function UserTicketsScreen() {
     isRefetching
   } = useUserTicketsInfiniteQuery({
     limit: 10,
-    enabled: sessionHydrated && mpinUnlocked,
+    enabled: sessionHydrated,
   });
   const tickets = data?.pages.flatMap((page) => page.items) ?? [];
 

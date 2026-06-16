@@ -34,7 +34,7 @@ export type UseStaffBookingQueryOptions = {
 /** `GET /staff/bookings/:bookingId` */
 export function useStaffBookingQuery({ bookingId, enabled = true }: UseStaffBookingQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
   const id = bookingId?.trim();
 
@@ -44,7 +44,6 @@ export function useStaffBookingQuery({ bookingId, enabled = true }: UseStaffBook
       Boolean(accessToken) &&
       Boolean(id) &&
       sessionHydrated &&
-      mpinUnlocked &&
       enabled,
     queryFn: async () => {
       const token = accessToken;

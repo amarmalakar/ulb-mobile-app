@@ -60,7 +60,7 @@ function LayoutContext() {
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <Stack screenOptions={{ headerShown: false }} />
       <PortalHost />
-      {/* <QueryDevTools /> */}
+      <QueryDevTools />
     </>
   );
 }

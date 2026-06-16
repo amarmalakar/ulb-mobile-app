@@ -14,7 +14,7 @@ export type UseUserServicesQueryOptions = {
 /** Loads ULB services from `GET /user/services`. */
 export function useUserServicesQuery(options?: UseUserServicesQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
 
   return useQuery<UserService[], Error>({
@@ -22,7 +22,6 @@ export function useUserServicesQuery(options?: UseUserServicesQueryOptions) {
     enabled:
       Boolean(accessToken) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     queryFn: async () => {
       const token = accessToken;

@@ -246,11 +246,11 @@ export function StaffHomeDashboard() {
   const { t } = useTranslation();
   const router = useRouter();
 
-  const { sessionHydrated, mpinUnlocked, staffInfo } = useStaffAuth();
+  const { sessionHydrated, staffInfo } = useStaffAuth();
 
   const { data: analytics, isLoading, isError, error } = useStaffHomeAnalyticsQuery(
     { wards: staffInfo?.wards ?? [] },
-    { enabled: Boolean(sessionHydrated) && mpinUnlocked },
+    { enabled: Boolean(sessionHydrated) },
   );
 
   if (isLoading) {

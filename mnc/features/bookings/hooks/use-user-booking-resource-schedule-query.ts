@@ -22,7 +22,7 @@ export function useUserBookingResourceScheduleQuery({
   enabled = true,
 }: UseUserBookingResourceScheduleQueryOptions) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useUserAuth();
+  const { session, sessionHydrated } = useUserAuth();
   const accessToken = session?.accessToken;
   const id = resourceId?.trim();
 
@@ -34,7 +34,6 @@ export function useUserBookingResourceScheduleQuery({
       Boolean(from) &&
       Boolean(to) &&
       sessionHydrated &&
-      mpinUnlocked &&
       enabled,
     queryFn: async () => {
       const token = accessToken;

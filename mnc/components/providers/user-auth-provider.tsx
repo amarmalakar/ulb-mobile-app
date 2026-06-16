@@ -1,6 +1,5 @@
 import { useNetworkContext } from '@/components/providers/network-provider';
 import {
-  fetchUserInfo,
   useUserInfoQuery,
   useUserLogoutMutation,
 } from '@/features/user-auth/hooks/use-user-auth-queries';
@@ -12,13 +11,13 @@ import type {
 } from '@/features/user-auth/types/index';
 import { throwUnlessOk } from '@/features/user-auth/utils/api-response';
 import { isApiError } from '@/lib/api-client';
+import { loadAuthTypeFromStorage } from '@/lib/auth-type-storage';
 import { API_PATHS } from '@/lib/api-paths';
 import {
   clearUserSession,
   loadUserSession,
   persistUserSession,
 } from '@/lib/user-auth-storage';
-import { useQueryClient } from '@tanstack/react-query';
 import {
   createContext,
   useCallback,
@@ -32,7 +31,6 @@ import {
 type UserAuthContextValue = {
   session: UserAuthSession | null;
   sessionHydrated: boolean;
-  mpinUnlocked: boolean;
   userInfo: UserInfo | undefined;
   isUserInfoLoading: boolean;
   userInfoError: Error | null;
@@ -41,7 +39,6 @@ type UserAuthContextValue = {
     accessToken: string;
     refreshToken?: string;
   }) => Promise<UserAuthSession | null>;
-  completeMpin: () => Promise<UserInfo>;
   signOut: () => Promise<void>;
   refetchUserInfo: () => void;
 };
@@ -53,22 +50,29 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   const logoutMutation = useUserLogoutMutation();
   const [session, setSessionState] = useState<UserAuthSession | null>(null);
   const [sessionHydrated, setSessionHydrated] = useState(false);
-  const [mpinUnlocked, setMpinUnlocked] = useState(false);
+  const [activeForUser, setActiveForUser] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     void (async () => {
       try {
+        const authType = await loadAuthTypeFromStorage();
+        const isUser = authType === 'User';
+        if (!cancelled) {
+          setActiveForUser(isUser);
+        }
+
+        if (!isUser) {
+          if (!cancelled) setSessionState(null);
+          return;
+        }
+
         const stored = await loadUserSession();
         if (!stored) {
           if (!cancelled) setSessionState(null);
           return;
         }
 
-        // The stored access token is typically expired after the app was
-        // killed or backgrounded for a while. Rotate it once during hydration
-        // so the first authenticated call (e.g. /user/auth/mpin/status) does
-        // not hit the server with a stale token and get a 401.
         try {
           const res = (await client.post(API_PATHS.user.sessionRefresh, {
             refreshToken: stored.refreshToken,
@@ -82,13 +86,9 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
           if (!cancelled) setSessionState(next);
         } catch (refreshError) {
           if (isApiError(refreshError) && refreshError.status === 401) {
-            // Refresh token has been revoked/expired server-side — drop the
-            // session so the user is routed back to login.
             await clearUserSession();
             if (!cancelled) setSessionState(null);
           } else {
-            // Network or other transient failure — keep the stored session so
-            // the user can retry once connectivity is restored.
             if (!cancelled) setSessionState(stored);
           }
         }
@@ -106,13 +106,13 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   const setSession = useCallback(
     async (next: UserAuthSession | null) => {
       if (next) {
+        setActiveForUser(true);
         await persistUserSession(next);
         setSessionState(next);
-        setMpinUnlocked(false);
       } else {
+        setActiveForUser(false);
         await clearUserSession();
         setSessionState(null);
-        setMpinUnlocked(false);
         queryClient.removeQueries({ queryKey: userQueryKeys.all });
       }
     },
@@ -136,7 +136,7 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
   );
 
   const signOut = useCallback(async () => {
-    const refreshToken = session?.refreshToken;
+    const refreshToken = session?.refreshToken ?? (await loadUserSession())?.refreshToken;
     if (refreshToken) {
       try {
         await logoutMutation.mutateAsync({ refreshToken });
@@ -147,32 +147,19 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     await setSession(null);
   }, [logoutMutation, session?.refreshToken, setSession]);
 
-  const completeMpin = useCallback(async () => {
-    const token = session?.accessToken;
-    if (!token) {
-      throw new Error('Missing user session');
-    }
-    const info = await queryClient.fetchQuery({
-      queryKey: userQueryKeys.info(token),
-      queryFn: () => fetchUserInfo(client, token),
-    });
-    setMpinUnlocked(true);
-    return info;
-  }, [client, queryClient, session?.accessToken]);
-
-  const userInfoQuery = useUserInfoQuery(mpinUnlocked ? session?.accessToken : null);
+  const userInfoQuery = useUserInfoQuery(
+    activeForUser ? session?.accessToken : null,
+  );
 
   const value = useMemo<UserAuthContextValue>(
     () => ({
       session,
       sessionHydrated,
-      mpinUnlocked,
       userInfo: userInfoQuery.data,
       isUserInfoLoading: userInfoQuery.isLoading,
       userInfoError: userInfoQuery.error,
       setSession,
       updateSessionTokens,
-      completeMpin,
       signOut,
       refetchUserInfo: () => {
         void userInfoQuery.refetch();
@@ -181,14 +168,12 @@ export function UserAuthProvider({ children }: { children: ReactNode }) {
     [
       session,
       sessionHydrated,
-      mpinUnlocked,
       userInfoQuery.data,
       userInfoQuery.isLoading,
       userInfoQuery.error,
       userInfoQuery.refetch,
       setSession,
       updateSessionTokens,
-      completeMpin,
       signOut,
     ],
   );

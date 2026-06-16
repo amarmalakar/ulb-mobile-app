@@ -38,14 +38,14 @@ export function useStaffHomeAnalyticsQuery(
   options?: { enabled?: boolean },
 ) {
   const { client } = useNetworkContext();
-  const { session, mpinUnlocked } = useStaffAuth();
+  const { session } = useStaffAuth();
   const accessToken = session?.accessToken;
   const wardsKey =
     params.wards.length > 0 ? [...params.wards].sort((a, b) => a - b).join(',') : '';
 
   return useQuery<StaffHomeAnalyticsData, Error>({
     queryKey: ['staff', 'home-analytics', accessToken, wardsKey],
-    enabled: Boolean(accessToken) && mpinUnlocked && (options?.enabled ?? true),
+    enabled: Boolean(accessToken) && (options?.enabled ?? true),
     staleTime: STALE_TIME_MS,
     placeholderData: keepPreviousData,
     queryFn: async () => {

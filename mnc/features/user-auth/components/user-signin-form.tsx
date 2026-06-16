@@ -8,11 +8,13 @@ import { useRouter } from 'expo-router';
 
 import { Button } from '@/components/ui/button';
 import { Typography } from '@/components/common/typography';
+import { MOBILE_NUMBER_LENGTH, OTP_LENGTH } from '../constants';
 import {
   useUserSigninForm,
   type UseUserSigninFormOptions,
 } from '../hooks/use-user-signin-form';
 import { UserMobileInput } from './user-mobile-input';
+import { UserOtpInput } from './user-otp-input';
 
 export function UserSigninForm({
   onSession,
@@ -21,13 +23,19 @@ export function UserSigninForm({
   const { t } = useTranslation();
   const router = useRouter();
   const {
-    form,
-    submitError,
-    clearSubmitError,
-    submit,
+    step,
     isLoading,
-    buttonTitle,
-    buttonLoading,
+    isVerifyingOtp,
+    isResending,
+    sendError,
+    clearSendError,
+    phoneForm,
+    otpForm,
+    otp,
+    phoneDisplay,
+    goBackToPhone,
+    resendOtp,
+    stepsActions,
     maxPhoneLength,
   } = useUserSigninForm({ onSession, onSignedIn });
 
@@ -38,43 +46,68 @@ export function UserSigninForm({
   return (
     <KeyboardFormScroll scrollViewProps={{ contentContainerClassName: 'flex-grow' }}>
       <View className="mt-12 gap-4">
-        <Controller
-          control={form.control}
-          name="phone"
-          render={({ field, fieldState }) => (
-            <UserMobileInput
-              value={field.value}
-              onChangeText={(text) => {
-                field.onChange(text.replace(/\D/g, '').slice(0, maxPhoneLength));
-                clearSubmitError();
-              }}
-              maxLength={maxPhoneLength}
-              error={fieldState.error?.message}
-              disabled={isLoading}
-            />
-          )}
-        />
-        {submitError ? (
-          <Typography variant="body2" color="destructive" className="px-1">{submitError}</Typography>
+        {step === 'phone' ? (
+          <Controller
+            control={phoneForm.control}
+            name="phone"
+            render={({ field, fieldState }) => (
+              <UserMobileInput
+                value={field.value}
+                onChangeText={(text) => {
+                  field.onChange(text.replace(/\D/g, '').slice(0, maxPhoneLength));
+                  clearSendError();
+                }}
+                maxLength={maxPhoneLength}
+                error={fieldState.error?.message}
+                disabled={isLoading}
+              />
+            )}
+          />
+        ) : (
+          <UserOtpInput
+            value={otp ?? ''}
+            onChangeText={(text) => {
+              otpForm.setValue('otp', text, { shouldDirty: true });
+              clearSendError();
+            }}
+            error={otpForm.formState.errors.otp?.message}
+            cellCount={OTP_LENGTH}
+            phoneDisplay={phoneDisplay}
+            onChangePhone={goBackToPhone}
+            disabled={isVerifyingOtp || isResending}
+            onResend={resendOtp}
+          />
+        )}
+
+        {sendError ? (
+          <Typography variant="body2" color="destructive" className="px-1">
+            {sendError}
+          </Typography>
         ) : null}
       </View>
 
       <Button
         disabled={isLoading}
         className="mt-auto h-14 rounded-lg bg-primary"
-        onPress={submit}
+        onPress={stepsActions.onPress}
       >
         <Typography variant="h5" weight="bold" className="text-white">
-          {isLoading ? buttonLoading : buttonTitle}
+          {isLoading ? stepsActions.loadingText : stepsActions.title}
         </Typography>
       </Button>
 
-      <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
-        <Typography variant="h6" color="muted">{t('auth.newHere')}</Typography>
-        <Pressable onPress={onPressSignUp} disabled={isLoading} hitSlop={8}>
-          <Typography variant="h6" color="primary">{t('auth.createAccount')}</Typography>
-        </Pressable>
-      </View>
+      {step === 'phone' ? (
+        <View className="mt-4 flex-row flex-wrap items-center justify-center gap-1">
+          <Typography variant="h6" color="muted">
+            {t('auth.newHere')}
+          </Typography>
+          <Pressable onPress={onPressSignUp} disabled={isLoading} hitSlop={8}>
+            <Typography variant="h6" color="primary">
+              {t('auth.createAccount')}
+            </Typography>
+          </Pressable>
+        </View>
+      ) : null}
     </KeyboardFormScroll>
   );
 }

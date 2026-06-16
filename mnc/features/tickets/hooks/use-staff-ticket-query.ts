@@ -36,7 +36,7 @@ export function useStaffTicketQuery(
   options?: UseStaffTicketQueryOptions,
 ) {
   const { client } = useNetworkContext();
-  const { session, sessionHydrated, mpinUnlocked } = useStaffAuth();
+  const { session, sessionHydrated } = useStaffAuth();
   const accessToken = session?.accessToken;
   const id = Array.isArray(ticketId) ? ticketId[0]?.trim() : ticketId?.trim();
 
@@ -45,7 +45,6 @@ export function useStaffTicketQuery(
     enabled:
       Boolean(accessToken && id) &&
       sessionHydrated &&
-      mpinUnlocked &&
       (options?.enabled ?? true),
     queryFn: async () => {
       const token = accessToken;
