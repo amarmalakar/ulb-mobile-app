@@ -6,7 +6,8 @@ import { useStaffLeadershipQuery } from '@/features/leadership/hooks/use-staff-l
 import { Stack } from 'expo-router';
 import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
-import { StaffHomeDashboard } from '@/features/tickets/components/staff-home-dashboard';
+// import { StaffHomeDashboard } from '@/features/tickets/components/staff-home-dashboard';
+import { StaffHomeAnalytics } from '@/features/tickets/components/staff-home-analytics';
 
 export default function StaffHomeScreen() {
   const { t } = useTranslation();
@@ -35,7 +36,8 @@ export default function StaffHomeScreen() {
             onRetry={() => void refetchLeadership()}
           />
 
-          <StaffHomeDashboard />
+          <StaffHomeAnalytics />
+          {/* <StaffHomeDashboard /> */}
         </ScrollView>
 
         <BottomNav activeItemId="home" />

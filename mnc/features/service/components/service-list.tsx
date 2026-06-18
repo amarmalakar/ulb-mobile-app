@@ -1,4 +1,4 @@
-import { Pressable, View } from 'react-native';
+import { FlatList, Pressable, View } from 'react-native';
 import { Typography } from '@/components/common/typography';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,9 @@ import { useRouter } from 'expo-router';
 import { getServiceColorClass } from '@/lib/get-service-color-class';
 import { resolveServiceIcon } from '@/features/service/lib/resolve-service-icon';
 import { getLocaleString } from '@/lib/i18n/get-locale-string';
+import { resolveTicketImageUrl } from '@/lib/resolve-ticket-image-url';
 import { cn } from '@/lib/utils';
+import { Image } from 'expo-image';
 
 function ServiceError({
   onRetry,
@@ -45,53 +47,14 @@ function ServiceError({
   );
 }
 
-function ServiceItem({ service }: { service: UserService }) {
-  const router = useRouter();
-  const ServiceIcon = resolveServiceIcon(service.icon);
-
-  return (
-    <View className="w-1/4">
-      <Pressable
-        className="self-center items-center gap-2 active:opacity-80"
-        onPress={() => router.push({
-          pathname: '/user/service-form-screen',
-          params: {
-            params: JSON.stringify({
-              serviceId: service.id,
-              serviceTitle: service.title,
-              subServicesArray: service.subServices
-            })
-          },
-        })}
-      >
-        <View
-          className={cn(
-            'h-14 w-14 items-center justify-center rounded-full border',
-            getServiceColorClass('border', service.color, 200),
-            getServiceColorClass('bg', service.color, 100),
-          )}
-        >
-          <Icon
-            as={ServiceIcon}
-            className={getServiceColorClass('text', service.color, 600)}
-            size={24}
-          />
-        </View>
-        <Typography className="text-center text-foreground text-sm font-medium">
-          {getLocaleString(service.title)}
-        </Typography>
-      </Pressable>
-    </View>
-  );
-}
-
 export default function ServiceList() {
   const { t } = useTranslation();
+  const router = useRouter();
   const { isLoading, isError, error, refetch, data: services } = useUserServicesQuery();
 
   if (isLoading) {
     return (
-      <View className="gap-4 p-4">
+      <View className="gap-4 py-4 px-2">
         <Skeleton className="h-6 w-56" />
         <View className="flex-row flex-wrap gap-y-4">
           {new Array(7).fill(0).map((_, index) => (
@@ -108,7 +71,7 @@ export default function ServiceList() {
 
   if (isError) {
     return (
-      <View className="gap-4 p-4">
+      <View className="gap-4 py-4 px-2">
         <Typography variant="h4" className="text-primary">{t('complaints.title')}</Typography>
         <ServiceError
           onRetry={() => void refetch()}
@@ -124,20 +87,69 @@ export default function ServiceList() {
   const items = services ?? [];
 
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-4 py-4 px-2">
       <Typography variant="h4" className="text-primary">
         {t('services.title')}
       </Typography>
       {items.length === 0 ? (
         <Typography className="text-muted-foreground text-sm">{t('complaints.empty')}</Typography>
       ) : (
-        <View className="flex-row flex-wrap gap-y-4">
-          {items.map((item) => {
+        <FlatList
+          data={items}
+          scrollEnabled={false}
+          renderItem={({ item }) => {
+            const iconImageUrl = item.iconPathname
+              ? resolveTicketImageUrl(item.iconPathname)
+              : '';
+            const ServiceIcon = resolveServiceIcon(item.icon);
+
             return (
-              <ServiceItem key={item.id} service={item} />
+              <View className='flex-1'>
+                <Pressable
+                  className={cn(
+                    "self-center items-center gap-2 border border-primary rounded-lg aspect-square w-full overflow-hidden",
+                    ""
+                  )}
+                  onPress={() => router.push({
+                    pathname: '/user/service-form-screen',
+                    params: {
+                      params: JSON.stringify({
+                        serviceId: item.id,
+                        serviceTitle: item.title,
+                        subServicesArray: item.subServices
+                      })
+                    },
+                  })}
+                >
+                  <View className="aspect-square w-full items-center justify-center bg-primary/10 p-2.5 shadow-sm">
+                    {iconImageUrl ? (
+                      <Image
+                        source={{ uri: iconImageUrl }}
+                        style={{ width: '60%', height: '60%' }}
+                        contentFit="contain"
+                        accessibilityLabel={getLocaleString(item.title)}
+                      />
+                    ) : (
+                      <Icon
+                        as={ServiceIcon}
+                        className={getServiceColorClass('text', item.color, 600)}
+                        size={28}
+                      />
+                    )}
+                  </View>
+                </Pressable>
+
+                <Typography className="text-center text-foreground text-xs font-medium pt-2">
+                  {getLocaleString(item.title)}
+                </Typography>
+              </View>
             )
-          })}
-        </View>
+          }}
+          keyExtractor={(item) => item.id}
+          numColumns={4}
+          columnWrapperStyle={{ gap: 10 }}
+          contentContainerStyle={{ gap: 20 }}
+        />
       )}
     </View>
   );

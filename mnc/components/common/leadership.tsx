@@ -20,23 +20,6 @@ type UserLeadershipProps = {
   onRetry?: () => void;
 };
 
-const positionTheme: Record<LeadershipPosition, { badgeClass: string; textClass: string }> = {
-  Mayor: {
-    badgeClass: 'border-primary/30 bg-primary/10',
-    textClass: 'text-primary',
-  },
-  'Deputy Mayor': {
-    badgeClass: 'border-sky-200 bg-sky-100',
-    textClass: 'text-sky-700',
-  },
-  'Ward Coordinator': {
-    badgeClass: 'border-violet-200 bg-violet-100',
-    textClass: 'text-violet-700',
-  },
-};
-
-const defaultPositionTheme = positionTheme['Ward Coordinator'];
-
 function leadershipPositionKey(position: LeadershipPosition) {
   const keys = {
     Mayor: 'leadership.positions.mayor',
@@ -64,7 +47,7 @@ function LeadershipSectionTitle() {
 
 function LeadershipSkeleton() {
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-4 py-4 px-2">
       <Skeleton className="h-7 w-40" />
       <View className="flex-row gap-3">
         {new Array(3).fill(0).map((_, index) => (
@@ -92,7 +75,7 @@ function LeadershipError({
   const { t } = useTranslation();
 
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-4 py-4 px-2">
       <LeadershipSectionTitle />
       <View className="items-center gap-4 rounded-2xl border border-border bg-card px-4 py-8">
         <View className="bg-destructive/10 size-16 items-center justify-center rounded-full">
@@ -121,7 +104,7 @@ function LeadershipEmpty() {
   const { t } = useTranslation();
 
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-4 py-4 px-2">
       <LeadershipSectionTitle />
       <View className="items-center gap-4 rounded-2xl border border-dashed border-border bg-muted/30 px-4 py-8">
         <View className="size-16 items-center justify-center rounded-full bg-muted">
@@ -142,12 +125,6 @@ function LeadershipEmpty() {
 
 function LeadershipCard({ member }: { member: LeadershipMember }) {
   const { t } = useTranslation();
-  const theme =
-    member.position === 'Mayor' ||
-    member.position === 'Deputy Mayor' ||
-    member.position === 'Ward Coordinator'
-      ? positionTheme[member.position]
-      : defaultPositionTheme;
   const initials = member.name
     .split(/\s+/)
     .filter(Boolean)
@@ -173,12 +150,12 @@ function LeadershipCard({ member }: { member: LeadershipMember }) {
         <View
           className={cn(
             'items-center rounded-full border px-1.5 py-0.5',
-            theme.badgeClass,
+            'border-sky-200 bg-sky-100'
           )}
         >
           <Typography
-            className={cn('text-center text-[10px] font-semibold leading-tight', theme.textClass)}
-            numberOfLines={2}
+            className={cn('text-center text-[10px] font-semibold leading-tight text-sky-700')}
+            numberOfLines={1}
           >
             {getPositionLabel(member.position, t)}
           </Typography>
@@ -195,7 +172,7 @@ function LeadershipList({ leadership }: { leadership: LeadershipMember[] }) {
   );
 
   return (
-    <View className="gap-4 p-4">
+    <View className="gap-4 py-4 px-2">
       <LeadershipSectionTitle />
       <View className="flex-row gap-3">
         {sorted.map((member) => (

@@ -11,6 +11,7 @@ export type StaffHomeAnalyticsServiceBreakdown = {
   id: string;
   title: LocalizedStringRecord;
   icon: string | null;
+  iconPathname: string | null;
   color: string | null;
   open: number;
 };

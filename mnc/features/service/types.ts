@@ -16,6 +16,8 @@ export type UserService = {
   ulbId: string;
   title: LocalizedTitle;
   icon: string | null;
+  /** R2 object key when `icon` is a ServiceIcon id. */
+  iconPathname: string | null;
   color: string | null;
   active: boolean;
   sortOrder: number;
