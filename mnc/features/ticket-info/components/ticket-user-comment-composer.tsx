@@ -9,9 +9,11 @@ import { usePostUserTicketCommentMutation } from "@/features/tickets/hooks/use-u
 export function TicketUserCommentComposer({
   ticketId,
   commentEnabled,
+  onFocus,
 }: {
   ticketId: string;
   commentEnabled: boolean;
+  onFocus?: () => void;
 }) {
   const { t } = useTranslation();
   const { session } = useUserAuth();
@@ -40,6 +42,7 @@ export function TicketUserCommentComposer({
       <TextInput
         value={draftComment}
         onChangeText={setDraftComment}
+        onFocus={onFocus}
         multiline
         editable={canCompose}
         placeholder={

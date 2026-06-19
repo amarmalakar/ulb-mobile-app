@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { ActivityIndicator, Alert, KeyboardAvoidingView, Platform, ScrollView, View } from "react-native";
 import { Typography } from "@/components/common/typography";
 import type { TicketInfoAuthType, TicketInfoTicket } from "@/features/ticket-info/types";
@@ -24,22 +25,34 @@ export default function TicketInfo({
 }) {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
+  const scrollRef = useRef<ScrollView>(null);
+  const commentsScrollY = useRef(0);
   const patchStaffStatus = usePatchStaffTicketStatusMutation();
   const patchUserStatus = usePatchUserTicketStatusMutation();
   const patchStatus = authType === "Staff" ? patchStaffStatus : patchUserStatus;
   const canRate = authType === "User" && ticket.status === "COMPLETED";
 
+  const scrollToComments = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollTo({
+        y: Math.max(0, commentsScrollY.current - 16),
+        animated: true,
+      });
+    }, Platform.OS === "ios" ? 250 : 100);
+  };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       className="flex-1"
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
     >
       <ScrollView
+        ref={scrollRef}
         className="flex-1"
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
+        automaticallyAdjustKeyboardInsets
       >
         <View className="gap-4">
           <View className="px-4 pt-4">
@@ -103,13 +116,19 @@ export default function TicketInfo({
 
           <Separator className="my-2" />
 
-          <View className="px-4">
+          <View
+            className="px-4"
+            onLayout={(event) => {
+              commentsScrollY.current = event.nativeEvent.layout.y;
+            }}
+          >
             <Typography variant="h4" className="text-primary pb-2">{t("tickets.comments")}</Typography>
             <TicketComments
               comments={ticket.comments}
               ticketId={ticket.id}
               commentEnabled={ticket.commentEnabled}
               authType={authType}
+              onComposerFocus={scrollToComments}
             />
           </View>
         </View>

@@ -210,6 +210,9 @@ export const hi: TranslationSchema = {
     totalTicketsTitle: 'कुल टिकट {{total}}',
     openTicketsCount: '{{count}} खुले टिकट',
     dashboardLoadError: 'डैशबोर्ड लोड नहीं हो सका।',
+    analyticsEmptyTitle: 'अभी कोई विश्लेषण नहीं',
+    analyticsEmptyHint:
+      'डेटा उपलब्ध होने पर सेवा और बुकिंग की जानकारी यहाँ दिखाई देगी।',
     filters: 'फ़िल्टर',
     filtersActive: 'फ़िल्टर, {{count}} सक्रिय',
     openFilters: 'फ़िल्टर खोलें',

@@ -207,6 +207,9 @@ export const en = {
     totalTicketsTitle: 'Total Tickets {{total}}',
     openTicketsCount: '{{count}} Open Tickets',
     dashboardLoadError: 'Could not load dashboard.',
+    analyticsEmptyTitle: 'No analytics yet',
+    analyticsEmptyHint:
+      'Service and booking insights will appear here once data is available.',
     filters: 'Filters',
     filtersActive: 'Filters, {{count}} active',
     openFilters: 'Open filters',

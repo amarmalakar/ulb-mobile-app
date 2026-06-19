@@ -10,9 +10,11 @@ import { Typography } from "@/components/common/typography";
 export function TicketStaffCommentComposer({
   ticketId,
   commentEnabled,
+  onFocus,
 }: {
   ticketId: string;
   commentEnabled: boolean;
+  onFocus?: () => void;
 }) {
   const { t } = useTranslation();
   const { session } = useStaffAuth();
@@ -40,6 +42,7 @@ export function TicketStaffCommentComposer({
       <TextInput
         value={draftComment}
         onChangeText={setDraftComment}
+        onFocus={onFocus}
         multiline
         editable={canCompose}
         placeholder={

@@ -9,10 +9,13 @@ import { iTicketStatus } from "../types";
 import { cn } from "@/lib/utils";
 import { getLocaleString } from "@/lib/i18n/get-locale-string";
 import { resolveTicketImageUrl } from "@/lib/resolve-ticket-image-url";
-import { getServiceColorClass } from "@/lib/get-service-color-class";
 import { Image } from "expo-image";
 import { StaffHomeAnalyticsBookingResourceBreakdown, StaffHomeAnalyticsServiceBreakdown } from "../types/staff-home-analytics";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Icon } from "@/components/ui/icon";
+import { AlertCircleIcon, BarChart3Icon, RefreshCcwIcon } from "lucide-react-native";
 
 function ServiceAnalyticsCard({
   service,
@@ -129,21 +132,107 @@ function BookingResourceAnalyticsCard({
   );
 }
 
+function StaffHomeAnalyticsSkeleton() {
+  return (
+    <View className="gap-6">
+      <Separator />
+      <View className="gap-6 px-4">
+        <Skeleton className="h-6 w-32" />
+        <View className="-mx-1 flex-row flex-wrap">
+          {new Array(6).fill(0).map((_, index) => (
+            <View key={`services-${index}`} className="mb-3 w-1/3 px-1">
+              <Skeleton className="h-[100px] w-full rounded-2xl" />
+            </View>
+          ))}
+        </View>
+      </View>
+      <Separator />
+      <View className="gap-6 px-4">
+        <Skeleton className="h-6 w-40" />
+        <View className="-mx-1 flex-row flex-wrap">
+          {new Array(3).fill(0).map((_, index) => (
+            <View key={`resources-${index}`} className="mb-3 w-1/3 px-1">
+              <Skeleton className="h-[100px] w-full rounded-2xl" />
+            </View>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function StaffHomeAnalyticsError({
+  message,
+  onRetry,
+}: {
+  message?: string;
+  onRetry?: () => void;
+}) {
+  const { t } = useTranslation();
+
+  return (
+    <View className="gap-6">
+      <Separator />
+      <View className="px-4">
+        <View className="items-center gap-4 rounded-2xl border border-border bg-card px-4 py-8">
+          <View className="bg-destructive/10 size-16 items-center justify-center rounded-full">
+            <Icon as={AlertCircleIcon} className="text-destructive" size={32} />
+          </View>
+          <View className="gap-1.5">
+            <Typography className="text-destructive text-center text-base font-bold">
+              {t("common.errorTitle")}
+            </Typography>
+            <Typography className="text-muted-foreground text-center text-sm">
+              {message ?? t("tickets.dashboardLoadError")}
+            </Typography>
+          </View>
+          {onRetry ? (
+            <Button size="sm" variant="outline" onPress={onRetry}>
+              <Icon as={RefreshCcwIcon} className="size-4" />
+              <Typography>{t("common.retry")}</Typography>
+            </Button>
+          ) : null}
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function StaffHomeAnalyticsEmpty() {
+  const { t } = useTranslation();
+
+  return (
+    <View className="gap-6">
+      <Separator />
+      <View className="px-4">
+        <View className="items-center gap-4 rounded-2xl border border-dashed border-border bg-muted/30 px-4 py-8">
+          <View className="size-16 items-center justify-center rounded-full bg-muted">
+            <Icon as={BarChart3Icon} className="text-muted-foreground" size={32} />
+          </View>
+          <View className="gap-1.5">
+            <Typography className="text-center text-base font-bold text-foreground">
+              {t("tickets.analyticsEmptyTitle")}
+            </Typography>
+            <Typography className="text-muted-foreground max-w-[280px] text-center text-sm leading-relaxed">
+              {t("tickets.analyticsEmptyHint")}
+            </Typography>
+          </View>
+        </View>
+      </View>
+    </View>
+  );
+}
+
 export function StaffHomeAnalytics() {
   const { t } = useTranslation();
   const router = useRouter();
 
   const { sessionHydrated, staffInfo } = useStaffAuth();
 
-  const { data: analytics, isLoading, isError, error } = useStaffHomeAnalyticsQuery(
+  const { data: analytics, isLoading, isError, error, refetch } = useStaffHomeAnalyticsQuery(
     { wards: staffInfo?.wards ?? [] },
     { enabled: Boolean(sessionHydrated) },
   );
-
-  const tickets = analytics?.serviceTickets;
-  const services = analytics?.services ?? [];
-  const bookingSummary = analytics?.bookingSummary;
-  const bookingResources = analytics?.bookingResources ?? [];
 
   const handleServicePress = (serviceId: string) => {
     const openStatuses: iTicketStatus[] = [
@@ -161,6 +250,27 @@ export function StaffHomeAnalytics() {
       }),
     });
   };
+
+  if (isLoading) {
+    return <StaffHomeAnalyticsSkeleton />;
+  }
+
+  if (isError && !analytics) {
+    return (
+      <StaffHomeAnalyticsError
+        message={error?.message}
+        onRetry={() => void refetch()}
+      />
+    );
+  }
+
+  const services = analytics?.services ?? [];
+  const bookingSummary = analytics?.bookingSummary;
+  const bookingResources = analytics?.bookingResources ?? [];
+
+  if (services.length === 0 && !bookingSummary) {
+    return <StaffHomeAnalyticsEmpty />;
+  }
 
   return (
     <View className="gap-6">

@@ -49,11 +49,13 @@ export function TicketComments({
   ticketId,
   commentEnabled,
   authType,
+  onComposerFocus,
 }: {
   comments: TicketComment[];
   ticketId: string;
   commentEnabled: boolean;
   authType: TicketInfoAuthType;
+  onComposerFocus?: () => void;
 }) {
   const { t } = useTranslation();
   const hasComments = comments.length > 0;
@@ -71,9 +73,17 @@ export function TicketComments({
       ) : null}
 
       {authType === "User" ? (
-        <TicketUserCommentComposer ticketId={ticketId} commentEnabled={commentEnabled} />
+        <TicketUserCommentComposer
+          ticketId={ticketId}
+          commentEnabled={commentEnabled}
+          onFocus={onComposerFocus}
+        />
       ) : (
-        <TicketStaffCommentComposer ticketId={ticketId} commentEnabled={commentEnabled} />
+        <TicketStaffCommentComposer
+          ticketId={ticketId}
+          commentEnabled={commentEnabled}
+          onFocus={onComposerFocus}
+        />
       )}
 
       {hasComments ? (
