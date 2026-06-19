@@ -28,10 +28,10 @@ function ServiceAnalyticsCard({
   const color = "sky";
 
   return (
-    <Pressable className="mb-3 w-1/3 px-1 active:opacity-80" onPress={onPress}>
+    <Pressable className="mb-3 w-1/3 px-1 active:opacity-80 h-[100px]" onPress={onPress}>
       <View
         className={cn(
-          "relative min-h-[90px] rounded-2xl border p-3 shadow-sm",
+          "relative h-[100px] rounded-2xl border p-3 shadow-sm",
           `border-${color}-200 bg-${color}-50`,
         )}
       >
@@ -85,10 +85,10 @@ function BookingResourceAnalyticsCard({
   const color = "emerald";
 
   return (
-    <Pressable className="mb-3 w-1/3 px-1 active:opacity-80" onPress={onPress}>
+    <Pressable className="mb-3 w-1/3 px-1 active:opacity-80 h-[100px]" onPress={onPress}>
       <View
         className={cn(
-          "relative min-h-[90px] rounded-2xl border p-3 shadow-sm",
+          "relative h-[100px] rounded-2xl border p-3 shadow-sm",
           `border-${color}-200 bg-${color}-50`,
         )}
       >

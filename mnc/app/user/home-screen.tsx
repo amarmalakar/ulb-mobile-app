@@ -2,6 +2,7 @@ import { BottomNav } from '@/components/common/bottom-nav';
 import { Leadership } from '@/components/common/leadership';
 import { useUserAuth } from '@/components/providers/user-auth-provider';
 import { HomeBanner } from '@/features/home-banner';
+import { HomeFeatured } from '@/features/home-featured';
 import { useUserLeadershipQuery } from '@/features/leadership/hooks/use-user-leadership-query';
 import ServiceList from '@/features/service/components/service-list';
 import { Stack } from 'expo-router';
@@ -25,7 +26,8 @@ export default function UserHomeScreen() {
 
       <View className="bg-background flex-1 pb-28">
         <ScrollView showsVerticalScrollIndicator={false}>
-          <HomeBanner userName={userInfo?.name ?? t('common.user')} />
+          <HomeFeatured userName={userInfo?.name ?? t('common.user')} />
+          {/* <HomeBanner userName={userInfo?.name ?? t('common.user')} /> */}
 
           <Leadership
             isLoading={isLeadershipLoading}

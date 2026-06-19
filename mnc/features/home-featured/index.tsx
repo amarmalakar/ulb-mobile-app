@@ -1,22 +1,20 @@
-import { Pressable, Image, ScrollView, useWindowDimensions, View } from "react-native";
+import { Pressable, Image, ScrollView, StyleSheet, useWindowDimensions, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useEffect, useRef, useState } from "react";
 import { MenuIcon } from "lucide-react-native";
 import { UserAvatar } from "@/components/common/user-avatar";
 import { MobileMenu } from "@/components/common/mobile-menu";
 import { useLogout } from "@/hooks/use-logout";
+import { HOME_FEATURED_ITEMS } from "./constants";
+import { Typography } from "@/components/common/typography";
+import { FeaturedGradient } from "./components/featured-gradient";
+import { FeaturedMedia } from "./components/featured-media";
 
-type UserHomeHeroProps = {
+export function HomeFeatured({
+  userName,
+}: {
   userName: string;
-};
-
-const heroSlides = [
-  'https://images.pexels.com/photos/28712146/pexels-photo-28712146.jpeg',
-  'https://images.pexels.com/photos/36930062/pexels-photo-36930062.jpeg',
-  'https://images.pexels.com/photos/30217970/pexels-photo-30217970.jpeg',
-  // 'https://www.pexels.com/download/video/35771140/'
-];
-
-export function HomeBanner({ userName }: UserHomeHeroProps) {
+}) {
   const sliderRef = useRef<ScrollView>(null);
   const { width } = useWindowDimensions();
   const [activeSlideIndex, setActiveSlideIndex] = useState(0);
@@ -26,11 +24,11 @@ export function HomeBanner({ userName }: UserHomeHeroProps) {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setActiveSlideIndex((currentIndex) => {
-        const nextIndex = (currentIndex + 1) % heroSlides.length;
+        const nextIndex = (currentIndex + 1) % HOME_FEATURED_ITEMS.length;
         sliderRef.current?.scrollTo({ x: width * nextIndex, animated: true });
         return nextIndex;
       });
-    }, 3000);
+    }, 5000);
 
     return () => clearInterval(intervalId);
   }, [width]);
@@ -49,13 +47,30 @@ export function HomeBanner({ userName }: UserHomeHeroProps) {
             );
             setActiveSlideIndex(nextIndex);
           }}>
-          {heroSlides.map((slide) => (
-            <Image
-              key={slide}
-              source={{ uri: slide }}
-              resizeMode="cover"
-              className="h-[424px] w-screen"
-            />
+          {HOME_FEATURED_ITEMS.map((slide, index) => (
+            <View key={slide.id} className="h-[424px] w-screen">
+              <FeaturedMedia
+                type={slide.type}
+                image={slide.image}
+                title={slide.title}
+                description={slide.description}
+                logo={slide.logo}
+                isActive={index === activeSlideIndex}
+                link={slide.link}
+                linkText={slide.linkText}
+              />
+
+              {slide.type !== "TEXT" ? (
+                <FeaturedGradient
+                  featuredId={slide.id}
+                  logo={slide.logo}
+                  title={slide.title}
+                  description={slide.description}
+                  link={slide.link}
+                  linkText={slide.linkText}
+                />
+              ) : null}
+            </View>
           ))}
         </ScrollView>
 
@@ -75,9 +90,9 @@ export function HomeBanner({ userName }: UserHomeHeroProps) {
         </View>
 
         <View className="absolute bottom-3 left-0 right-0 flex-row items-center justify-center gap-2 shadow-lg">
-          {heroSlides.map((slide, index) => (
+          {HOME_FEATURED_ITEMS.map((slide, index) => (
             <View
-              key={slide}
+              key={slide.id}
               className={index === activeSlideIndex ? 'h-2.5 w-6 rounded-full bg-white' : 'h-2.5 w-2.5 rounded-full bg-white/45'}
             />
           ))}

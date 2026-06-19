@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { ScrollView, View } from 'react-native';
 // import { StaffHomeDashboard } from '@/features/tickets/components/staff-home-dashboard';
 import { StaffHomeAnalytics } from '@/features/tickets/components/staff-home-analytics';
+import { HomeFeatured } from '@/features/home-featured';
 
 export default function StaffHomeScreen() {
   const { t } = useTranslation();
@@ -26,7 +27,9 @@ export default function StaffHomeScreen() {
 
       <View className="bg-background flex-1 pb-28">
         <ScrollView showsVerticalScrollIndicator={false}>
-          <HomeBanner userName={staffInfo?.name ?? t('common.staff')} />
+          {/* <HomeBanner userName={staffInfo?.name ?? t('common.staff')} /> */}
+
+          <HomeFeatured userName={staffInfo?.name ?? t('common.staff')} />
 
           <Leadership
             isLoading={isLeadershipLoading}
