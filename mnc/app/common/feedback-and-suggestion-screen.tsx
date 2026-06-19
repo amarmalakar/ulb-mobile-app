@@ -1,4 +1,4 @@
-import { Stack } from 'expo-router';
+import { Stack, useRouter } from 'expo-router';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { View } from 'react-native';
@@ -9,15 +9,14 @@ import { Button } from '@/components/ui/button';
 import { Icon } from '@/components/ui/icon';
 import { Typography } from '@/components/common/typography';
 import { FeedbackAndSuggestionFilters } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-filters';
-import { FeedbackAndSuggestionFormModal } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-form-modal';
 import { FeedbackAndSuggestionList } from '@/features/feedback-and-suggestion-form/components/feedback-and-suggestion-list';
 import { createDefaultFeedbackAndSuggestionFilter } from '@/features/feedback-and-suggestion-form/hooks/use-feedback-and-suggestion-filters';
 import { useFeedbackAndSuggestionInfiniteQuery } from '@/features/feedback-and-suggestion-form/hooks/use-feedback-and-suggestion-infinite-query';
 
 export default function FeedbackAndSuggestionScreen() {
   const { t } = useTranslation();
+  const router = useRouter();
   const [filter, setFilter] = useState(createDefaultFeedbackAndSuggestionFilter);
-  const [isCreateModalVisible, setIsCreateModalVisible] = useState(false);
   const listQuery = useFeedbackAndSuggestionInfiniteQuery(filter);
 
   return (
@@ -30,7 +29,7 @@ export default function FeedbackAndSuggestionScreen() {
         <View className="flex-row items-center justify-between gap-2 px-4 py-2">
           <Button
             className="shrink flex-row gap-2"
-            onPress={() => setIsCreateModalVisible(true)}
+            onPress={() => router.push('/common/feedback-and-suggestion-create-screen')}
           >
             <Icon as={PlusIcon} className="size-4 text-primary-foreground" />
             <Typography className="font-semibold text-primary-foreground">{t('feedback.create')}</Typography>
@@ -40,11 +39,6 @@ export default function FeedbackAndSuggestionScreen() {
 
         <FeedbackAndSuggestionList filter={filter} listQuery={listQuery} />
       </View>
-
-      <FeedbackAndSuggestionFormModal
-        visible={isCreateModalVisible}
-        onClose={() => setIsCreateModalVisible(false)}
-      />
     </>
   );
 }
