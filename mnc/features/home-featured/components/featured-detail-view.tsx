@@ -15,6 +15,7 @@ export function FeaturedDetailView({ item }: { item: FeaturedItem }) {
         <FeaturedMedia
           type={item.type}
           image={item.image}
+          video={item.video}
           title={item.title}
           description={item.description}
           logo={item.logo}

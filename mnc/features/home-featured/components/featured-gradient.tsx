@@ -8,14 +8,14 @@ import { cn } from "@/lib/utils";
 export function FeaturedGradient({
   featuredId,
   title,
-  description,
+  subTitle,
   logo,
   link,
   linkText,
 }: {
   featuredId: string;
   title: string;
-  description: string;
+  subTitle: string;
   logo?: string;
   link?: string;
   linkText?: string;
@@ -59,7 +59,7 @@ export function FeaturedGradient({
 
           <View className="flex-1">
             <Typography variant="h5" className="text-white">{title}</Typography>
-            <Typography variant="caption" className="text-white" numberOfLines={2}>{description}</Typography>
+            <Typography variant="caption" className="text-white" numberOfLines={2}>{subTitle}</Typography>
           </View>
         </Pressable>
 

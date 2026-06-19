@@ -55,5 +55,7 @@ export const API_PATHS = {
     feedbackAndSuggestion: '/common/feedback-and-suggestion',
     insights: '/common/insights',
     insightById: (insightId: string) => `/common/insights/${insightId}`,
+    featured: '/common/featured',
+    featuredById: (featuredId: string) => `/common/featured/${encodeURIComponent(featuredId)}`,
   },
 } as const;

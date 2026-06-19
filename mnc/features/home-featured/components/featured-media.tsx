@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 export function FeaturedMedia({
   type,
   image,
+  video,
   title,
   description,
   logo,
@@ -18,7 +19,8 @@ export function FeaturedMedia({
   showVideoControls = false,
 }: {
   type: FeaturedItemType;
-  image: string;
+  image?: string;
+  video?: string;
   title: string;
   description: string;
   logo?: string;
@@ -27,7 +29,9 @@ export function FeaturedMedia({
   linkText?: string;
   showVideoControls?: boolean;
 }) {
-  const player = useVideoPlayer(type === "VIDEO" ? image : null, (player) => {
+  const videoUri = video ?? image ?? null;
+
+  const player = useVideoPlayer(type === "VIDEO" ? videoUri : null, (player) => {
     if (showVideoControls) {
       player.loop = false;
       player.muted = false;
@@ -62,6 +66,10 @@ export function FeaturedMedia({
   }, [type, isActive, player, showVideoControls]);
 
   if (type === "IMAGE") {
+    if (!image) {
+      return <View className="h-full w-full bg-primary" />;
+    }
+
     return (
       <Image
         source={{ uri: image }}
@@ -72,6 +80,10 @@ export function FeaturedMedia({
   }
 
   if (type === "VIDEO") {
+    if (!videoUri) {
+      return <View className="h-full w-full bg-primary" />;
+    }
+
     return (
       <View className="h-full w-full">
         <VideoView

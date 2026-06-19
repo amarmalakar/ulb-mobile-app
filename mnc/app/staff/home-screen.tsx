@@ -9,6 +9,7 @@ import { ScrollView, View } from 'react-native';
 // import { StaffHomeDashboard } from '@/features/tickets/components/staff-home-dashboard';
 import { StaffHomeAnalytics } from '@/features/tickets/components/staff-home-analytics';
 import { HomeFeatured } from '@/features/home-featured';
+import { useFeaturedQuery } from '@/features/home-featured/hooks/use-featured-query';
 
 export default function StaffHomeScreen() {
   const { t } = useTranslation();
@@ -20,6 +21,13 @@ export default function StaffHomeScreen() {
     error: leadershipError,
     refetch: refetchLeadership,
   } = useStaffLeadershipQuery();
+  const {
+    data: featuredItems,
+    isLoading: isFeaturedLoading,
+    isError: isFeaturedError,
+    error: featuredError,
+    refetch: refetchFeatured,
+  } = useFeaturedQuery();
 
   return (
     <>
@@ -29,7 +37,14 @@ export default function StaffHomeScreen() {
         <ScrollView showsVerticalScrollIndicator={false}>
           {/* <HomeBanner userName={staffInfo?.name ?? t('common.staff')} /> */}
 
-          <HomeFeatured userName={staffInfo?.name ?? t('common.staff')} />
+          <HomeFeatured
+            userName={staffInfo?.name ?? t('common.staff')}
+            items={featuredItems ?? []}
+            isLoading={isFeaturedLoading}
+            isError={isFeaturedError}
+            error={featuredError ?? undefined}
+            onRetry={() => void refetchFeatured()}
+          />
 
           <Leadership
             isLoading={isLeadershipLoading}
