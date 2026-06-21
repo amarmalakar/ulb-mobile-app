@@ -145,6 +145,14 @@ export const en = {
     currentLocation: 'Current Location',
     profileAddress: 'Profile Address',
   },
+  staff: {
+    allWards: 'All Wards',
+    type: {
+      PUBLIC_REPRESENTATIVE: 'Public Representative',
+      MUNICIPAL_STAFF: 'Municipal Staff',
+      TECHNICAL_STAFF: 'Technical Staff',
+    },
+  },
   tickets: {
     title: 'Tickets',
     loading: 'Loading…',
@@ -202,10 +210,12 @@ export const en = {
     assignedToName: 'Assigned to {{name}}',
     totalTicketsTitle: 'Total Tickets {{total}}',
     openTicketsCount: '{{count}} Open Tickets',
+    openTicketsLabel: 'Open Tickets',
     dashboardLoadError: 'Could not load dashboard.',
     analyticsEmptyTitle: 'No analytics yet',
     analyticsEmptyHint:
       'Service and booking insights will appear here once data is available.',
+    byWardsTitle: '{{service}} by Wards',
     filters: 'Filters',
     filtersActive: 'Filters, {{count}} active',
     openFilters: 'Open filters',

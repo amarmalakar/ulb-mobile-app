@@ -1,11 +1,12 @@
+import { useMemo } from "react";
 import { useStaffAuth } from "@/components/providers/staff-auth-provider";
 import { useRouter } from "expo-router";
 import { useTranslation } from "react-i18next";
 import { useStaffHomeAnalyticsQuery } from "../hooks/use-staff-home-analytics-query";
-import { Pressable, View } from "react-native";
+import { Pressable, ScrollView, View } from "react-native";
 import { Typography } from "@/components/common/typography";
 import { buildStaffTicketScreenParams } from "../hooks/use-tickets-filter";
-import { iTicketStatus } from "../types";
+import { iLocalizedTitle, iTicketStatus } from "../types";
 import { cn } from "@/lib/utils";
 import { getLocaleString } from "@/lib/i18n/get-locale-string";
 import { resolveTicketImageUrl } from "@/lib/resolve-ticket-image-url";
@@ -16,6 +17,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { AlertCircleIcon, BarChart3Icon, RefreshCcwIcon } from "lucide-react-native";
+import { buildStaffRoleSummary } from "@/features/staff-auth/lib/build-staff-role-summary";
 
 function ServiceAnalyticsCard({
   service,
@@ -234,7 +236,12 @@ export function StaffHomeAnalytics() {
     { enabled: Boolean(sessionHydrated) },
   );
 
-  const handleServicePress = (serviceId: string) => {
+  const staffRoleSummary = useMemo(
+    () => (staffInfo ? buildStaffRoleSummary(staffInfo, t) : ""),
+    [staffInfo, t],
+  );
+
+  const handleServicePress = (service: StaffHomeAnalyticsServiceBreakdown) => {
     const openStatuses: iTicketStatus[] = [
       "TODO",
       "IN_PROGRESS",
@@ -242,12 +249,20 @@ export function StaffHomeAnalytics() {
       "REOPENED",
     ];
     router.push({
-      pathname: "/staff/staff-tickets-screen",
-      params: buildStaffTicketScreenParams({
-        selectedServiceId: serviceId,
-        selectedStatuses: openStatuses,
-        selectedWards: staffInfo?.wards ?? [],
-      }),
+      pathname: staffInfo?.wards.length === 1 ? "/staff/staff-tickets-screen" : "/staff/staff-tickets-ward-screen",
+      params: {
+        params: JSON.stringify(
+          buildStaffTicketScreenParams({
+            selectedServiceId: service.id,
+            selectedStatuses: openStatuses,
+            selectedWards: staffInfo?.wards ?? [],
+          })
+        ),
+        data: JSON.stringify({
+          title: service.title,
+          ticketsByWards: service.ticketsByWards
+        }),
+      },
     });
   };
 
@@ -275,12 +290,26 @@ export function StaffHomeAnalytics() {
   return (
     <View className="gap-6">
 
+      {/* <Typography variant="caption" className="text-muted-foreground">
+        {JSON.stringify(staffInfo?.wards, null, 2)}
+      </Typography> */}
+
       <Separator />
 
       <View className="gap-6 px-4">
-        {/* <Text>Staff Home Analytics</Text> */}
         <View className="gap-3">
-          <Typography variant="h4" className="text-primary">{t("service.title")}</Typography>
+          <View className="">
+            <Typography variant="h4" className="text-primary">{t("service.title")}</Typography>
+
+            {staffRoleSummary ? (
+              <ScrollView horizontal>
+                <Typography variant="caption" className="text-muted-foreground">
+                  {staffRoleSummary}
+                </Typography>
+              </ScrollView>
+            ) : null}
+          </View>
+
           {services.length === 0 ? (
             <Typography className="text-muted-foreground text-sm">{t("service.empty")}</Typography>
           ) : (
@@ -289,7 +318,7 @@ export function StaffHomeAnalytics() {
                 <ServiceAnalyticsCard
                   key={item.id}
                   service={item}
-                  onPress={() => handleServicePress(item.id)}
+                  onPress={() => handleServicePress(item)}
                 />
               ))}
             </View>

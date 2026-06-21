@@ -1,5 +1,10 @@
 import type { LocalizedStringRecord } from '@/lib/i18n/get-locale-string';
 
+export type iLocalizedTitle = {
+  en: string;
+  hi: string;
+};
+
 export enum TicketCategory {
   SERVICE = 'SERVICE',
 }

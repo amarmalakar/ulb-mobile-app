@@ -148,6 +148,14 @@ export const hi: TranslationSchema = {
     currentLocation: 'वर्तमान स्थान',
     profileAddress: 'प्रोफ़ाइल पता',
   },
+  staff: {
+    allWards: 'सभी वार्ड',
+    type: {
+      PUBLIC_REPRESENTATIVE: 'जन प्रतिनिधि',
+      MUNICIPAL_STAFF: 'नगरपालिका कर्मचारी',
+      TECHNICAL_STAFF: 'तकनीकी कर्मचारी',
+    },
+  },
   tickets: {
     title: 'टिकट',
     loading: 'लोड हो रहा है…',
@@ -205,10 +213,12 @@ export const hi: TranslationSchema = {
     assignedToName: '{{name}} को सौंपा गया',
     totalTicketsTitle: 'कुल टिकट {{total}}',
     openTicketsCount: '{{count}} खुले टिकट',
+    openTicketsLabel: 'खुले टिकट',
     dashboardLoadError: 'डैशबोर्ड लोड नहीं हो सका।',
     analyticsEmptyTitle: 'अभी कोई विश्लेषण नहीं',
     analyticsEmptyHint:
       'डेटा उपलब्ध होने पर सेवा और बुकिंग की जानकारी यहाँ दिखाई देगी।',
+    byWardsTitle: '{{service}} - वार्ड अनुसार',
     filters: 'फ़िल्टर',
     filtersActive: 'फ़िल्टर, {{count}} सक्रिय',
     openFilters: 'फ़िल्टर खोलें',

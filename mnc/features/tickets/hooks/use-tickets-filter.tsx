@@ -10,7 +10,7 @@ import {
 } from "date-fns";
 import { getAppLocale } from "@/lib/i18n";
 import { getDateFnsLocale } from "@/lib/date-fns-locale";
-import type { iTicketStatus } from "@/features/tickets/types";
+import type { iLocalizedTitle, iTicketStatus } from "@/features/tickets/types";
 import { useCallback, useState } from "react";
 
 export const TICKET_FILTER_YEAR_START = 2026;
@@ -187,6 +187,18 @@ export type StaffTicketScreenSearchParams = {
   selectedServiceId?: string | string[];
   selectedStatuses?: string | string[];
   selectedWards?: string | string[];
+  title?: string;
+};
+
+/** Route params from staff analytics / ward screens (`params` + `data` JSON strings). */
+export type StaffTicketsRouteParams = StaffTicketScreenSearchParams & {
+  params?: string | string[];
+  data?: string | string[];
+};
+
+export type StaffTicketsRouteData = {
+  title?: iLocalizedTitle;
+  ticketsByWards?: { ward: number; tickets: number }[];
 };
 
 function firstSearchParam(value: string | string[] | undefined): string | undefined {
@@ -233,6 +245,42 @@ export function parseStaffTicketScreenParams(
   return out;
 }
 
+function parseStaffTicketsRouteData(
+  raw: StaffTicketsRouteParams,
+): StaffTicketsRouteData | undefined {
+  const dataJson = firstSearchParam(raw.data);
+  if (!dataJson) return undefined;
+  try {
+    return JSON.parse(dataJson) as StaffTicketsRouteData;
+  } catch {
+    return undefined;
+  }
+}
+
+/** Parses route params from analytics/ward screens or legacy flat search params. */
+export function parseStaffTicketsRouteParams(raw: StaffTicketsRouteParams): {
+  filterPatch: Partial<TicketFilterState>;
+  data?: StaffTicketsRouteData;
+} {
+  const paramsJson = firstSearchParam(raw.params);
+  if (paramsJson) {
+    try {
+      const parsed = JSON.parse(paramsJson) as StaffTicketScreenSearchParams;
+      return {
+        filterPatch: parseStaffTicketScreenParams(parsed),
+        data: parseStaffTicketsRouteData(raw),
+      };
+    } catch {
+      // Fall through to legacy flat params.
+    }
+  }
+
+  return {
+    filterPatch: parseStaffTicketScreenParams(raw),
+    data: parseStaffTicketsRouteData(raw),
+  };
+}
+
 /** Serializes filter fields for `router.push` (comma-separated lists). */
 export function buildStaffTicketScreenParams(
   filter: Pick<
@@ -251,6 +299,29 @@ export function buildStaffTicketScreenParams(
     params.selectedWards = filter.selectedWards.join(",");
   }
   return params;
+}
+
+/** Builds `params` + `data` route payload for `staff-tickets-screen`. */
+export function buildStaffTicketsScreenRouteParams(
+  routeParams: StaffTicketsRouteParams,
+  options?: { ward?: number },
+): { params: string; data: string } {
+  const paramsJson = firstSearchParam(routeParams.params) ?? "{}";
+  let filterParams: Record<string, string> = {};
+  try {
+    filterParams = JSON.parse(paramsJson) as Record<string, string>;
+  } catch {
+    filterParams = {};
+  }
+
+  if (options?.ward !== undefined) {
+    filterParams.selectedWards = String(options.ward);
+  }
+
+  return {
+    params: JSON.stringify(filterParams),
+    data: firstSearchParam(routeParams.data) ?? "",
+  };
 }
 
 export function countActiveTicketFilters(filter: TicketFilterState): number {

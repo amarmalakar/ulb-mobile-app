@@ -59,6 +59,11 @@ export type StaffInfoReportTo = {
 
 export type StaffAccess = 'COMPLAINTS' | 'DOCUMENTS' | 'BOOKINGS';
 
+export type StaffType =
+  | 'PUBLIC_REPRESENTATIVE'
+  | 'MUNICIPAL_STAFF'
+  | 'TECHNICAL_STAFF';
+
 export type StaffInfo = {
   id: string;
   ulbId: string;
@@ -71,9 +76,15 @@ export type StaffInfo = {
   departmentId: string | null;
   positionId: string;
   positionName: string;
+  type: StaffType;
   reportTo: StaffInfoReportTo | null;
   zone: StaffInfoZone[];
+  /** Wards assigned directly on the staff profile (excludes zone expansion). */
+  selectedWards: number[];
+  /** All wards the staff may access (selected wards ∪ zone wards). */
   wards: number[];
+  ulbTotalWards?: number;
+  ulbTotalZones?: number;
   access: StaffAccess[];
   createdAt: string;
   updatedAt: string;

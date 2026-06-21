@@ -7,6 +7,11 @@ export type StaffHomeAnalyticsServiceTickets = {
   blocked: number;
 };
 
+export type StaffHomeAnalyticsServiceTicketsByWard = {
+  ward: number;
+  tickets: number;
+};
+
 export type StaffHomeAnalyticsServiceBreakdown = {
   id: string;
   title: LocalizedStringRecord;
@@ -14,6 +19,7 @@ export type StaffHomeAnalyticsServiceBreakdown = {
   iconPathname: string | null;
   color: string | null;
   open: number;
+  ticketsByWards: StaffHomeAnalyticsServiceTicketsByWard[];
 };
 
 export type StaffHomeAnalyticsBookingSummary = {

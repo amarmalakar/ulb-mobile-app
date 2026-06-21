@@ -519,7 +519,7 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
               showsVerticalScrollIndicator={false}
               keyboardShouldPersistTaps="handled"
             >
-              <View className="relative">
+              {/* <View className="relative">
                 <View className="pointer-events-none absolute left-3 top-0 z-10 h-10 justify-center">
                   <Icon as={SearchIcon} size={16} className="text-muted-foreground" />
                 </View>
@@ -532,7 +532,7 @@ export function TicketFilter({ filter, replaceFilter }: TicketFilterProps) {
                   autoCapitalize="none"
                   clearButtonMode="while-editing"
                 />
-              </View>
+              </View> */}
 
               <WardsFilter
                 selectedWards={draft.selectedWards}
