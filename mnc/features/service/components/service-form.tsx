@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Alert, View } from "react-native";
+import { FileTextIcon, MapPinHouseIcon, PhoneIcon } from "lucide-react-native";
 import { useRouter } from "expo-router";
 import { KeyboardFormScroll } from "@/components/common/keyboard-form-scroll";
 import { Typography } from "@/components/common/typography";
@@ -13,6 +14,7 @@ import { useUserAuth } from "@/components/providers/user-auth-provider";
 import { PhotoPicker } from "@/components/common/photo-picker";
 import { LiveLocationField } from "@/components/common/live-location-field";
 import { Input } from "@/components/ui/input";
+import { Icon } from "@/components/ui/icon";
 import { Textarea } from "@/components/ui/textarea";
 import { TicketCategory } from "@/features/tickets/types";
 import { SERVICE_PHOTO_RAW_MAX_BYTES } from "@/features/service/constants";
@@ -167,57 +169,68 @@ export function ServiceForm({
             options={subServices}
           />
 
-          <View className="flex-row gap-2">
-            <Controller
-              control={control}
-              name="ward"
-              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                <View className="gap-1.5 w-32">
+          <Controller
+            control={control}
+            name="ward"
+            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+              <View className="gap-1.5">
+                <View className="border-input bg-background dark:bg-input/30 flex-row items-center gap-2 rounded-md border px-3 py-2">
+                  <Icon as={MapPinHouseIcon} size={18} className="text-primary shrink-0" />
+                  <Typography className="text-foreground shrink-0 text-base">Ward:</Typography>
                   <Input
                     placeholder={t("complaints.wardPlaceholder")}
                     value={value === undefined || value === null ? "" : String(value)}
                     onBlur={onBlur}
                     onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
                     keyboardType="number-pad"
+                    className="h-auto min-h-0 flex-1 border-0 bg-transparent p-0 shadow-none"
                   />
-                  {error ? (
-                    <Typography className="text-destructive text-sm">{error.message}</Typography>
-                  ) : null}
                 </View>
-              )}
-            />
-            <Controller
-              control={control}
-              name="phoneNumber"
-              render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
-                <View className="gap-1.5 flex-1">
+                {error ? (
+                  <Typography className="text-destructive text-sm">{error.message}</Typography>
+                ) : null}
+              </View>
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="phoneNumber"
+            render={({ field: { onChange, onBlur, value }, fieldState: { error } }) => (
+              <View className="gap-1.5 flex-1">
+                <View className="border-input bg-background dark:bg-input/30 flex-row items-center gap-2 rounded-md border px-3 py-2">
+                  <Icon as={PhoneIcon} size={18} className="text-primary shrink-0" />
                   <Input
                     placeholder={t("complaints.phonePlaceholder")}
                     value={String(value ?? "")}
                     onBlur={onBlur}
                     onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
                     keyboardType="phone-pad"
+                    className="h-auto min-h-0 flex-1 border-0 bg-transparent p-0 shadow-none"
                   />
-                  {error ? (
-                    <Typography className="text-destructive text-sm">{error.message}</Typography>
-                  ) : null}
                 </View>
-              )}
-            />
-          </View>
+                {error ? (
+                  <Typography className="text-destructive text-sm">{error.message}</Typography>
+                ) : null}
+              </View>
+            )}
+          />
 
           <Controller
             control={control}
             name="description"
             render={({ field: { onChange, onBlur, value } }) => (
               <View className="gap-1.5">
-                <Textarea
-                  placeholder={t("complaints.descriptionPlaceholder")}
-                  value={value}
-                  onBlur={onBlur}
-                  onChangeText={onChange}
-                  className="min-h-28"
-                />
+                <View className="border-input bg-background dark:bg-input/30 flex-row items-start gap-2 rounded-md border px-3 py-2">
+                  <Icon as={FileTextIcon} size={20} className="text-primary mt-0.5 shrink-0" />
+                  <Textarea
+                    placeholder={t("complaints.descriptionPlaceholder")}
+                    value={value}
+                    onBlur={onBlur}
+                    onChangeText={onChange}
+                    className="min-h-28 flex-1 border-0 bg-transparent p-0 shadow-none placeholder:text-muted-foreground"
+                  />
+                </View>
                 {errors.description ? (
                   <Typography className="text-destructive text-sm">
                     {errors.description.message}

@@ -138,11 +138,11 @@ export function PhotoPicker<
         onPress={() => void pickPhoto()}
         disabled={photos.length >= MAX_PHOTOS}
         className={cn(
-          "border-border items-center justify-center rounded-lg border border-dashed py-4",
+          "items-center justify-center rounded-lg border border-dashed border-primary py-4",
           photos.length >= MAX_PHOTOS && "opacity-50",
         )}
       >
-        <Typography className="text-foreground font-medium">{t("complaints.addPhotos")}</Typography>
+        <Typography className="text-primary font-medium">{t("complaints.addPhotos")}</Typography>
       </Pressable>
       <Typography className="text-muted-foreground text-center text-xs">
         {t("complaints.photosHint", {

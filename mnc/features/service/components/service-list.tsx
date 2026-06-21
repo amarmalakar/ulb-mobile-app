@@ -1,4 +1,4 @@
-import { FlatList, Pressable, View } from 'react-native';
+import { FlatList, Pressable, useWindowDimensions, View } from 'react-native';
 import { Typography } from '@/components/common/typography';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
@@ -14,6 +14,10 @@ import { getLocaleString } from '@/lib/i18n/get-locale-string';
 import { resolveTicketImageUrl } from '@/lib/resolve-ticket-image-url';
 import { cn } from '@/lib/utils';
 import { Image } from 'expo-image';
+
+const NUM_COLUMNS = 4;
+const COLUMN_GAP = 10;
+const LIST_HORIZONTAL_PADDING = 16;
 
 function ServiceError({
   onRetry,
@@ -51,14 +55,16 @@ export default function ServiceList() {
   const { t } = useTranslation();
   const router = useRouter();
   const { isLoading, isError, error, refetch, data: services } = useUserServicesQuery();
+  const { width: screenWidth } = useWindowDimensions();
+  const itemWidth = (screenWidth - LIST_HORIZONTAL_PADDING - COLUMN_GAP * (NUM_COLUMNS - 1)) / NUM_COLUMNS;
 
   if (isLoading) {
     return (
       <View className="gap-4 py-4 px-2">
         <Skeleton className="h-6 w-56" />
-        <View className="flex-row flex-wrap gap-y-4">
+        <View className="flex-row flex-wrap" style={{ gap: COLUMN_GAP, rowGap: 20 }}>
           {new Array(7).fill(0).map((_, index) => (
-            <View key={index} className="w-1/4">
+            <View key={index} style={{ width: itemWidth }}>
               <View className="self-center items-center gap-2">
                 <Skeleton className="h-14 w-14 items-center justify-center rounded-full" />
               </View>
@@ -104,7 +110,7 @@ export default function ServiceList() {
             const ServiceIcon = resolveServiceIcon(item.icon);
 
             return (
-              <View className='flex-1'>
+              <View style={{ width: itemWidth }}>
                 <Pressable
                   className={cn(
                     "self-center items-center gap-2 border border-primary rounded-lg aspect-square w-full overflow-hidden",
@@ -146,8 +152,8 @@ export default function ServiceList() {
             )
           }}
           keyExtractor={(item) => item.id}
-          numColumns={4}
-          columnWrapperStyle={{ gap: 10 }}
+          numColumns={NUM_COLUMNS}
+          columnWrapperStyle={{ gap: COLUMN_GAP }}
           contentContainerStyle={{ gap: 20 }}
         />
       )}

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Check, ChevronDown } from "lucide-react-native";
+import { CheckIcon, ChevronDownIcon, CircleAlertIcon } from "lucide-react-native";
 import { Pressable, ScrollView, View, type LayoutChangeEvent } from "react-native";
 import { Control, Controller, FieldValues, Path } from "react-hook-form";
 
@@ -89,11 +89,12 @@ function ServiceDropdownFieldControl({
           <Pressable
             onLayout={onTriggerLayout}
             className={cn(
-              "flex-row items-center justify-between",
+              "flex-row items-center justify-between gap-2",
               "bg-background dark:bg-input/30 h-10 w-full min-w-0 rounded-md border px-3 py-2",
               invalid ? "border-destructive" : "border-input",
             )}
           >
+            <Icon as={CircleAlertIcon} size={18} className="text-primary" />
             <Typography
               className={cn(
                 "flex-1 text-base",
@@ -103,7 +104,7 @@ function ServiceDropdownFieldControl({
             >
               {selectedOption?.label ?? placeholder}
             </Typography>
-            <Icon as={ChevronDown} size={20} className="text-primary" />
+            <Icon as={ChevronDownIcon} size={20} className="text-primary" />
           </Pressable>
         </DropdownMenuTrigger>
 
@@ -141,7 +142,7 @@ function ServiceDropdownFieldControl({
                     {option.label}
                   </Typography>
                   {isSelected ? (
-                    <Icon as={Check} className="text-primary size-4 shrink-0" />
+                    <Icon as={CheckIcon} className="text-primary size-4 shrink-0" />
                   ) : null}
                 </DropdownMenuItem>
               );
