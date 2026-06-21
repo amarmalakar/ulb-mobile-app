@@ -67,7 +67,7 @@ export function PhotoPicker<
 
     const perm = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (!perm.granted) {
-      setPickerError(t("complaints.photoLibraryRequired"));
+      setPickerError(t("service.photoLibraryRequired"));
       return;
     }
 
@@ -106,9 +106,9 @@ export function PhotoPicker<
       setPickerError(
         skippedOversized
           ? largestRejectedMb !== null
-            ? t("complaints.photoTooLarge", { size: largestRejectedMb, max: maxPhotoMb })
-            : t("complaints.photoMaxSize", { max: maxPhotoMb })
-          : t("complaints.noPhotosAdded"),
+            ? t("service.photoTooLarge", { size: largestRejectedMb, max: maxPhotoMb })
+            : t("service.photoMaxSize", { max: maxPhotoMb })
+          : t("service.noPhotosAdded"),
       );
       return;
     }
@@ -120,8 +120,8 @@ export function PhotoPicker<
     if (skippedOversized) {
       setPickerError(
         largestRejectedMb !== null
-          ? t("complaints.photosSkipped", { max: maxPhotoMb, largest: largestRejectedMb })
-          : t("complaints.photosSkippedShort", { max: maxPhotoMb }),
+          ? t("service.photosSkipped", { max: maxPhotoMb, largest: largestRejectedMb })
+          : t("service.photosSkippedShort", { max: maxPhotoMb }),
       );
     }
   };
@@ -142,10 +142,10 @@ export function PhotoPicker<
           photos.length >= MAX_PHOTOS && "opacity-50",
         )}
       >
-        <Typography className="text-primary font-medium">{t("complaints.addPhotos")}</Typography>
+        <Typography className="text-primary font-medium">{t("service.addPhotos")}</Typography>
       </Pressable>
       <Typography className="text-muted-foreground text-center text-xs">
-        {t("complaints.photosHint", {
+        {t("service.photosHint", {
           count: photos.length,
           max: MAX_PHOTOS,
           maxMb: maxPhotoMb,

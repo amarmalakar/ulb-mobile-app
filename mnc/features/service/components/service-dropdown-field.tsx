@@ -31,7 +31,7 @@ export function ServiceDropdownField<
   placeholder?: string;
 }) {
   const { t } = useTranslation();
-  const resolvedPlaceholder = placeholder ?? t("complaints.selectProblem");
+  const resolvedPlaceholder = placeholder ?? t("service.selectProblem");
 
   return (
     <Controller

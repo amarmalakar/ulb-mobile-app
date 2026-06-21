@@ -47,7 +47,7 @@ export function LiveLocationField<
     try {
       const { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setPickerError(t("complaints.locationPermissionRequired"));
+        setPickerError(t("service.locationPermissionRequired"));
         setLocationLoading(false);
         return;
       }
@@ -75,7 +75,7 @@ export function LiveLocationField<
         { shouldValidate: true },
       );
     } catch {
-      setPickerError(t("complaints.locationResolveFailed"));
+      setPickerError(t("service.locationResolveFailed"));
     } finally {
       setLocationLoading(false);
     }
@@ -122,7 +122,7 @@ export function LiveLocationField<
       <View className="flex-row items-center gap-2 px-4 pb-3 pt-4">
         <Icon as={MapPinIcon} className="size-[18px] text-primary" />
         <Text className="text-muted-foreground text-sm font-medium">
-          {t("complaints.selectProblemLocation")}
+          {t("service.selectProblemLocation")}
         </Text>
       </View>
 
@@ -142,7 +142,7 @@ export function LiveLocationField<
                     nativeID="loc-current"
                     onPress={() => onChange("current")}
                   >
-                    {t("complaints.currentLocation")}
+                    {t("service.currentLocation")}
                   </Label>
                 </View>
                 <View className="flex-row items-center gap-2">
@@ -152,7 +152,7 @@ export function LiveLocationField<
                     nativeID="loc-profile"
                     onPress={() => onChange("profile")}
                   >
-                    {t("complaints.profileAddress")}
+                    {t("service.profileAddress")}
                   </Label>
                 </View>
               </View>
@@ -167,7 +167,7 @@ export function LiveLocationField<
         {locationLoading ? (
           <View className="h-44 items-center justify-center">
             <ActivityIndicator />
-            <Text className="text-muted-foreground mt-2 text-sm">{t("complaints.findingLocation")}</Text>
+            <Text className="text-muted-foreground mt-2 text-sm">{t("service.findingLocation")}</Text>
           </View>
         ) : (
           <MapView

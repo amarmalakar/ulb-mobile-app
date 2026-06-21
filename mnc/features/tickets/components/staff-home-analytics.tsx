@@ -280,9 +280,9 @@ export function StaffHomeAnalytics() {
       <View className="gap-6 px-4">
         {/* <Text>Staff Home Analytics</Text> */}
         <View className="gap-3">
-          <Typography variant="h4" className="text-primary">{t("services.title")}</Typography>
+          <Typography variant="h4" className="text-primary">{t("service.title")}</Typography>
           {services.length === 0 ? (
-            <Typography className="text-muted-foreground text-sm">{t("services.empty")}</Typography>
+            <Typography className="text-muted-foreground text-sm">{t("service.empty")}</Typography>
           ) : (
             <View className="-mx-1 flex-row flex-wrap">
               {services.map((item) => (

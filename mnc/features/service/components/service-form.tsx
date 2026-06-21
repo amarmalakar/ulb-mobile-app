@@ -58,7 +58,7 @@ export function ServiceForm({
     setSubmitError(null);
     const token = session?.accessToken;
     if (!token) {
-      Alert.alert(t("complaints.couldNotSubmit"), t("complaints.submitSignInRequired"));
+      Alert.alert(t("service.couldNotSubmit"), t("service.submitSignInRequired"));
       return;
     }
 
@@ -94,8 +94,8 @@ export function ServiceForm({
           : "";
 
       Alert.alert(
-        t("complaints.submitSuccessTitle"),
-        t("complaints.submitSuccessBody", {
+        t("service.submitSuccessTitle"),
+        t("service.submitSuccessBody", {
           ticketId: ticket.ticketTokenId,
           photoNote,
         }),
@@ -114,9 +114,9 @@ export function ServiceForm({
       );
     } catch (error) {
       const message =
-        error instanceof Error ? error.message : t("complaints.submitFailed");
+        error instanceof Error ? error.message : t("service.submitFailed");
       setSubmitError(message);
-      Alert.alert(t("complaints.couldNotSubmit"), message);
+      Alert.alert(t("service.couldNotSubmit"), message);
     } finally {
       setSubmitPhase("idle");
     }
@@ -152,10 +152,10 @@ export function ServiceForm({
               >
                 <Typography>
                   {submitPhase === "photos"
-                    ? t("complaints.uploadingPhotos")
+                    ? t("service.uploadingPhotos")
                     : submitPhase === "submit" || createServiceTicketMutation.isPending
-                      ? t("complaints.submitting")
-                      : t("complaints.submitComplaint")}
+                      ? t("service.submitting")
+                      : t("service.submitService")}
                 </Typography>
               </Button>
             </View>
@@ -178,7 +178,7 @@ export function ServiceForm({
                   <Icon as={MapPinHouseIcon} size={18} className="text-primary shrink-0" />
                   <Typography className="text-foreground shrink-0 text-base">Ward:</Typography>
                   <Input
-                    placeholder={t("complaints.wardPlaceholder")}
+                    placeholder={t("service.wardPlaceholder")}
                     value={value === undefined || value === null ? "" : String(value)}
                     onBlur={onBlur}
                     onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
@@ -201,7 +201,7 @@ export function ServiceForm({
                 <View className="border-input bg-background dark:bg-input/30 flex-row items-center gap-2 rounded-md border px-3 py-2">
                   <Icon as={PhoneIcon} size={18} className="text-primary shrink-0" />
                   <Input
-                    placeholder={t("complaints.phonePlaceholder")}
+                    placeholder={t("service.phonePlaceholder")}
                     value={String(value ?? "")}
                     onBlur={onBlur}
                     onChangeText={(text) => onChange(text.replace(/\D/g, ""))}
@@ -224,7 +224,7 @@ export function ServiceForm({
                 <View className="border-input bg-background dark:bg-input/30 flex-row items-start gap-2 rounded-md border px-3 py-2">
                   <Icon as={FileTextIcon} size={20} className="text-primary mt-0.5 shrink-0" />
                   <Textarea
-                    placeholder={t("complaints.descriptionPlaceholder")}
+                    placeholder={t("service.descriptionPlaceholder")}
                     value={value}
                     onBlur={onBlur}
                     onChangeText={onChange}

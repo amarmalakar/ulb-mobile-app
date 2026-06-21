@@ -275,7 +275,7 @@ export function ComplaintFilter({
   return (
     <View className="gap-2 py-3">
       <Typography className="text-primary text-xs font-bold uppercase tracking-wide">
-        {t("tickets.filterComplaintType")}
+        {t("tickets.filterServiceType")}
       </Typography>
 
       {isPending ? (

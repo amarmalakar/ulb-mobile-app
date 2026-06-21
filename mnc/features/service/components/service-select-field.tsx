@@ -30,8 +30,8 @@ export function ServiceSelectField<
   title?: string;
 }) {
   const { t } = useTranslation();
-  const resolvedPlaceholder = placeholder ?? t("complaints.selectProblem");
-  const resolvedTitle = title ?? t("complaints.selectProblem");
+  const resolvedPlaceholder = placeholder ?? t("service.selectProblem");
+  const resolvedTitle = title ?? t("service.selectProblem");
 
   return (
     <Controller
@@ -152,7 +152,7 @@ function ServiceSelectFieldControl({
                       {t("common.noResults")}
                     </Typography>
                     <Typography className="text-muted-foreground text-center text-sm">
-                      {t("complaints.tryDifferentSearch")}
+                      {t("service.tryDifferentSearch")}
                     </Typography>
                   </View>
                 ) : (

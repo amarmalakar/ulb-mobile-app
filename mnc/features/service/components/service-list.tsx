@@ -78,7 +78,7 @@ export default function ServiceList() {
   if (isError) {
     return (
       <View className="gap-4 py-4 px-2">
-        <Typography variant="h4" className="text-primary">{t('complaints.title')}</Typography>
+        <Typography variant="h4" className="text-primary">{t('service.title')}</Typography>
         <ServiceError
           onRetry={() => void refetch()}
           message={error?.message}
@@ -95,10 +95,10 @@ export default function ServiceList() {
   return (
     <View className="gap-4 py-4 px-2">
       <Typography variant="h4" className="text-primary">
-        {t('services.title')}
+        {t('service.title')}
       </Typography>
       {items.length === 0 ? (
-        <Typography className="text-muted-foreground text-sm">{t('complaints.empty')}</Typography>
+        <Typography className="text-muted-foreground text-sm">{t('service.empty')}</Typography>
       ) : (
         <FlatList
           data={items}
