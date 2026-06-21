@@ -9,6 +9,9 @@ import { FeaturedGradient } from "./components/featured-gradient";
 import { FeaturedMedia } from "./components/featured-media";
 import type { FeaturedItem } from "./types";
 
+const SLIDE_INTERVAL_MS = 5000;
+const VIDEO_SLIDE_INTERVAL_MS = 12000;
+
 export function HomeFeatured({
   userName,
   items,
@@ -40,16 +43,19 @@ export function HomeFeatured({
       return;
     }
 
-    const intervalId = setInterval(() => {
+    const currentItem = items[activeSlideIndex];
+    const delay = currentItem?.type === "VIDEO" ? VIDEO_SLIDE_INTERVAL_MS : SLIDE_INTERVAL_MS;
+
+    const timeoutId = setTimeout(() => {
       setActiveSlideIndex((currentIndex) => {
         const nextIndex = (currentIndex + 1) % items.length;
         sliderRef.current?.scrollTo({ x: width * nextIndex, animated: true });
         return nextIndex;
       });
-    }, 5000);
+    }, delay);
 
-    return () => clearInterval(intervalId);
-  }, [width, items.length]);
+    return () => clearTimeout(timeoutId);
+  }, [width, items, activeSlideIndex]);
 
   if (isLoading) {
     return (

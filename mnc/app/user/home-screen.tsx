@@ -1,7 +1,6 @@
 import { BottomNav } from '@/components/common/bottom-nav';
 import { Leadership } from '@/components/common/leadership';
 import { useUserAuth } from '@/components/providers/user-auth-provider';
-import { HomeBanner } from '@/features/home-banner';
 import { HomeFeatured } from '@/features/home-featured';
 import { useFeaturedQuery } from '@/features/home-featured/hooks/use-featured-query';
 import { useUserLeadershipQuery } from '@/features/leadership/hooks/use-user-leadership-query';
@@ -42,7 +41,6 @@ export default function UserHomeScreen() {
             error={featuredError ?? undefined}
             onRetry={() => void refetchFeatured()}
           />
-          {/* <HomeBanner userName={userInfo?.name ?? t('common.user')} /> */}
 
           <Leadership
             isLoading={isLeadershipLoading}
