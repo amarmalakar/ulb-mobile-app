@@ -4,6 +4,7 @@ import { API_PATHS } from "@/lib/api-paths";
 import { SERVICE_PHOTO_MAX_COUNT } from "@/features/service/constants";
 
 import { prepareServicePhotoForUpload } from "./prepare-service-photo-for-upload";
+import { isComplaintPhotoStorageKey } from "./complaint-photo-storage-key";
 
 type OkResponse<T> = { ok: boolean; data?: T; message?: string };
 
@@ -15,7 +16,7 @@ type UploadData = {
 
 function isLocalPhotoUri(uri: string): boolean {
   const t = uri.trim();
-  return t.length > 0 && !/^https?:\/\//i.test(t) && !t.startsWith("complaint-photos/");
+  return t.length > 0 && !/^https?:\/\//i.test(t) && !isComplaintPhotoStorageKey(t);
 }
 
 function bearerHeaders(accessToken: string) {
@@ -63,7 +64,7 @@ export async function uploadServicePhotos(
   const locals = localUris.filter(isLocalPhotoUri).slice(0, SERVICE_PHOTO_MAX_COUNT);
   const existingKeys = localUris
     .map((u) => u.trim())
-    .filter((u) => u.startsWith("complaint-photos/"));
+    .filter((u) => isComplaintPhotoStorageKey(u));
 
   if (locals.length === 0) {
     return existingKeys;

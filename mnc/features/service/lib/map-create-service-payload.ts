@@ -2,10 +2,11 @@ import type { CreateUserServiceTicketRequest } from "@/features/service/types";
 import { TicketCategory } from "@/features/tickets/types";
 
 import type { ServiceFormValues } from "@/features/service/hooks/use-service-form";
+import { isComplaintPhotoStorageKey } from "@/features/service/lib/complaint-photo-storage-key";
 
 function isLocalPhotoUri(uri: string): boolean {
   const t = uri.trim();
-  return t.length > 0 && !/^https?:\/\//i.test(t) && !t.startsWith("complaint-photos/");
+  return t.length > 0 && !/^https?:\/\//i.test(t) && !isComplaintPhotoStorageKey(t);
 }
 
 function storedImageRefs(images: string[]): string[] {

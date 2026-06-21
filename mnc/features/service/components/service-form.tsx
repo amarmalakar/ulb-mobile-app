@@ -22,6 +22,7 @@ import { useCreateUserServiceTicketMutation } from "@/features/service/hooks/use
 import { useServiceForm } from "@/features/service/hooks/use-service-form";
 import { mapServiceFormToCreateRequest } from "@/features/service/lib/map-create-service-payload";
 import { uploadServicePhotos } from "@/features/service/lib/upload-service-photos";
+import { isComplaintPhotoStorageKey } from "@/features/service/lib/complaint-photo-storage-key";
 
 import { ServiceDropdownField } from "./service-dropdown-field";
 
@@ -70,7 +71,7 @@ export function ServiceForm({
         (uri) =>
           uri.trim().length > 0 &&
           !/^https?:\/\//i.test(uri.trim()) &&
-          !uri.trim().startsWith("complaint-photos/"),
+          !isComplaintPhotoStorageKey(uri.trim()),
       );
 
       if (hasLocalPhotos) {
